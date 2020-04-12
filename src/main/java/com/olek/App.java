@@ -7,6 +7,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import java.time.LocalDateTime;
+import java.util.Properties;
 
 
 public class App {
@@ -14,13 +15,18 @@ public class App {
     private final TemplateEngine templateEngine = new TemplateEngine();
 
     public static void main(String[] args) {
-        App app = new App();
+        var app = new App();
+        var properties = loadProperties(args);
         app.configure();
-        Javalin lin = Javalin.create().start(7000);
+        var lin = Javalin.create().start(7000);
         lin.get("/", ctx -> {
             ctx.header("Content-Type", "text/html");
             ctx.result(app.process());
         });
+    }
+
+    private static Properties loadProperties(String... args) {
+        return Config.properties(args);
     }
 
     public String process() {
