@@ -1,0 +1,4 @@
+CREATE DATABASE "order";
+
+CREATE USER "order" WITH PASSWORD 'order';
+GRANT ALL PRIVILEGES ON DATABASE "order" to "order";
