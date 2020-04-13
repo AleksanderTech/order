@@ -1,4 +1,4 @@
-package com.olek;
+package com.order;
 
 import io.javalin.Javalin;
 import org.thymeleaf.TemplateEngine;
