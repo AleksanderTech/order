@@ -1,17 +1,17 @@
-package com.order;
+package com.order.config;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class Config {
+public class PropertiesLoader {
 
-    public static Properties properties(String... args) {
+    public static Properties load(String... args) {
         InputStream in;
         try {
             if (args.length == 0) {
-                in = Config.class.getResourceAsStream("/app.properties");
+                in = PropertiesLoader.class.getResourceAsStream("/app.properties");
             } else {
                 in = new FileInputStream(args[0]);
             }
