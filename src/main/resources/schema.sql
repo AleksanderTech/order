@@ -6,27 +6,23 @@ create table order_user (
      is_active boolean not null default false
 );
 
-create table if not exists meta_dates (
-    id bigserial primary key,
-    created_at timestamp not null default now(),
-    modified_at timestamp
-);
-
 create table if not exists thought (
     id bigserial primary key,
     name varchar(100),
     content text,
-    user_id bigint references order_user(id)
+    user_id bigint references order_user(id),
+    created_at timestamp not null default now(),
+    modified_at timestamp
 );
 
 create table if not exists thought_link (
     thought_id bigint references thought(id),
     linked_thought_id bigint references thought(id),
-    primary key(left_thought_id,right_thought_id)
+    primary key(thought_id,linked_thought_id)
 );
 
 create table if not exists tag (
-    name varchar(100) primary key,
+    name varchar(100) primary key
 );
 
 create table if not exists thought_tag (

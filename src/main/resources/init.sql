@@ -1,4 +1,5 @@
 CREATE DATABASE "order";
 
 CREATE USER "order" WITH PASSWORD 'order';
-GRANT ALL PRIVILEGES ON DATABASE "order" to "order";
+ALTER DATABASE "order" OWNER TO "order";
+ALTER USER "order" WITH createdb;
