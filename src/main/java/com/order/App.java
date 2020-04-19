@@ -2,7 +2,8 @@ package com.order;
 
 import com.order.config.AppProperties;
 import com.order.config.PropertiesLoader;
-import com.order.handler.HomeHandler;
+import com.order.handler.StartHandler;
+import com.order.view.TemplatePresenter;
 import io.javalin.Javalin;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
@@ -23,8 +24,9 @@ public class App {
         var appProps = new AppProperties(loadProperties(args));
         var dslContext = loadDbContext(appProps);
         var lin = Javalin.create();
-        var homeHandler = new HomeHandler(templateEngine());
-        homeHandler.register(lin);
+        var presenter = new TemplatePresenter(templateEngine());
+        var startHandler = new StartHandler(presenter);
+        startHandler.register(lin);
         lin.start(appProps.SERVER_PORT);
     }
 
