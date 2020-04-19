@@ -17,7 +17,7 @@ public class StartHandler {
 
     public void register(Javalin lin) {
         lin.get("/", ctx -> {
-            ctx.header("Content-Type","text/html");
+            ctx.header("Content-Type", "text/html");
             var startModel = new StartModel("name", new Date());
             ctx.result(presenter.template(Views.START, startModel));
         });

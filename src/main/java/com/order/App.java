@@ -2,6 +2,7 @@ package com.order;
 
 import com.order.config.AppProperties;
 import com.order.config.PropertiesLoader;
+import com.order.config.ThymeleafConfig;
 import com.order.handler.StartHandler;
 import com.order.view.TemplatePresenter;
 import io.javalin.Javalin;
@@ -24,7 +25,7 @@ public class App {
         var appProps = new AppProperties(loadProperties(args));
         var dslContext = loadDbContext(appProps);
         var lin = Javalin.create();
-        var presenter = new TemplatePresenter(templateEngine());
+        var presenter = new TemplatePresenter(ThymeleafConfig.templateEngine());
         var startHandler = new StartHandler(presenter);
         startHandler.register(lin);
         lin.start(appProps.SERVER_PORT);
@@ -44,16 +45,5 @@ public class App {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static ITemplateEngine templateEngine() {
-        ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
-        resolver.setPrefix("/templates/");
-        resolver.setSuffix(".html");
-        resolver.setCharacterEncoding("UTF-8");
-        resolver.setTemplateMode(TemplateMode.HTML);
-        var templateEngine = new TemplateEngine();
-        templateEngine.setTemplateResolver(resolver);
-        return templateEngine;
     }
 }
