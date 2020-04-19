@@ -1,8 +1,9 @@
 
 
+let mode = document.querySelector('.mode');
 let root = document.documentElement;
 let isLightMode = true;
-root.addEventListener("click", e => {
+mode.addEventListener("click", e => {
     if (isLightMode) {
         root.style.setProperty('--black-white-1', '#FFFFFF');
         root.style.setProperty('--black-white-2', '#F8F8F8');
@@ -16,7 +17,7 @@ root.addEventListener("click", e => {
         root.style.setProperty('--black-white-10', '#202020');
         root.style.setProperty('--order-image', "url('tree-light.png')");
         isLightMode = false;
-    }else{
+    } else {
         root.style.setProperty('--black-white-1', '#202020');
         root.style.setProperty('--black-white-2', '#404040');
         root.style.setProperty('--black-white-3', '#606060');
@@ -28,6 +29,6 @@ root.addEventListener("click", e => {
         root.style.setProperty('--black-white-9', '#F8F8F8');
         root.style.setProperty('--black-white-10', '#FFFFFF');
         root.style.setProperty('--order-image', "url('tree.png')");
-        isLightMode=true;
+        isLightMode = true;
     }
 });

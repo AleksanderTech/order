@@ -16,30 +16,30 @@
     --black-white-9: #F8F8F8;
     --black-white-10: #FFFFFF;
     --order-image: url('tree.png');
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     background-color: var(--black-white-10);
 }
 
-#start-image{
+#start-image {
     background-image: var(--order-image);
-    background-position:center;
-    background-repeat:no-repeat;
+    background-position: center;
+    background-repeat: no-repeat;
     background-size: contain;
-    width:450px;
+    width: 450px;
     height: 250px;
 }
 
 #title {
-    color:var(--black-white-1);
+    color: var(--black-white-1);
     font-size: 85px;
     letter-spacing: 30px;
-    margin-right:-25px;
+    margin-right: -25px;
     text-align: center;
     text-transform: uppercase;
 }
 
 #slogan {
-    color:var(--black-white-1);
+    color: var(--black-white-1);
     font-size: 25px;
     text-align: justify;
     letter-spacing: 5px;
@@ -56,17 +56,17 @@
 }
 
 #buttons {
-    margin:20px;
-    width:350px;
+    margin: 20px;
+    width: 350px;
     display: flex;
-    justify-content:space-evenly;
+    justify-content: space-evenly;
 }
 
 .button {
     background-color: var(--black-white-1);
     color: var(--black-white-9);
     font-weight: bold;
-    letter-spacing:2px;
+    letter-spacing: 2px;
     border: none;
     outline: none;
     min-width: 110px;
@@ -75,7 +75,7 @@
 
 .button:hover {
     cursor: pointer;
-    background-color:  var(--black-white-3);
+    background-color: var(--black-white-3);
 }
 
 @media screen and (max-width: 900px) {
@@ -90,14 +90,31 @@
     }
 }
 
-.small-space{
-    display:inline-block;
-    width:15px;
+.small-space {
+    display: inline-block;
+    width: 15px;
     height: 15px;
 }
 
-.medium-space{
-    display:inline-block;
-    width:25px;
+.medium-space {
+    display: inline-block;
+    width: 25px;
     height: 25px;
+}
+
+.mode {
+    padding: 10px 20px;
+    font-weight: bold;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    color: var(--black-white-1);
+    background-color: var(--black-white-10);
+    border: 1px solid var(--black-white-1);
+    border-radius: 4px;
+}
+
+.mode:hover {
+    cursor: pointer;
+    background-color: var(--black-white-9);
 }
