@@ -9,10 +9,6 @@ import io.javalin.Javalin;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
-import org.thymeleaf.ITemplateEngine;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,10 +17,16 @@ import java.util.Properties;
 
 public class App {
 
+    public static final String IMAGES_PATH = "/images";
+    public static final String STYLE_PATH = "/style";
+
     public static void main(String[] args) {
         var appProps = new AppProperties(loadProperties(args));
         var dslContext = loadDbContext(appProps);
-        var lin = Javalin.create();
+        var lin = Javalin.create(config -> {
+            config.addStaticFiles(IMAGES_PATH);
+            config.addStaticFiles(STYLE_PATH);
+        });
         var presenter = new TemplatePresenter(ThymeleafConfig.templateEngine());
         var startHandler = new StartHandler(presenter);
         startHandler.register(lin);
