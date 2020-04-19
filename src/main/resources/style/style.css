@@ -5,7 +5,6 @@
 }
 
 :root {
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     --black-white-1: #202020;
     --black-white-2: #404040;
     --black-white-3: #606060;
@@ -15,9 +14,23 @@
     --black-white-7: #C8C8C8;
     --black-white-8: #DCDCDC;
     --black-white-9: #F8F8F8;
+    --black-white-10: #FFFFFF;
+    --order-image: url('tree.png');
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: var(--black-white-10);
+}
+
+#start-image{
+    background-image: var(--order-image);
+    background-position:center;
+    background-repeat:no-repeat;
+    background-size: contain;
+    width:450px;
+    height: 250px;
 }
 
 #title {
+    color:var(--black-white-1);
     font-size: 85px;
     letter-spacing: 30px;
     margin-right:-25px;
@@ -26,6 +39,7 @@
 }
 
 #slogan {
+    color:var(--black-white-1);
     font-size: 25px;
     text-align: justify;
     letter-spacing: 5px;
@@ -43,17 +57,20 @@
 
 #buttons {
     margin:20px;
+    width:350px;
     display: flex;
+    justify-content:space-evenly;
 }
 
 .button {
     background-color: var(--black-white-1);
     color: var(--black-white-9);
+    font-weight: bold;
     letter-spacing:2px;
     border: none;
     outline: none;
-    min-width: 100px;
-    padding: 15px;
+    min-width: 110px;
+    padding: 12px 15px;
 }
 
 .button:hover {
@@ -77,4 +94,10 @@
     display:inline-block;
     width:15px;
     height: 15px;
+}
+
+.medium-space{
+    display:inline-block;
+    width:25px;
+    height: 25px;
 }

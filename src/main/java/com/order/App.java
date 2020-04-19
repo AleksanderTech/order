@@ -19,6 +19,7 @@ public class App {
 
     public static final String IMAGES_PATH = "/images";
     public static final String STYLE_PATH = "/style";
+    public static final String JS_PATH = "/js";
 
     public static void main(String[] args) {
         var appProps = new AppProperties(loadProperties(args));
@@ -26,6 +27,7 @@ public class App {
         var lin = Javalin.create(config -> {
             config.addStaticFiles(IMAGES_PATH);
             config.addStaticFiles(STYLE_PATH);
+            config.addStaticFiles(JS_PATH);
         });
         var presenter = new TemplatePresenter(ThymeleafConfig.templateEngine());
         var startHandler = new StartHandler(presenter);
