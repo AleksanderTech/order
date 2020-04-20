@@ -15,13 +15,23 @@
     --black-white-8: #DCDCDC;
     --black-white-9: #F8F8F8;
     --black-white-10: #FFFFFF;
-    --order-image: url('tree.png');
+    --tree-image: url('tree.png');
+    --tree-long-image: url('tree-long.png');
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     background-color: var(--black-white-10);
 }
 
 #start-image {
-    background-image: var(--order-image);
+    background-image: var(--tree-image);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 450px;
+    height: 250px;
+}
+
+#sign-in-image{
+    background-image: var(--tree-long-image);
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -55,6 +65,15 @@
     margin-top: 18vh;
 }
 
+#wrapper{
+    max-width: 100vw;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 18vh;
+}
+
 #buttons {
     margin: 20px;
     width: 350px;
@@ -78,7 +97,7 @@
     background-color: var(--black-white-3);
 }
 
-@media screen and (max-width: 900px) {
+/* @media screen and (max-width: 900px) {
     #start-wrapper {
         width: 30%;
     }
@@ -88,7 +107,7 @@
     #start-wrapper {
         width: 60%;
     }
-}
+} */
 
 .small-space {
     display: inline-block;

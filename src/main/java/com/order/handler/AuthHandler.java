@@ -1,26 +1,22 @@
 package com.order.handler;
 
-import com.order.model.StartModel;
 import com.order.view.Presenter;
 import com.order.view.Views;
 import io.javalin.Javalin;
 
-import java.util.Date;
-
-public class StartHandler implements Handler {
+public class AuthHandler implements Handler {
 
     private Presenter presenter;
 
-    public StartHandler(Presenter presenter) {
+    public AuthHandler(Presenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
     public void register(Javalin lin) {
-        lin.get("/", ctx -> {
+        lin.get("/sign-in", ctx -> {
             ctx.header("Content-Type", "text/html");
-            var startModel = new StartModel("name", new Date());
-            ctx.result(presenter.template(Views.START, startModel));
+            ctx.result(presenter.template(Views.SIGN_IN));
         });
     }
 }

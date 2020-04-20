@@ -15,9 +15,14 @@ public class TemplatePresenter implements Presenter {
     }
 
     @Override
+    public String template(String name) {
+        return templateEngine.process(viewName(name), new Context());
+    }
+
+    @Override
     public String template(String name, ViewModel<?> viewModel) {
         Context context = new Context();
-        context.setVariable(MODEL,viewModel);
+        context.setVariable(MODEL, viewModel);
         return templateEngine.process(viewName(name), context);
     }
 
