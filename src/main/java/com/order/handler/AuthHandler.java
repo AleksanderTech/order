@@ -15,8 +15,10 @@ public class AuthHandler implements Handler {
     @Override
     public void register(Javalin lin) {
         lin.get("/sign-in", ctx -> {
-            ctx.header("Content-Type", "text/html");
-            ctx.result(presenter.template(Views.SIGN_IN));
+            ctx.html(presenter.template(Views.SIGN_IN));
+        });
+        lin.post("/sign-in", ctx -> {
+            ctx.result("account created successfully");
         });
     }
 }

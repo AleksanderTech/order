@@ -13,10 +13,17 @@
     <div id="wrapper">
         <button class="mode">Mode</button>
         <div id="sign-in-image"></div>
-        <div id="buttons">
-            <button class="button">back</button>
-            <button class="button">Sign in</button>
-        </div>
+        <form action="/sign-in" method="post">
+            <input type="text" placeholder="Username">
+            <br>
+            <input type="password" placeholder="Password">
+            <br>
+            <div id="buttons">
+                <button class="button">back</button>
+                <button class="button" type="submit">Sign in</button>
+            </div>
+        </form>
+
     </div>
 </body>
 
