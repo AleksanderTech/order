@@ -21,14 +21,18 @@
     background-color: var(--black-white-10);
 }
 
-input,input:focus{
-    border:none;
+a, a:active, a:hover, a:link {
+    text-decoration: none;
+}
+
+input, input:focus {
+    border: none;
     outline: none;
 }
 
 /* welcome page---------- */
 
-#start-image {
+#welcome-image {
     background-image: var(--tree-image);
     background-position: center;
     background-repeat: no-repeat;
@@ -46,6 +50,11 @@ input,input:focus{
     text-transform: uppercase;
 }
 
+#mode {
+    cursor: pointer;
+    color: var(--black-white-1);
+}
+
 #slogan {
     color: var(--black-white-1);
     font-size: 25px;
@@ -54,13 +63,13 @@ input,input:focus{
     word-spacing: 10px;
 }
 
-#start-wrapper {
+#welcome-wrapper {
     max-width: 100vw;
     max-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 18vh;
+    margin-top: 15vh;
 }
 
 /* welcome page---------- */
@@ -78,7 +87,6 @@ input,input:focus{
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    /* flex-grow: 1; */
 }
 
 #sign-in-wrapper {
@@ -90,25 +98,12 @@ input,input:focus{
     justify-content: space-between;
 }
 
-#sign-in-form{ display: flex;
+#sign-in-form {
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
 }
-
-
-
-/* @media screen and (max-width: 1600px) {
-    #sign-in-content {
-        width: 50%;
-    }
-  }
-
-  @media screen and (max-width: 1000px) {
-    #sign-in-content {
-        width: 100%;
-    }
-  } */
 
 /* sign in----------*/
 
@@ -126,6 +121,7 @@ input,input:focus{
     color: var(--black-white-9);
     font-weight: bold;
     letter-spacing: 2px;
+    text-align: center;
     border: none;
     outline: none;
     min-width: 110px;
@@ -135,6 +131,14 @@ input,input:focus{
 .button:hover {
     cursor: pointer;
     background-color: var(--black-white-3);
+}
+
+.text-black {
+    color: var(--black-white-1);
+}
+
+.text-white {
+    color: var(--black-white-9);
 }
 
 .small-space {
@@ -149,24 +153,54 @@ input,input:focus{
     height: 25px;
 }
 
-.mode {
-    align-self: flex-start;
-    margin: 20px;
-    padding: 10px 20px;
+.col {
+    float: left;
+}
+
+.w-33 {
+    width: 33.3%;
+}
+
+.row:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.font-20 {
+    font-size: 20px;
+}
+
+.font-bold {
     font-weight: bold;
-    color: var(--black-white-1);
-    background-color: var(--black-white-10);
-    border: 1px solid var(--black-white-1);
-    border-radius: 4px;
 }
 
-#mode-wrapper {
-    height: 15vh;
+.letter-sp-3 {
+    letter-spacing: 3px;
 }
 
-.mode:hover {
-    cursor: pointer;
-    background-color: var(--black-white-9);
+.pad-1 {
+    padding: 10px;
+}
+
+.pad-2 {
+    padding: 20px;
+}
+
+.pad-3 {
+    padding: 30px;
 }
 
 /* shared---------- */

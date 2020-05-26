@@ -1,6 +1,6 @@
 
 
-let mode = document.querySelector('.mode');
+let mode = document.getElementById('mode');
 let root = document.documentElement;
 let isLightMode = true;
 mode.addEventListener("click", e => {
