@@ -2,12 +2,12 @@ package com.order.model;
 
 import java.util.Date;
 
-public class StartModel implements ViewModel<StartModel> {
+public class WelcomeModel implements ViewModel<WelcomeModel> {
 
     private String name;
     private Date date;
 
-    public StartModel(String name, Date date) {
+    public WelcomeModel(String name, Date date) {
         this.name = name;
         this.date = date;
     }
@@ -29,13 +29,13 @@ public class StartModel implements ViewModel<StartModel> {
     }
 
     @Override
-    public StartModel model() {
+    public WelcomeModel model() {
         return this;
     }
 
     @Override
     public String toString() {
-        return "StartModel{" +
+        return "WelcomeModel{" +
                 "name='" + name + '\'' +
                 ", date=" + date +
                 '}';

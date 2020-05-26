@@ -5,7 +5,7 @@ import com.order.config.PropertiesLoader;
 import com.order.config.ThymeleafConfig;
 import com.order.handler.AuthHandler;
 import com.order.handler.Handler;
-import com.order.handler.StartHandler;
+import com.order.handler.WelcomeHandler;
 import com.order.view.TemplatePresenter;
 import io.javalin.Javalin;
 import org.jooq.DSLContext;
@@ -21,7 +21,7 @@ import java.util.Properties;
 public class App {
 
     public static final String IMAGES_PATH = "/images";
-    public static final String STYLE_PATH = "/style";
+    public static final String STYLE_PATH = "/css";
     public static final String JS_PATH = "/js";
 
     public static void main(String[] args) {
@@ -39,7 +39,7 @@ public class App {
 
     private static List<Handler> handlers() {
         var presenter = new TemplatePresenter(ThymeleafConfig.templateEngine());
-        var startHandler = new StartHandler(presenter);
+        var startHandler = new WelcomeHandler(presenter);
         var authHandler = new AuthHandler(presenter);
         return List.of(startHandler, authHandler);
     }

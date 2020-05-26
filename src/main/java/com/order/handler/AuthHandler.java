@@ -18,6 +18,7 @@ public class AuthHandler implements Handler {
             ctx.html(presenter.template(Views.SIGN_IN));
         });
         lin.post("/sign-in", ctx -> {
+            System.out.println(ctx.body());
             ctx.result("account created successfully");
         });
     }

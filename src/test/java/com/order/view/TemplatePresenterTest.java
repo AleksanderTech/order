@@ -1,7 +1,7 @@
 package com.order.view;
 
 import com.order.config.ThymeleafConfig;
-import com.order.model.StartModel;
+import com.order.model.WelcomeModel;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -13,6 +13,6 @@ class TemplatePresenterTest {
     @Test
     void template_templateExists_returnsTemplate() {
         var presenter = new TemplatePresenter(ThymeleafConfig.templateEngine());
-        assertNotNull(presenter.template(Views.START, new StartModel("", new Date())));
+        assertNotNull(presenter.template(Views.WELCOME, new WelcomeModel("", new Date())));
     }
 }

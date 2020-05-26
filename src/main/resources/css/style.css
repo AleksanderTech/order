@@ -21,17 +21,15 @@
     background-color: var(--black-white-10);
 }
 
-#start-image {
-    background-image: var(--tree-image);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 450px;
-    height: 250px;
+input,input:focus{
+    border:none;
+    outline: none;
 }
 
-#sign-in-image{
-    background-image: var(--tree-long-image);
+/* welcome page---------- */
+
+#start-image {
+    background-image: var(--tree-image);
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -65,14 +63,56 @@
     margin-top: 18vh;
 }
 
-#wrapper{
-    max-width: 100vw;
-    max-height: 100vh;
+/* welcome page---------- */
+
+/* sign in----------*/
+
+#sign-in-content {
+    background-image: var(--tree-long-image);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 85vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* flex-grow: 1; */
+}
+
+#sign-in-wrapper {
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 18vh;
+    justify-content: space-between;
 }
+
+#sign-in-form{ display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+
+/* @media screen and (max-width: 1600px) {
+    #sign-in-content {
+        width: 50%;
+    }
+  }
+
+  @media screen and (max-width: 1000px) {
+    #sign-in-content {
+        width: 100%;
+    }
+  } */
+
+/* sign in----------*/
+
+/* shared---------- */
 
 #buttons {
     margin: 20px;
@@ -97,18 +137,6 @@
     background-color: var(--black-white-3);
 }
 
-/* @media screen and (max-width: 900px) {
-    #start-wrapper {
-        width: 30%;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    #start-wrapper {
-        width: 60%;
-    }
-} */
-
 .small-space {
     display: inline-block;
     width: 15px;
@@ -122,18 +150,23 @@
 }
 
 .mode {
+    align-self: flex-start;
+    margin: 20px;
     padding: 10px 20px;
     font-weight: bold;
-    position: absolute;
-    left: 20px;
-    top: 20px;
     color: var(--black-white-1);
     background-color: var(--black-white-10);
     border: 1px solid var(--black-white-1);
     border-radius: 4px;
 }
 
+#mode-wrapper {
+    height: 15vh;
+}
+
 .mode:hover {
     cursor: pointer;
     background-color: var(--black-white-9);
 }
+
+/* shared---------- */
