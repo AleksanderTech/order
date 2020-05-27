@@ -16,6 +16,7 @@ mode.addEventListener("click", e => {
         root.style.setProperty('--black-white-9', '#404040');
         root.style.setProperty('--black-white-10', '#202020');
         root.style.setProperty('--tree-image', "url('tree-light.png')");
+        root.style.setProperty('--tree-long-image', "url('tree-long-light.png')");
         isLightMode = false;
     } else {
         root.style.setProperty('--black-white-1', '#202020');
@@ -29,6 +30,10 @@ mode.addEventListener("click", e => {
         root.style.setProperty('--black-white-9', '#F8F8F8');
         root.style.setProperty('--black-white-10', '#FFFFFF');
         root.style.setProperty('--tree-image', "url('tree.png')");
+        root.style.setProperty('--tree-long-image', "url('tree-long.png')");
         isLightMode = true;
     }
 });
+function goBack() {
+    window.history.back();
+}
