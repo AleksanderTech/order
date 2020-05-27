@@ -17,11 +17,14 @@
             <span class="col text-right w-33 pad-3"><a class="text-black" href="#">Thoughts</a></span>
         </nav>
         <div id="sign-in-content">
-            <form id="sign-in-form" action="/sign-in" method="post">
-                <input type="text" placeholder="Username" name="username">
-                <br>
-                <input type="password" placeholder="Password" name="password">
-                <br>
+            <form id="sign-in-form" action="/sign-in" method="post" autocomplete="off">
+                <div class="bg-color-10 mar-b-3">
+                    <input class="mar-1 pad-t-2 pad-b-0-5" type="text" id="sign-in-username" placeholder="Username"
+                        name="username">
+                    <br>
+                    <input class="mar-1 pad-t-2 pad-b-0-5" type="password" placeholder="Password" name="password">
+                    <br>
+                </div>
                 <div id="buttons">
                     <button class="button" type="button" onclick="goBack()">back</button>
                     <button class="button" type="submit">Sign in</button>
