@@ -1,6 +1,6 @@
 package com.order.view;
 
-import com.order.model.ViewModel;
+import com.order.view.model.ViewModel;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -8,7 +8,7 @@ public class TemplatePresenter implements Presenter {
 
     public static final String EXTENSION = ".html";
     public static final String MODEL = "model";
-    private ITemplateEngine templateEngine;
+    private final ITemplateEngine templateEngine;
 
     public TemplatePresenter(ITemplateEngine templateEngine) {
         this.templateEngine = templateEngine;

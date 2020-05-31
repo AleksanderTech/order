@@ -1,4 +1,4 @@
-package com.order.model;
+package com.order.view.model;
 
 public interface ViewModel<T> {
 

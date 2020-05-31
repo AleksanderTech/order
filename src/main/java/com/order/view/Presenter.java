@@ -1,6 +1,6 @@
 package com.order.view;
 
-import com.order.model.ViewModel;
+import com.order.view.model.*;
 
 public interface Presenter {
 

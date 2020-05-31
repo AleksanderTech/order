@@ -1,11 +1,14 @@
 package com.order;
 
+
 import com.order.config.AppProperties;
 import com.order.config.PropertiesLoader;
 import com.order.config.ThymeleafConfig;
 import com.order.handler.AuthHandler;
 import com.order.handler.Handler;
 import com.order.handler.WelcomeHandler;
+import com.order.repository.SqlUserRepository;
+import com.order.service.AuthService;
 import com.order.view.TemplatePresenter;
 import io.javalin.Javalin;
 import org.jooq.DSLContext;
@@ -16,7 +19,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
-
 
 public class App {
 
@@ -32,15 +34,18 @@ public class App {
             config.addStaticFiles(STYLE_PATH);
             config.addStaticFiles(JS_PATH);
         });
-        List<Handler> handlers = handlers();
-        handlers.forEach(h->h.register(lin));
+        List<Handler> handlers = handlers(appProps);
+        handlers.forEach(h -> h.register(lin));
         lin.start(appProps.SERVER_PORT);
     }
 
-    private static List<Handler> handlers() {
+    private static List<Handler> handlers(AppProperties appProperties) {
+        var dslContext = loadDbContext(appProperties);
         var presenter = new TemplatePresenter(ThymeleafConfig.templateEngine());
+        var authRepository = new SqlUserRepository(dslContext);
+        var authService = new AuthService(authRepository);
         var startHandler = new WelcomeHandler(presenter);
-        var authHandler = new AuthHandler(presenter);
+        var authHandler = new AuthHandler(presenter, authService);
         return List.of(startHandler, authHandler);
     }
 
