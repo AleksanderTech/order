@@ -18,15 +18,18 @@
         </nav>
         <div id="sign-in-content">
             <form id="sign-in-form" action="/sign-in" method="post" autocomplete="off">
+                <div class="line"></div>
                 <div class="bg-color-10 mar-b-3">
                     <input class="mar-1 pad-t-2 pad-b-0-5" type="text" id="sign-in-username" placeholder="Username"
                         name="username">
+                    <div class="alert mar-l-1">Username has to be minimum 4 letters long</div>
                     <br>
                     <input class="mar-1 pad-t-2 pad-b-0-5" type="password" placeholder="Password" name="password">
+                    <div class="alert mar-l-1">Username has to be minimum 4 letters long</div>
                     <br>
                 </div>
                 <div id="buttons">
-                    <button class="button" type="button" onclick="goBack()">back</button>
+                    <button class="button" type="button" onclick="goBack()">Back</button>
                     <button class="button" type="submit">Sign in</button>
                 </div>
             </form>
