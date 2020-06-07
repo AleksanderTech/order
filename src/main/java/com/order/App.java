@@ -9,6 +9,7 @@ import com.order.handler.Handler;
 import com.order.handler.WelcomeHandler;
 import com.order.repository.SqlUserRepository;
 import com.order.service.AuthService;
+import com.order.service.Hasher;
 import com.order.view.TemplatePresenter;
 import io.javalin.Javalin;
 import org.jooq.DSLContext;
@@ -42,8 +43,9 @@ public class App {
     private static List<Handler> handlers(AppProperties appProperties) {
         var dslContext = loadDbContext(appProperties);
         var presenter = new TemplatePresenter(ThymeleafConfig.templateEngine());
+        var hasher = new Hasher();
         var authRepository = new SqlUserRepository(dslContext);
-        var authService = new AuthService(authRepository);
+        var authService = new AuthService(authRepository,hasher);
         var startHandler = new WelcomeHandler(presenter);
         var authHandler = new AuthHandler(presenter, authService);
         return List.of(startHandler, authHandler);

@@ -1,17 +1,16 @@
 package com.order.handler;
 
 import com.order.model.User;
-import com.order.view.model.SignUpModel;
-import com.order.view.model.ViewModel;
 import com.order.service.AuthService;
 import com.order.validators.UserValidator;
 import com.order.validators.Validator;
 import com.order.view.Presenter;
 import com.order.view.Views;
+import com.order.view.model.SignUpModel;
+import com.order.view.model.ViewModel;
 import io.javalin.Javalin;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AuthHandler implements Handler {
