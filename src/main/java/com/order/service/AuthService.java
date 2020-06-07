@@ -4,6 +4,7 @@ import com.order.error.Message;
 import com.order.error.UsernameAlreadyExists;
 import com.order.model.User;
 import com.order.repository.SqlUserRepository;
+import org.postgresql.util.Base64;
 
 public class AuthService {
 
@@ -13,6 +14,23 @@ public class AuthService {
     public AuthService(SqlUserRepository userRepository, Hasher hasher) {
         this.userRepository = userRepository;
         this.hasher = hasher;
+    }
+
+    public void signIn(User user){
+        userRepository.getByUsername(user.username)
+                .ifPresentOrElse(
+                        us -> {
+                            if(hasher.validatePassword(user.username,us.password)){
+                                System.out.println("User sign in");
+                            }else{
+
+                                throw new RuntimeException();
+                            }
+                        },
+                        () -> {
+                            throw new RuntimeException();
+                        }
+                );
     }
 
     public void signUp(User user) {

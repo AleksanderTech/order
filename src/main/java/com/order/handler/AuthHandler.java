@@ -34,6 +34,8 @@ public class AuthHandler implements Handler {
         });
         lin.post("/sign-in", ctx -> {
             System.out.println(ctx.body());
+            var user = new User(ctx.formParam(PARAMETER_USERNAME), ctx.formParam(PARAMETER_PASSWORD));
+            authService.signIn(user);
             ctx.result("you are signed in");
         });
         lin.get("/sign-up", ctx -> {
