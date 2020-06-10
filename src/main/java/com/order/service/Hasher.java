@@ -36,22 +36,12 @@ public class Hasher {
             int iterations = Integer.parseInt(parts[0]);
             byte[] salt = Base64.getDecoder().decode(parts[1]);
             byte[] hash = Base64.getDecoder().decode(parts[2]);
-
             PBEKeySpec spec = new PBEKeySpec(providedPassword.toCharArray(), salt, iterations, KEY_LENGTH);
             SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] testHash = skf.generateSecret(spec).getEncoded();
-
-            int diff = hash.length ^ testHash.length;
             return Arrays.equals(hash, testHash);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static byte[] getSalt() throws NoSuchAlgorithmException {
-        SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        return salt;
     }
 }

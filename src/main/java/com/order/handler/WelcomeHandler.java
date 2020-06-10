@@ -14,7 +14,7 @@ public class WelcomeHandler implements Handler {
 
     @Override
     public void register(Javalin lin) {
-         lin.get("/", ctx -> {
+        lin.get("/", ctx -> {
             ctx.header("Content-Type", "text/html");
             ctx.result(presenter.template(Views.WELCOME));
         });

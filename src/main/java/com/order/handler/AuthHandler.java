@@ -10,6 +10,8 @@ import com.order.view.model.SignUpModel;
 import com.order.view.model.ViewModel;
 import io.javalin.Javalin;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,12 @@ public class AuthHandler implements Handler {
 
     @Override
     public void register(Javalin lin) {
+
+        lin.before(ctx -> {
+            ctx.sessionAttribute("my-key", "My value");
+            System.out.println(ctx.sessionAttributeMap());
+            System.out.println((String) ctx.sessionAttribute("current-user"));
+        });
         lin.get("/sign-in", ctx -> {
             ctx.html(presenter.template(Views.SIGN_IN));
         });
@@ -36,7 +44,17 @@ public class AuthHandler implements Handler {
             System.out.println(ctx.body());
             var user = new User(ctx.formParam(PARAMETER_USERNAME), ctx.formParam(PARAMETER_PASSWORD));
             authService.signIn(user);
-            ctx.result("you are signed in");
+
+            HttpSession oldHttpSession = ctx.req.getSession(false);
+            if (oldHttpSession != null) {
+                oldHttpSession.invalidate();
+            }
+            HttpSession newSession = ctx.req.getSession(true);
+            newSession.setMaxInactiveInterval(5 * 60);
+            Cookie message = new Cookie("message", "Welcome");
+            ctx.res.addCookie(message);
+            ctx.res.sendRedirect("home");
+
         });
         lin.get("/sign-up", ctx -> {
             ViewModel<SignUpModel> model = new SignUpModel(new ArrayList<>());
