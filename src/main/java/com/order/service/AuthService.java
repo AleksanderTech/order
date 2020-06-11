@@ -15,20 +15,13 @@ public class AuthService {
         this.hasher = hasher;
     }
 
-    public void signIn(User user){
-        userRepository.getByUsername(user.username)
-                .ifPresentOrElse(
-                        us -> {
-                            if(hasher.validatePassword(user.password,us.password)){
-                                System.out.println("User sign in");
-                            }else{
-                                throw new RuntimeException();
-                            }
-                        },
-                        () -> {
-                            throw new RuntimeException();
-                        }
-                );
+    public User signIn(User user) {
+        User originalUser = userRepository.getByUsername(user.username).orElseThrow(RuntimeException::new);
+        if (hasher.validatePassword(user.password, originalUser.password)) {
+            return originalUser;
+        } else {
+            throw new RuntimeException();
+        }
     }
 
     public void signUp(User user) {

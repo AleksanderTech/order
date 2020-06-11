@@ -14,6 +14,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class AuthHandler implements Handler {
 
@@ -31,28 +32,21 @@ public class AuthHandler implements Handler {
 
     @Override
     public void register(Javalin lin) {
-
-        lin.before(ctx -> {
-            ctx.sessionAttribute("my-key", "My value");
-            System.out.println(ctx.sessionAttributeMap());
-            System.out.println((String) ctx.sessionAttribute("current-user"));
-        });
         lin.get("/sign-in", ctx -> {
             ctx.html(presenter.template(Views.SIGN_IN));
         });
         lin.post("/sign-in", ctx -> {
             System.out.println(ctx.body());
             var user = new User(ctx.formParam(PARAMETER_USERNAME), ctx.formParam(PARAMETER_PASSWORD));
-            authService.signIn(user);
-
+            System.out.println(user);
+            user = authService.signIn(user);
             HttpSession oldHttpSession = ctx.req.getSession(false);
             if (oldHttpSession != null) {
                 oldHttpSession.invalidate();
             }
             HttpSession newSession = ctx.req.getSession(true);
-            newSession.setMaxInactiveInterval(5 * 60);
-            Cookie message = new Cookie("message", "Welcome");
-            ctx.res.addCookie(message);
+            newSession.setMaxInactiveInterval(60 * 60 * 12);
+            newSession.setAttribute("userId", user.id);
             ctx.res.sendRedirect("home");
 
         });
@@ -74,6 +68,13 @@ public class AuthHandler implements Handler {
                 authService.signUp(new User(username, email, password, false));
                 ctx.html(presenter.template(Views.SIGN_IN));
             }
+        });
+        lin.post("/sign-out", ctx -> {
+            HttpSession session = ctx.req.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
+            ctx.res.sendRedirect("/");
         });
     }
 }

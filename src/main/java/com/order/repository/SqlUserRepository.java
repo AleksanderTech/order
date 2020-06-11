@@ -21,6 +21,14 @@ public class SqlUserRepository implements UserRepository {
         return dsl.selectFrom(ORDER_USER)
                 .where(ORDER_USER.USERNAME.eq(username))
                 .fetchOptional()
+                .map(record -> new User(record.getId(),record.getUsername(), record.getEmail(), record.getPassword(), record.getIsActive()));
+    }
+
+    @Override
+    public Optional<User> getById(long id) {
+        return dsl.selectFrom(ORDER_USER)
+                .where(ORDER_USER.ID.eq(id))
+                .fetchOptional()
                 .map(record -> new User(record.getUsername(), record.getEmail(), record.getPassword(), record.getIsActive()));
     }
 

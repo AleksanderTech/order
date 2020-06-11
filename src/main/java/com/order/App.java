@@ -4,10 +4,7 @@ package com.order;
 import com.order.config.AppProperties;
 import com.order.config.PropertiesLoader;
 import com.order.config.ThymeleafConfig;
-import com.order.handler.AuthHandler;
-import com.order.handler.Handler;
-import com.order.handler.HomeHandler;
-import com.order.handler.WelcomeHandler;
+import com.order.handler.*;
 import com.order.repository.SqlUserRepository;
 import com.order.service.AuthService;
 import com.order.service.Hasher;
@@ -26,26 +23,33 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class App {
 
     public static final String IMAGES_PATH = "/images";
     public static final String STYLE_PATH = "/css";
     public static final String JS_PATH = "/js";
+    private static final ScheduledExecutorService sessionWiper = Executors.newScheduledThreadPool(1);
 
     public static void main(String[] args) {
         var appProps = new AppProperties(loadProperties(args));
         var dslContext = loadDbContext(appProps);
+        var sessionHandler = fileSessionHandler();
         var lin = Javalin.create(config -> {
-            config.sessionHandler(App::fileSessionHandler);
+            config.sessionHandler(() -> sessionHandler);
             config.addStaticFiles(IMAGES_PATH);
             config.addStaticFiles(STYLE_PATH);
             config.addStaticFiles(JS_PATH);
         });
+
         List<Handler> handlers = handlers(appProps);
         handlers.forEach(h -> h.register(lin));
 
         lin.start(appProps.SERVER_PORT);
+        sessionWiper.scheduleAtFixedRate(sessionHandler::scavenge, 1, 8, TimeUnit.SECONDS);
     }
 
     private static SessionHandler fileSessionHandler() {
@@ -54,6 +58,7 @@ public class App {
         sessionCache.setSessionDataStore(fileSessionDataStore());
         sessionHandler.setSessionCache(sessionCache);
         sessionHandler.getSessionCookieConfig().setHttpOnly(true);
+        sessionHandler.scavenge();
         return sessionHandler;
     }
 
@@ -62,8 +67,8 @@ public class App {
         FileSessionDataStore fileSessionDataStore = new FileSessionDataStore();
         File baseDir = new File(System.getProperty("java.io.tmpdir"));
         File storeDir = new File(baseDir, "javalin-session-store");
-        storeDir.mkdir();
         fileSessionDataStore.setStoreDir(storeDir);
+        fileSessionDataStore.sweepDisk();
         return fileSessionDataStore;
     }
 
@@ -76,7 +81,8 @@ public class App {
         var startHandler = new WelcomeHandler(presenter);
         var authHandler = new AuthHandler(presenter, authService);
         var homeHandler = new HomeHandler(presenter);
-        return List.of(startHandler, authHandler, homeHandler);
+        var errorHandler = new ErrorHandler(presenter);
+        return List.of(startHandler, authHandler, homeHandler, errorHandler);
     }
 
     private static Properties loadProperties(String... args) {
