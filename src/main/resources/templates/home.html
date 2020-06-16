@@ -6,25 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script type="text/javascript" defer src="app.js"></script>
+    <script defer type ="module" src="home.js"></script>
 </head>
 
 <body>
-    <nav class="row vw-100 font-20 font-bold letter-sp-3">
-        <span class="col text-left w-33 pad-3"><span class="text-black" id="mode">Mode</span></span>
-        <span class="col text-center w-33 pad-3"><a class="text-black" href="#">Search</a></span>
-        <span class="col text-right w-33 pad-3"><a class="text-black" href="#">Thoughts</a></span>
-        <form method="post" action="sign-out">
-            <input type="submit" value="Sign out">
-        </form>
-    </nav>
-    <div th:if="${model.cookies.size()} > 0 ">
-        <tr th:each="cookie : ${model.cookies}">
-            <td th:text="${cookie.key}">keyvalue</td>
-            <td th:text="${cookie.value}">num</td>
-        </tr>
-        <div th:if="${model.userId !=null}" th:text="${model.userId}">
-            I wonder if model.userId exists ...
+    <div id="home-component">
+        <nav class="row vw-100 font-20 font-bold letter-sp-3">
+            <span class="col text-center w-33 pad-3"><a class="text-black" href="#">Search</a></span>
+            <span class="col text-right w-33 pad-3"><a class="text-black" href="#">Thoughts</a></span>
+            <div class="col text-left w-33 pad-3">
+                <form method="post" action="sign-out">
+                    <input type="submit" value="Sign out">
+                </form>
+                <span class="text-black" id="settings">Settings</span>
+                <span class="text-black" id="light-mode">Light mode</span>
+                <span class="text-black" id="dark-mode">Dark mode</span>
+            </div>
+
+        </nav>
+        <div th:if="${model.cookies.size()} > 0 ">
+            <tr th:each="cookie : ${model.cookies}">
+                <td th:text="${cookie.key}">keyvalue</td>
+                <td th:text="${cookie.value}">num</td>
+            </tr>
+            <div th:if="${model.userId !=null}" th:text="${model.userId}">
+                I wonder if model.userId exists ...
+            </div>
         </div>
     </div>
 </body>
