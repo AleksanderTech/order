@@ -21,10 +21,15 @@
     --tree-image-width: 450px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     background-color: var(--black-white-10);
+    color: var(--black-white-1);
 }
 
 a, a:active, a:hover, a:link {
     text-decoration: none;
+}
+
+ul {
+    list-style-type: none;
 }
 
 input, input:focus {
@@ -35,6 +40,13 @@ input, input:focus {
 ::placeholder {
     font-size: 14px;
     opacity: 0.7;
+}
+
+input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, textarea:-webkit-autofill, textarea:-webkit-autofill:hover, textarea:-webkit-autofill:focus, select:-webkit-autofill, select:-webkit-autofill:hover, select:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--black-white-1);
+    -webkit-box-shadow: 0 0 0px 1000px var(--black-white-10) inset;
+    box-shadow: 200px 200px 100px var(--black-white-10) inset;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 /* welcome page---------- */
@@ -77,7 +89,7 @@ input, input:focus {
 }
 
 #welcome-content {
-    margin-top: 15vh;
+    margin-top: 20vh;
 }
 
 /* welcome page---------- */
@@ -91,15 +103,16 @@ input, input:focus {
 
 #sign-in-content {
     background-image: var(--tree-long-image);
-    background-position: center;
+    background-position: bottom;
     background-repeat: no-repeat;
     background-size: contain;
-    height: 85vh;
+    height: 92.5vh;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    align-self: flex-end;
 }
 
 #sign-in-wrapper {
@@ -108,7 +121,7 @@ input, input:focus {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
 #sign-in-form {
@@ -159,15 +172,16 @@ input, input:focus {
 
 #sign-up-content {
     background-image: var(--tree-long-image);
-    background-position: center;
+    background-position: bottom;
     background-repeat: no-repeat;
     background-size: contain;
-    height: 85vh;
+    height: 92.5vh;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    align-self: flex-end;
 }
 
 #sign-up-wrapper {
@@ -176,7 +190,7 @@ input, input:focus {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
 #sign-up-form {
@@ -190,6 +204,53 @@ input, input:focus {
 
 /* sign up----------*/
 
+/* home page----------*/
+
+#settings-list {
+    visibility: hidden;
+    height: 0;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+#settings:hover>#settings-list {
+    visibility: visible;
+    opacity: 1;
+}
+
+#sign-out {
+    background-color: var(--black-white-10);
+    color: var(--black-white-1);
+    font-size: 20px;
+}
+
+.rate-list-div {
+    overflow: hidden;
+    width: 25%;
+}
+
+.show-list {
+    transform: translateY(110px);
+}
+
+.rate-list {
+    /* transform: translateY(-120%); */
+    transform: translateY(-200px);
+    list-style-type: none;
+    transition: all 1s ease;
+}
+
+.rate-list-item {
+    margin: 0.4rem 0;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border: 2px solid #a56245;
+    width: 100%;
+    text-align: center;
+}
+
+/* home page----------*/
+
 /* shared---------- */
 
 .line {
@@ -198,16 +259,16 @@ input, input:focus {
     border-bottom: 2px solid var(--red-1);
 }
 
-.line-transform{
-     transform: translateX(calc(((100vw - var(--tree-image-width)) / 2) * -1));
+.line-transform {
+    transform: translateX(calc(((100vw - var(--tree-image-width)) / 2) * -1));
 }
 
-.line::after{
+.line::after {
     transform: translateX(calc((100vw - var(--tree-image-width)) / 2));
     display: block;
     width: var(--tree-image-width);
     height: 2px;
-    content:"";
+    content: "";
     position: absolute;
     background-color: var(--black-white-10);
 }
@@ -349,8 +410,16 @@ input, input:focus {
     margin-bottom: 20px;
 }
 
-.mar-l-1{
+.mar-t-2 {
+    margin-top: 20px;
+}
+
+.mar-l-1 {
     margin-left: 10px;
+}
+
+.mar-r-3 {
+    margin-right: 30px;
 }
 
 .vw-100 {

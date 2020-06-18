@@ -12,7 +12,7 @@
 <body>
     <div id="sign-up-wrapper">
         <div id="sign-up-content">
-            <form id="sign-up-form" action="sign-up" method="post" autocomplete="off">
+            <form id="sign-up-form" action="/sign-up" method="post" autocomplete="off">
                 <div class="line"></div>
                 <div class="bg-color-10 mar-b-2">
                     <input class="mar-1 pad-t-2 pad-b-0-5" type="text" placeholder="Username" name="username">
@@ -29,7 +29,7 @@
                     <div class="alert mar-l-1" th:if="${model.errors.size()} > 1 " th:text="${model.errors.get(0)}"></div>
                 </div>
                 <div id="buttons">
-                    <button class="button" type="button" onclick="goBack()">Back</button>
+                    <button class="button back" type="button" onclick="location.href='/'">Back</button>
                     <button class="button" type="submit">Sign up</button>
                 </div>
             </form>
