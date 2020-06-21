@@ -15,32 +15,25 @@
             <span class="col text-center w-33 pad-3"><a class="text-black" href="#">Search</a></span>
             <span class="col text-center w-33 pad-3"><a class="text-black" href="#">Thoughts</a></span>
             <div id="settings" class="col text-black text-center w-33 pad-3">
-                <div>Settings</div>
-                <ul id="settings-list">
-                    <form class="mar-t-2" id="sign-out" method="post" action="sign-out">
-                        <span id="sign-out-submit">Sign out</span>
-                    </form>
-                    <li class="mar-t-2" id="light-mode">Light mode</li>
-                    <li class="mar-t-2" id="dark-mode">Dark mode</li>
-                </ul>
-
+                <div id="settings-label">
+                    <span class="pointer">Settings</span>
+                </div>
+                <div id="settings-list-wrapper">
+                    <ul id="settings-list" class="hide-settings">
+                        <li class="mar-t-2" id="light-mode">
+                            <span class="pointer">Light mode</span>
+                        </li>
+                        <li class="mar-t-2" id="dark-mode">
+                            <span class="pointer">Dark mode</span>
+                        </li>
+                        <form class="mar-t-2" id="sign-out" method="post" action="sign-out">
+                            <span id="sign-out-submit" class="pointer">Sign out</span>
+                        </form>
+                    </ul>
+                </div>
             </div>
         </nav>
         <div th:if="${model.cookies.size()} > 0 ">
-            <div class="rate-list-title" onclick="showRateList(this)">rate</div>
-            <div class="rate-list-div">
-                <ol id ="list-rate" class="rate-list">
-                    <li class="rate-list-item">1asdadas</li>
-                    <li class="rate-list-item">2asdasddasdas</li>
-                    <li class="rate-list-item">3</li>
-                    <li class="rate-list-item">4</li>
-                    <li class="rate-list-item">5</li>
-                    <li class="rate-list-item">6</li>
-                    <li class="rate-list-item">7</li>
-                    <li class="rate-list-item">8</li>
-                    <li class="rate-list-item">9</li>
-                </ol>
-            </div>
             <tr th:each="cookie : ${model.cookies}">
                 <td th:text="${cookie.key}">keyvalue</td>
                 <td th:text="${cookie.value}">num</td>
@@ -50,32 +43,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-    let isOpened = false;
-
-        function showRateList(list) {
-            console.log(list);
-            // list.querySelector('#list-rate').classList.add('show-list');
-            if (isOpened) {
-                this.closeRateList(document.querySelector('#list-rate'));
-                return;
-            }
-            console.log(document.querySelector('#list-rate'));
-            
-            document.querySelector('#list-rate').classList.add('show-list');
-            document.querySelector('#list-rate').classList.remove('rate-list');
-
-            // list.classList.add('show-list');
-            isOpened = true;
-        }
-
-         function closeRateList(list) {
-            // document.querySelector('#list-rate').classList.remove('show-list');
-
-            list.classList.remove('show-list');
-            isOpened = false;
-        }</script>
 </body>
 
 </html>

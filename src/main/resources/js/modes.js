@@ -1,0 +1,33 @@
+export const LIGHT_MAP = new Map();
+LIGHT_MAP.set('--black-white-1', '#202020');
+LIGHT_MAP.set('--black-white-2', '#404040');
+LIGHT_MAP.set('--black-white-3', '#606060');
+LIGHT_MAP.set('--black-white-4', '#787878');
+LIGHT_MAP.set('--black-white-5', '#989898');
+LIGHT_MAP.set('--black-white-6', '#B0B0B0');
+LIGHT_MAP.set('--black-white-7', '#C8C8C8');
+LIGHT_MAP.set('--black-white-8', '#DCDCDC');
+LIGHT_MAP.set('--black-white-9', '#F8F8F8');
+LIGHT_MAP.set('--black-white-10', '#FFFFFF');
+LIGHT_MAP.set('--red-1', '#B80000');
+LIGHT_MAP.set('--tree-image', "url('tree.png')");
+LIGHT_MAP.set('--tree-long-image', "url('tree-long.png')");
+LIGHT_MAP.set('--red-1', '#B80000');
+
+export const DARK_MAP = new Map();
+DARK_MAP.set('--black-white-1', '#FFFFFF');
+DARK_MAP.set('--black-white-2', '#F8F8F8');
+DARK_MAP.set('--black-white-3', '#DCDCDC');
+DARK_MAP.set('--black-white-4', '#C8C8C8');
+DARK_MAP.set('--black-white-5', '#B0B0B0');
+DARK_MAP.set('--black-white-6', '#989898');
+DARK_MAP.set('--black-white-7', '#787878');
+DARK_MAP.set('--black-white-8', '#606060');
+DARK_MAP.set('--black-white-9', '#404040');
+DARK_MAP.set('--black-white-10', '#202020');
+DARK_MAP.set('--red-1', '#980000');
+DARK_MAP.set('--tree-image', "url('tree-light.png')");
+DARK_MAP.set('--tree-long-image', "url('tree-long-light.png')");
+
+export const LIGHT = 'light';
+export const DARK = 'dark';

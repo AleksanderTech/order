@@ -1,3 +1,3 @@
-import { loadUserMode } from './mode-loader.js'
+import * as modeManager from './mode-manager.js';
 
-loadUserMode();
+modeManager.loadUserMode();

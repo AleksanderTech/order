@@ -69,11 +69,6 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     text-transform: uppercase;
 }
 
-#mode {
-    cursor: pointer;
-    color: var(--black-white-1);
-}
-
 #slogan {
     color: var(--black-white-1);
     font-size: 25px;
@@ -206,47 +201,34 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 /* home page----------*/
 
-#settings-list {
-    visibility: hidden;
-    height: 0;
-    opacity: 0;
-    transition: visibility 0s, opacity 0.5s linear;
-}
-
-#settings:hover>#settings-list {
-    visibility: visible;
-    opacity: 1;
-}
-
 #sign-out {
     background-color: var(--black-white-10);
     color: var(--black-white-1);
     font-size: 20px;
 }
 
-.rate-list-div {
+#settings-list-wrapper {
     overflow: hidden;
-    width: 25%;
 }
 
-.show-list {
-    transform: translateY(110px);
+#settings {
+    overflow: hidden;
 }
 
-.rate-list {
-    /* transform: translateY(-120%); */
-    transform: translateY(-200px);
+#settings-list {
+    overflow: hidden;
+}
+
+.show-settings {
+    transform: translateY(0);
+    transition: transform 1s ease;
+}
+
+.hide-settings {
+    transform: translateY(-120%);
     list-style-type: none;
-    transition: all 1s ease;
-}
-
-.rate-list-item {
-    margin: 0.4rem 0;
-    font-size: 1.2rem;
-    cursor: pointer;
-    border: 2px solid #a56245;
-    width: 100%;
-    text-align: center;
+    transition: transform 1s ease;
+    overflow: hidden;
 }
 
 /* home page----------*/
@@ -424,6 +406,10 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 .vw-100 {
     width: 100vw;
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 /* shared---------- */

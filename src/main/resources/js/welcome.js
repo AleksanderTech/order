@@ -1,7 +1,3 @@
-import { loadUserMode } from './mode-loader.js';
+import * as modeManager from './mode-manager.js';
 
-loadUserMode();
-
-function goBack() {
-    window.history.back();
-}
+modeManager.loadUserMode();
