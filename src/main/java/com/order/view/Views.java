@@ -7,4 +7,5 @@ public class Views {
     public static final String SIGN_UP = "sign-up";
     public static final String HOME = "home";
     public static final String ERROR = "error";
+    public static final String THOUGHTS = "thoughts";
 }

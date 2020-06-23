@@ -7,7 +7,6 @@ export class HomeComponent {
         this.modeManager = modeManager;
         this.componentId = componentId;
         this.homeElement = document.getElementById(this.componentId);
-        this.settings = document.getElementById('settings')
         this.settingsList = document.getElementById('settings-list');
         this.settingsLabel = document.getElementById('settings-label');
         this.signOutElement = document.getElementById("sign-out");
@@ -42,8 +41,6 @@ export class HomeComponent {
     }
 
     closeList() {
-        console.log('ejejeje');
-        
         this.settingsList.classList.add('hide-settings');
         this.settingsList.classList.remove('show-settings');
         this.isOpened = false;

@@ -6,11 +6,12 @@ import com.order.view.model.HomeModel;
 import io.javalin.Javalin;
 
 import javax.servlet.http.Cookie;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class HomeHandler implements Handler {
+public class HomeHandler extends Handler {
 
     private final Presenter presenter;
 
@@ -20,18 +21,22 @@ public class HomeHandler implements Handler {
 
     @Override
     public void register(Javalin lin) {
-        lin.get("/home", ctx -> {
+        get("/home", lin, context -> {
             Long userId = null;
             String userIdName = "userId";
-            if (ctx.sessionAttribute(userIdName) != null) {
-                userId = ctx.sessionAttribute(userIdName);
+            if (context.sessionAttribute(userIdName) != null) {
+                userId = context.sessionAttribute(userIdName);
             }
             if (userId == null) {
-                ctx.res.sendRedirect("error");
+                try {
+                    context.res.sendRedirect("error");
+                } catch (IOException e) {
+                    throw new RuntimeException("redirection failed");
+                }
             }
             String message = null;
             String sessionID = null;
-            Cookie[] cookies = ctx.req.getCookies();
+            Cookie[] cookies = context.req.getCookies();
             Map<String, String> cookiesMap = new HashMap<>();
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
@@ -41,8 +46,8 @@ public class HomeHandler implements Handler {
                     }
                 }
             }
-            ctx.header("Content-Type", "text/html");
-            ctx.result(presenter.template(Views.HOME, new HomeModel(cookiesMap, userId)));
+            context.header("Content-Type", "text/html");
+            context.result(presenter.template(Views.HOME, new HomeModel(cookiesMap, userId)));
         });
     }
 }

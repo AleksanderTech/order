@@ -81,7 +81,8 @@ public class App {
         var authHandler = new AuthHandler(presenter, authService);
         var homeHandler = new HomeHandler(presenter);
         var errorHandler = new ErrorHandler(presenter);
-        return List.of(startHandler, authHandler, homeHandler, errorHandler);
+        var thoughtsHandler = new ThoughtsHandler(presenter);
+        return List.of(startHandler, authHandler, homeHandler, errorHandler, thoughtsHandler);
     }
 
     private static Properties loadProperties(String... args) {

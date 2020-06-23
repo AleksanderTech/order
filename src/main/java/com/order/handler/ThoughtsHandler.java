@@ -4,18 +4,18 @@ import com.order.view.Presenter;
 import com.order.view.Views;
 import io.javalin.Javalin;
 
-public class WelcomeHandler extends Handler {
+public class ThoughtsHandler extends Handler {
 
     private final Presenter presenter;
 
-    public WelcomeHandler(Presenter presenter) {
+    public ThoughtsHandler(Presenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
     public void register(Javalin lin) {
-        get("/", lin, ctx -> {
-            ctx.result(presenter.template(Views.WELCOME));
+        get("/thoughts", lin, context -> {
+            context.result(presenter.template(Views.THOUGHTS));
         });
     }
 }

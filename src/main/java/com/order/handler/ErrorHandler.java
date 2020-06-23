@@ -4,7 +4,7 @@ import com.order.view.Presenter;
 import com.order.view.Views;
 import io.javalin.Javalin;
 
-public class ErrorHandler implements Handler {
+public class ErrorHandler extends Handler {
 
     private final Presenter presenter;
 
@@ -14,8 +14,7 @@ public class ErrorHandler implements Handler {
 
     @Override
     public void register(Javalin lin) {
-        lin.get("/error", ctx -> {
-            ctx.header("Content-Type", "text/html");
+        get("/error", lin, ctx -> {
             ctx.result(presenter.template(Views.ERROR));
         });
     }

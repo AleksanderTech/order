@@ -10,13 +10,11 @@ import com.order.view.model.SignUpModel;
 import com.order.view.model.ViewModel;
 import io.javalin.Javalin;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-public class AuthHandler implements Handler {
+public class AuthHandler extends Handler {
 
     private final Presenter presenter;
     private final AuthService authService;
@@ -32,8 +30,12 @@ public class AuthHandler implements Handler {
 
     @Override
     public void register(Javalin lin) {
-        lin.get("/sign-in", ctx -> {
+        get("/sign-in", lin, ctx -> {
             ctx.html(presenter.template(Views.SIGN_IN));
+        });
+        get("/sign-up", lin, ctx -> {
+            ViewModel<SignUpModel> model = new SignUpModel(new ArrayList<>());
+            ctx.html(presenter.template(Views.SIGN_UP, model));
         });
         lin.post("/sign-in", ctx -> {
             System.out.println(ctx.body());
@@ -49,10 +51,6 @@ public class AuthHandler implements Handler {
             newSession.setAttribute("userId", user.id);
             ctx.res.sendRedirect("home");
 
-        });
-        lin.get("/sign-up", ctx -> {
-            ViewModel<SignUpModel> model = new SignUpModel(new ArrayList<>());
-            ctx.html(presenter.template(Views.SIGN_UP, model));
         });
         lin.post("/sign-up", ctx -> {
             String username = ctx.formParam(PARAMETER_USERNAME);
