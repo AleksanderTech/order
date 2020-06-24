@@ -1,6 +1,6 @@
 import * as modes from './modes.js';
 
-export class HomeComponent {
+export class NavigationComponent {
 
     constructor(modeManager, componentId) {
         this.isOpened = false;

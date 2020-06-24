@@ -1,3 +1,5 @@
-import * as modeManager from './mode-manager.js';
+import { ModeManager } from './mode-manager.js';
+
+const modeManager = new ModeManager();
 
 modeManager.loadUserMode();

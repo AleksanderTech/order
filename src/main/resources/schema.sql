@@ -15,14 +15,22 @@ create table if not exists thought (
     modified_at timestamp
 );
 
-create table if not exists thought_link (
+create table if not exists image (
+    id bigserial primary key,
+    url varchar(255),
+    thought_id bigint references thought(id)
+);
+
+create table if not exists thought_thought_link (
     thought_id bigint references thought(id),
-    linked_thought_id bigint references thought(id),
-    primary key(thought_id,linked_thought_id)
+    thought_link_id bigint references thought(id),
+    primary key(thought_id,thought_link_id)
 );
 
 create table if not exists tag (
-    name varchar(100) primary key
+    id bigserial primary key,
+    name varchar(100) unique,
+    created_at timestamp not null default now()
 );
 
 create table if not exists thought_tag (
