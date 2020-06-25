@@ -2,7 +2,7 @@ package com.order.handler;
 
 import com.order.view.Presenter;
 import com.order.view.Views;
-import com.order.view.model.HomeModel;
+import com.order.view.model.HomeVM;
 import io.javalin.Javalin;
 
 import javax.servlet.http.Cookie;
@@ -47,7 +47,7 @@ public class HomeHandler extends Handler {
                 }
             }
             context.header("Content-Type", "text/html");
-            context.result(presenter.template(Views.HOME, new HomeModel(cookiesMap, userId)));
+            context.result(presenter.template(Views.THOUGHTS, new HomeVM(cookiesMap, userId)));
         });
     }
 }

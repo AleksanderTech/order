@@ -67,7 +67,6 @@ public class App {
         File baseDir = new File(System.getProperty("java.io.tmpdir"));
         File storeDir = new File(baseDir, "javalin-session-store");
         fileSessionDataStore.setStoreDir(storeDir);
-        fileSessionDataStore.sweepDisk();
         return fileSessionDataStore;
     }
 
@@ -82,7 +81,8 @@ public class App {
         var homeHandler = new HomeHandler(presenter);
         var errorHandler = new ErrorHandler(presenter);
         var thoughtsHandler = new ThoughtsHandler(presenter);
-        return List.of(startHandler, authHandler, homeHandler, errorHandler, thoughtsHandler);
+        var searchHandler = new SearchHandler(presenter);
+        return List.of(startHandler, authHandler, homeHandler, errorHandler, thoughtsHandler, searchHandler);
     }
 
     private static Properties loadProperties(String... args) {

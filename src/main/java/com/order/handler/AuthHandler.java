@@ -6,7 +6,7 @@ import com.order.validators.UserValidator;
 import com.order.validators.Validator;
 import com.order.view.Presenter;
 import com.order.view.Views;
-import com.order.view.model.SignUpModel;
+import com.order.view.model.SignUpVM;
 import com.order.view.model.ViewModel;
 import io.javalin.Javalin;
 
@@ -34,7 +34,7 @@ public class AuthHandler extends Handler {
             ctx.html(presenter.template(Views.SIGN_IN));
         });
         get("/sign-up", lin, ctx -> {
-            ViewModel<SignUpModel> model = new SignUpModel(new ArrayList<>());
+            ViewModel<SignUpVM> model = new SignUpVM(new ArrayList<>());
             ctx.html(presenter.template(Views.SIGN_UP, model));
         });
         lin.post("/sign-in", ctx -> {
@@ -59,7 +59,7 @@ public class AuthHandler extends Handler {
             String confirmPassword = ctx.formParam(PARAMETER_CONFIRM_PASSWORD);
             Validator userValidator = new UserValidator();
             List<String> errors = userValidator.validate(username, email, password, confirmPassword);
-            ViewModel<SignUpModel> model = new SignUpModel(errors);
+            ViewModel<SignUpVM> model = new SignUpVM(errors);
             if (errors.size() > 0) {
                 ctx.html(presenter.template(Views.SIGN_UP, model));
             } else {
