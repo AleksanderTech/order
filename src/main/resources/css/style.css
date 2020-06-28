@@ -233,6 +233,41 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 /* home page----------*/
 
+/* thoughts page----------*/
+
+#thoughts-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#thoughts-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 30px;
+}
+
+.tile {
+    min-height: 100px;
+    min-width: 100px;
+    background-color: var(--black-white-5);
+    border: 1px solid var(--black-white-1);
+}
+
+.hovered{
+    background-color: var(--black-white-1);
+}
+
+.draggable {
+  cursor: move;
+}
+
+.dragging {
+    background-color: var(--black-white-3);
+}
+
+/* thoughts page----------*/
+
 /* shared---------- */
 
 .line {

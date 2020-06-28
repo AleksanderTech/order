@@ -1,19 +1,19 @@
 package com.order.service;
 
 import com.order.model.Thought;
-import com.order.repository.ThoughtsRepository;
+import com.order.repository.ThoughtRepository;
 
 import java.util.List;
 
 public class ThoughtsService {
 
-    private final ThoughtsRepository thoughtsRepository;
+    private final ThoughtRepository thoughtRepository;
 
-    public ThoughtsService(ThoughtsRepository thoughtsRepository) {
-        this.thoughtsRepository = thoughtsRepository;
+    public ThoughtsService(ThoughtRepository thoughtRepository) {
+        this.thoughtRepository = thoughtRepository;
     }
 
     public List<Thought> getByUserId(long id) {
-        return thoughtsRepository.getByUserId(id);
+        return thoughtRepository.getByUserId(id);
     }
 }

@@ -41,7 +41,7 @@ public class AuthHandler extends Handler {
             System.out.println(ctx.body());
             var user = new User(ctx.formParam(PARAMETER_USERNAME), ctx.formParam(PARAMETER_PASSWORD));
             System.out.println(user);
-            user = authService.signIn(user);
+            user = authService. signIn(user);
             HttpSession oldHttpSession = ctx.req.getSession(false);
             if (oldHttpSession != null) {
                 oldHttpSession.invalidate();

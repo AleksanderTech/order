@@ -7,11 +7,11 @@ import java.util.List;
 
 import static com.order.database.jooq.tables.Thought.THOUGHT;
 
-public class ThoughtsRepository {
+public class ThoughtRepository {
 
     private final DSLContext dslContext;
 
-    public ThoughtsRepository(DSLContext dslContext) {
+    public ThoughtRepository(DSLContext dslContext) {
         this.dslContext = dslContext;
     }
 
