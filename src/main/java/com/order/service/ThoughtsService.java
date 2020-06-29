@@ -16,4 +16,8 @@ public class ThoughtsService {
     public List<Thought> getByUserId(long id) {
         return thoughtRepository.getByUserId(id);
     }
+
+    public void create(Thought thought) {
+        thoughtRepository.create(thought);
+    }
 }

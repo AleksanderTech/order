@@ -1,9 +1,10 @@
 export class ThoughtsComponent {
 
     constructor(componentId) {
-        this.thoughtsElement = document.getElementById(this.componentId);
+        this.thoughtsElement = document.getElementById(componentId);
         this.tiles = document.querySelectorAll('.tile');
         this.thoughtsGrid = document.getElementById('thoughts-grid');
+        this.thoughtsManagement = document.getElementById('thoughts-management');
     }
 
     registerHandlers() {
@@ -31,6 +32,11 @@ export class ThoughtsComponent {
             })
         }
         );
+        this.thoughtsManagement.addEventListener('click', event => {
+            this.createThought();
+            this.findThoughts()
+        });
+
     }
 
     swap(container, dragging, hoverElement) {
@@ -41,5 +47,18 @@ export class ThoughtsComponent {
         } else {
             container.insertBefore(hoverElement, dragging);
         }
+    }
+
+    findThoughts(){
+        fetch('http://localhost:7000/api/thoughts')
+        .then(response => response.json())
+        .then(response=>{
+            console.log(response);
+            
+        })
+    }
+
+    createThought() {
+
     }
 }

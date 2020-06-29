@@ -17,6 +17,16 @@ public class ThoughtRepository {
 
     public List<Thought> getByUserId(long id) {
         return dslContext.selectFrom(THOUGHT)
-                .fetch(thought -> new Thought(thought.getId(), thought.getContent()));
+                .fetch(thought -> Thought.builder()
+                        .id(thought.getId())
+                        .name(thought.getName())
+                        .content(thought.getContent())
+                        .build());
+    }
+
+    public void create(Thought thought) {
+        dslContext.insertInto(THOUGHT, THOUGHT.NAME, THOUGHT.CONTENT, THOUGHT.USER_ID)
+                .values(thought.name, thought.content, thought.userId)
+                .execute();
     }
 }

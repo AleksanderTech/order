@@ -18,4 +18,8 @@ public abstract class Handler {
             consumer.accept(ctx);
         });
     }
+
+    public void post(String path, Javalin javalin, Consumer<Context> consumer) {
+        javalin.post(path, consumer::accept);
+    }
 }

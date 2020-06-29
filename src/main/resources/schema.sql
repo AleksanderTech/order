@@ -8,7 +8,7 @@ create table order_user (
 
 create table if not exists thought (
     id bigserial primary key,
-    name varchar(100),
+    name varchar(100) not null,
     content text,
     user_id bigint references order_user(id),
     created_at timestamp not null default now(),

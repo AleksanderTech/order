@@ -18,6 +18,7 @@
         <db.user>order</db.user>
         <db.password>order</db.password>
         <junit.version>5.1.0</junit.version>
+        <jackson.version>2.11.0</jackson.version>
     </properties>
     <dependencies>
         <dependency>
@@ -60,6 +61,11 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
     </dependencies>
     <build>
