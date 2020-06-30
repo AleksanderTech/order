@@ -1,7 +1,5 @@
 package com.order.service;
 
-import com.order.error.Message;
-import com.order.error.UsernameAlreadyExists;
 import com.order.model.User;
 import com.order.repository.SqlUserRepository;
 
@@ -28,7 +26,7 @@ public class AuthService {
         userRepository.getByUsername(user.username)
                 .ifPresentOrElse(
                         us -> {
-                            throw new UsernameAlreadyExists(Message.USER_USERNAME_ALREADY_EXISTS);
+//                            throw new UsernameAlreadyExists(Errors.USER_USERNAME_ALREADY_EXISTS); todo
                         },
                         () -> {
                             user.password = hasher.hash(user.password);

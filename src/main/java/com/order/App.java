@@ -10,6 +10,7 @@ import com.order.repository.ThoughtRepository;
 import com.order.service.AuthService;
 import com.order.service.Hasher;
 import com.order.service.ThoughtsService;
+import com.order.validators.ValidatorManager;
 import com.order.view.TemplatePresenter;
 import io.javalin.Javalin;
 import org.eclipse.jetty.server.session.DefaultSessionCache;
@@ -35,6 +36,14 @@ public class App {
     public static final String STYLE_PATH = "/css";
     public static final String JS_PATH = "/js";
     private static final ScheduledExecutorService sessionWiper = Executors.newScheduledThreadPool(1);
+
+    /*
+
+        czy nie sa nullami jesli null zwro
+
+
+
+     */
 
     public static void main(String[] args) {
         var appProps = new AppProperties(loadProperties(args));
@@ -76,12 +85,13 @@ public class App {
         var dslContext = loadDbContext(appProperties);
         var presenter = new TemplatePresenter(ThymeleafConfig.templateEngine());
         var hasher = new Hasher();
+        var validatorManager = new ValidatorManager();
         var authRepository = new SqlUserRepository(dslContext);
         var thoughtRepository = new ThoughtRepository(dslContext);
         var authService = new AuthService(authRepository, hasher);
         var thoughtService = new ThoughtsService(thoughtRepository);
         var startHandler = new WelcomeHandler(presenter);
-        var authHandler = new AuthHandler(presenter, authService);
+        var authHandler = new AuthHandler(presenter, authService, validatorManager);
         var homeHandler = new HomeHandler(presenter);
         var errorHandler = new ErrorHandler(presenter);
         var thoughtsHandler = new ThoughtsHandler(presenter, thoughtService);
