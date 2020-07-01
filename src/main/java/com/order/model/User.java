@@ -6,13 +6,12 @@ public class User {
     public String username;
     public String email;
     public String password;
-    public boolean isActive;
+    public boolean isActive = true;
 
-    public User(String username, String email, String password, boolean isActive) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.isActive = isActive;
     }
 
     public User(long id, String username, String email, String password, boolean isActive) {

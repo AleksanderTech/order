@@ -29,7 +29,7 @@ public class SqlUserRepository implements UserRepository {
         return dsl.selectFrom(ORDER_USER)
                 .where(ORDER_USER.ID.eq(id))
                 .fetchOptional()
-                .map(record -> new User(record.getUsername(), record.getEmail(), record.getPassword(), record.getIsActive()));
+                .map(record -> new User(record.getUsername(), record.getEmail(), record.getPassword()));
     }
 
     @Override
@@ -41,7 +41,6 @@ public class SqlUserRepository implements UserRepository {
                 .map(us -> new User(
                         us.getValue(ORDER_USER.USERNAME),
                         us.getValue(ORDER_USER.EMAIL),
-                        us.getValue(ORDER_USER.PASSWORD),
-                        us.getValue(ORDER_USER.IS_ACTIVE)));
+                        us.getValue(ORDER_USER.PASSWORD)));
     }
 }

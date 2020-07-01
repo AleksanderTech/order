@@ -143,13 +143,12 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 /* sign up----------*/
 
-.alert::before {
+/* .alert::before {
     position: relative;
-}
+} */
 
 .alert {
     color: var(--red-1);
-    position: absolute;
     background-color: var(--black-white-10);
     z-index: 10;
     padding-bottom: 4px;
@@ -254,12 +253,12 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     border: 1px solid var(--black-white-1);
 }
 
-.hovered{
+.hovered {
     background-color: var(--black-white-1);
 }
 
 .draggable {
-  cursor: move;
+    cursor: move;
 }
 
 .dragging {
@@ -269,6 +268,15 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 /* thoughts page----------*/
 
 /* shared---------- */
+
+.form-content {
+    width: 340px;
+    word-wrap: break-word;
+}
+
+.limiter{
+    height: 80px;
+}
 
 .line {
     position: absolute;

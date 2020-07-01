@@ -48,9 +48,7 @@ public class ThoughtsHandler extends Handler {
             try {
                 String userIdName = "userId";
                 Long userId = null;
-                System.out.println("before hello");
                 if (context.sessionAttribute(userIdName) != null) {
-                    System.out.println("hello inside");
                     userId = context.sessionAttribute(userIdName);
                     String name = context.formParam("name");
                     thoughtsService.create(Thought.builder().name(name).userId(userId).createdAt(LocalDateTime.now()).build());

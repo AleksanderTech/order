@@ -2,16 +2,16 @@ package com.order.view.model;
 
 import java.util.Map;
 
-public class SignUpVM implements ViewModel<SignUpVM> {
+public class SignInVM implements ViewModel<SignInVM> {
 
     public Map<String, String> errors;
 
-    public SignUpVM(Map<String, String> errors) {
+    public SignInVM(Map<String, String> errors) {
         this.errors = errors;
     }
 
     @Override
-    public SignUpVM model() {
+    public SignInVM model() {
         return this;
     }
 }
