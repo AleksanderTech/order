@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script defer type ="module" src="sign-in.js"></script>
+    <script defer type="module" src="sign-in.js"></script>
 </head>
 
 <body>
@@ -17,10 +17,12 @@
                 <div class="bg-color-10 mar-b-3 form-content">
                     <input class="mar-1 pad-t-2 pad-b-0-5" type="text" id="sign-in-username" placeholder="Username"
                         name="username">
-                    <div th:if="${model.errors.containsKey('username')}" th:text="${model.errors.get('username')}" class="alert mar-l-1"></div>
+                    <div th:if="${model.errors.containsKey('username')}" th:text="${model.errors.get('username')}"
+                        class="alert mar-l-1"></div>
                     <br>
                     <input class="mar-1 pad-t-2 pad-b-0-5" type="password" placeholder="Password" name="password">
-                    <div th:if="${model.errors.containsKey('password')}" th:text="${model.errors.get('password')}" class="alert mar-l-1"></div>
+                    <div th:if="${model.errors.containsKey('password')}" th:text="${model.errors.get('password')}"
+                        class="alert mar-l-1"></div>
                     <br>
                 </div>
                 <div id="buttons">

@@ -48,7 +48,7 @@ public class AuthHandler extends Handler {
                 var user = new User(username, password);
                 user = authService.signIn(user);
                 newSession(ctx, user.id);
-                ctx.res.sendRedirect("/home");
+                ctx.res.sendRedirect("/thoughts");
             }
         });
 

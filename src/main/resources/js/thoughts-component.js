@@ -4,7 +4,10 @@ export class ThoughtsComponent {
         this.thoughtsElement = document.getElementById(componentId);
         this.tiles = document.querySelectorAll('.tile');
         this.thoughtsGrid = document.getElementById('thoughts-grid');
-        this.thoughtsManagement = document.getElementById('thoughts-management');
+        this.newThoughtButton = document.getElementById('new-thought-button');
+        this.newTagButton = document.getElementById('new-tag-button');
+        this.creationModal = document.getElementById('creation-modal');
+        this.closeModal = document.getElementById('close-modal');
     }
 
     registerHandlers() {
@@ -12,31 +15,35 @@ export class ThoughtsComponent {
             e.preventDefault();
         });
         this.tiles.forEach(tile => {
-            tile.addEventListener('dragstart', event => {
+            tile.addEventListener('dragstart', e => {
                 tile.classList.add('dragging');
             })
-            tile.addEventListener('dragend', event => {
+            tile.addEventListener('dragend', e => {
                 tile.classList.remove('dragging');
                 tile.classList.remove('hovered');
             })
-            tile.addEventListener('dragleave', event => {
+            tile.addEventListener('dragleave', e => {
                 tile.classList.remove('hovered');
             })
-            tile.addEventListener('dragenter', event => {
+            tile.addEventListener('dragenter', e => {
                 tile.classList.add('hovered');
             })
-            tile.addEventListener('drop', event => {
+            tile.addEventListener('drop', e => {
                 const dragging = document.querySelector('.dragging');
                 tile.classList.remove('hovered');
                 this.swap(this.thoughtsGrid, dragging, tile);
             })
-        }
-        );
-        this.thoughtsManagement.addEventListener('click', event => {
-            this.createThought();
-            this.findThoughts()
         });
+        this.newThoughtButton.addEventListener('click', e => {
+            this.creationModal.style.display = 'block';
+        })
 
+        this.newTagButton.addEventListener('click', e => {
+            this.creationModal.style.display = 'block';
+        })
+        this.closeModal.addEventListener('click', e => {
+            this.creationModal.style.display = 'none';
+        })
     }
 
     swap(container, dragging, hoverElement) {
@@ -47,18 +54,5 @@ export class ThoughtsComponent {
         } else {
             container.insertBefore(hoverElement, dragging);
         }
-    }
-
-    findThoughts(){
-        fetch('http://localhost:7000/api/thoughts')
-        .then(response => response.json())
-        .then(response=>{
-            console.log(response);
-            
-        })
-    }
-
-    createThought() {
-
     }
 }

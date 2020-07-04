@@ -15,6 +15,20 @@ create table if not exists thought (
     modified_at timestamp
 );
 
+create table if not exists tag (
+    id bigserial primary key,
+    name varchar(100) unique,
+    parent_tag_id bigint references tag(id),
+    user_id bigint references order_user(id),
+    created_at timestamp not null default now()
+);
+
+create table if not exists thought_tag (
+    thought_id bigint references thought(id),
+    tag_name varchar(100) references tag(name) on update cascade on delete cascade,
+    primary key(thought_id,tag_name)
+);
+
 create table if not exists image (
     id bigserial primary key,
     url varchar(255),
@@ -27,15 +41,4 @@ create table if not exists thought_thought_link (
     primary key(thought_id,thought_link_id)
 );
 
-create table if not exists tag (
-    id bigserial primary key,
-    name varchar(100) unique,
-    created_at timestamp not null default now()
-);
-
-create table if not exists thought_tag (
-    thought_id bigint references thought(id),
-    tag_name varchar(100) references tag(name) on update cascade on delete cascade,
-    primary key(thought_id,tag_name)
-);
 

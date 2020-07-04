@@ -5,6 +5,7 @@ import com.order.model.Thought;
 import com.order.service.ThoughtsService;
 import com.order.view.Presenter;
 import com.order.view.Views;
+import com.order.view.model.ThoughtVM;
 import io.javalin.Javalin;
 
 import java.io.IOException;
@@ -24,12 +25,21 @@ public class ThoughtsHandler extends Handler {
     @Override
     public void register(Javalin lin) {
         get("/thoughts", lin, context -> {
-            Long userId = null;
+            Long userId;
             String userIdName = "userId";
             if (context.sessionAttribute(userIdName) != null) {
                 userId = context.sessionAttribute(userIdName);
-                List<Thought> thoughts = thoughtsService.getByUserId(userId);
-                context.result(presenter.template(Views.THOUGHTS));
+                if (userId == null) {
+                    try {
+                        context.res.sendRedirect("error");
+                    } catch (IOException e) {
+                        throw new RuntimeException("redirection failed");
+                    }
+                } else {
+                    List<Thought> thoughts = thoughtsService.getByUserId(userId);
+                    System.out.println(thoughts);
+                    context.result(presenter.template(Views.THOUGHTS, new ThoughtVM(thoughts)));
+                }
             }
         });
 

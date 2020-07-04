@@ -6,7 +6,7 @@ export class NavigationComponent {
         this.isOpened = false;
         this.modeManager = modeManager;
         this.componentId = componentId;
-        this.homeElement = document.getElementById(this.componentId);
+        this.navigationElement = document.getElementById(this.componentId);
         this.settingsList = document.getElementById('settings-list');
         this.settingsLabel = document.getElementById('settings-label');
         this.signOutElement = document.getElementById("sign-out");

@@ -7,12 +7,13 @@ LIGHT_MAP.set('--black-white-5', '#989898');
 LIGHT_MAP.set('--black-white-6', '#B0B0B0');
 LIGHT_MAP.set('--black-white-7', '#C8C8C8');
 LIGHT_MAP.set('--black-white-8', '#DCDCDC');
-LIGHT_MAP.set('--black-white-9', '#F8F8F8');
+LIGHT_MAP.set('--black-white-9', '#F7F7F7');
 LIGHT_MAP.set('--black-white-10', '#FFFFFF');
 LIGHT_MAP.set('--red-1', '#B80000');
 LIGHT_MAP.set('--tree-image', "url('tree.png')");
 LIGHT_MAP.set('--tree-long-image', "url('tree-long.png')");
 LIGHT_MAP.set('--red-1', '#B80000');
+LIGHT_MAP.set('--modal-background', '#20202088');
 
 export const DARK_MAP = new Map();
 DARK_MAP.set('--black-white-1', '#FFFFFF');
@@ -28,6 +29,7 @@ DARK_MAP.set('--black-white-10', '#202020');
 DARK_MAP.set('--red-1', '#980000');
 DARK_MAP.set('--tree-image', "url('tree-light.png')");
 DARK_MAP.set('--tree-long-image', "url('tree-long-light.png')");
+DARK_MAP.set('--modal-background', '#FFFFFFDD');
 
 export const LIGHT = 'light';
 export const DARK = 'dark';

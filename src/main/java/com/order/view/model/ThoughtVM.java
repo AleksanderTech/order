@@ -1,6 +1,16 @@
 package com.order.view.model;
 
-public class ThoughtVM implements ViewModel<ThoughtVM>{
+import com.order.model.Thought;
+
+import java.util.List;
+
+public class ThoughtVM implements ViewModel<ThoughtVM> {
+
+    public List<Thought> thoughts;
+
+    public ThoughtVM(List<Thought> thoughts) {
+        this.thoughts = thoughts;
+    }
 
     @Override
     public ThoughtVM model() {
