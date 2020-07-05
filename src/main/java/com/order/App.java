@@ -6,10 +6,12 @@ import com.order.config.PropertiesLoader;
 import com.order.config.ThymeleafConfig;
 import com.order.handler.*;
 import com.order.repository.SqlUserRepository;
+import com.order.repository.TagRepository;
 import com.order.repository.ThoughtRepository;
 import com.order.service.AuthService;
 import com.order.service.Hasher;
-import com.order.service.ThoughtsService;
+import com.order.service.TagService;
+import com.order.service.ThoughtService;
 import com.order.view.TemplatePresenter;
 import io.javalin.Javalin;
 import org.eclipse.jetty.server.session.DefaultSessionCache;
@@ -76,16 +78,19 @@ public class App {
         var dslContext = loadDbContext(appProperties);
         var presenter = new TemplatePresenter(ThymeleafConfig.templateEngine());
         var hasher = new Hasher();
+        var tagRepository = new TagRepository(dslContext);
+        var tagService = new TagService(tagRepository);
         var authRepository = new SqlUserRepository(dslContext);
         var thoughtRepository = new ThoughtRepository(dslContext);
         var authService = new AuthService(authRepository, hasher);
-        var thoughtService = new ThoughtsService(thoughtRepository);
+        var thoughtService = new ThoughtService(thoughtRepository);
         var startHandler = new WelcomeHandler(presenter);
         var authHandler = new AuthHandler(presenter, authService);
         var errorHandler = new ErrorHandler(presenter);
-        var thoughtsHandler = new ThoughtsHandler(presenter, thoughtService);
+        var thoughtsHandler = new ThoughtHandler(presenter, thoughtService);
         var searchHandler = new SearchHandler(presenter);
-        return List.of(startHandler, authHandler, errorHandler, thoughtsHandler, searchHandler);
+        var tagHandler = new TagHandler(presenter, tagService);
+        return List.of(startHandler, authHandler, errorHandler, thoughtsHandler, searchHandler, tagHandler);
     }
 
     private static Properties loadProperties(String... args) {

@@ -280,7 +280,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     background-color: var(--black-white-10);
     width: 10px !important;
     height: 10px !important;
-  }
+}
 
 #thoughts-management {
     display: flex;
@@ -329,6 +329,14 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     overflow: hidden;
 }
 
+#thoughts-form {
+    display: none;
+}
+
+#tags-form {
+    display: none;
+}
+
 #modal-content {
     width: 60%;
     margin: 200px auto;
@@ -339,10 +347,8 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 #modal-content input[type="text"] {
     border-bottom: 1px solid var(--black-white-1);
     padding: 0;
-    padding-top: 15px;
     margin: 0;
-    height: 40px;
-    width: 100%;
+    width: 80%;
 }
 
 #modal-content input::placeholder {
@@ -357,26 +363,22 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 /* shared---------- */
 
-body::-webkit-scrollbar-track, .scrollbar::-webkit-scrollbar-track
-{
+body::-webkit-scrollbar-track, .scrollbar::-webkit-scrollbar-track {
     /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
     background-color: var(--black-white-10);
 }
 
-body::-webkit-scrollbar, .scrollbar::-webkit-scrollbar
-{
+body::-webkit-scrollbar, .scrollbar::-webkit-scrollbar {
     width: 14px;
     background-color: var(--additional-color-1);
 }
 
-body::-webkit-scrollbar-corner, .scrollbar::-webkit-scrollbar-corner
-{
+body::-webkit-scrollbar-corner, .scrollbar::-webkit-scrollbar-corner {
     width: 14px;
     background-color: var(--additional-color-1);
 }
 
-body::-webkit-scrollbar-thumb, .scrollbar::-webkit-scrollbar-thumb
-{
+body::-webkit-scrollbar-thumb, .scrollbar::-webkit-scrollbar-thumb {
     background-color: var(--additional-color-1);
     border: 1px solid var(--additional-color-1);
 }
@@ -576,6 +578,10 @@ body::-webkit-scrollbar-thumb, .scrollbar::-webkit-scrollbar-thumb
 
 .pointer {
     cursor: pointer;
+}
+
+.display-none {
+    display: none;
 }
 
 /* shared---------- */

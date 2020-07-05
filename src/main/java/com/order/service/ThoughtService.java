@@ -5,11 +5,11 @@ import com.order.repository.ThoughtRepository;
 
 import java.util.List;
 
-public class ThoughtsService {
+public class ThoughtService {
 
     private final ThoughtRepository thoughtRepository;
 
-    public ThoughtsService(ThoughtRepository thoughtRepository) {
+    public ThoughtService(ThoughtRepository thoughtRepository) {
         this.thoughtRepository = thoughtRepository;
     }
 

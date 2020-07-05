@@ -44,17 +44,11 @@ function isOutOfBounds(element, parent) {
 
 const ro = new ResizeObserver(entries => {
     for (let entry of entries) {
-        if(isOverflownVertically(entry.target)){
-            console.log('OVERFLOW !');
-            
-        }
         entry.target.classList.add('dashed-border');
     }
 });
 
-function isOverflownVertically(element) {
-    return element.scrollHeight > element.clientHeight;
-}
+document.getElementById('parent-tag-id-input').
 
 document.getElementById('resize-grid').addEventListener('change', e => {
     if (document.getElementById('resize-grid').checked) {
