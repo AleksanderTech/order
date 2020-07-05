@@ -19,6 +19,7 @@
     --tree-image: url('tree.png');
     --tree-long-image: url('tree-long.png');
     --additional-color-1: #2a9df4;
+    --alert-color: #f34343;
     --tree-image-width: 450px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     background-color: var(--black-white-10);
@@ -244,20 +245,51 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     flex-direction: column;
     align-items: center;
     max-width: 100vw;
+    margin: 0 auto;
+    width: calc(100vw - 4vw);
+    height: 100vh;
+    position: relative;
+}
+
+.dashed-border {
+    border: 2px dashed var(--additional-color-1);
+    border-bottom: none;
+}
+
+.alert-border {
+    border: 2px dashed var(--alert-color);
+    border-bottom: none;
 }
 
 #thoughts-grid {
     display: grid;
-    grid-template-columns: repeat(4, 110px);
+    /* grid-template-columns: repeat(4, 110px); */
+    grid-template-columns: repeat( auto-fill, minmax(110px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(110px, 1fr));
     grid-gap: 30px;
     max-width: 100vw;
+    min-width: 800px;
+    resize: both;
+    overflow: auto;
+    /* border:1px solid black; */
+    position: absolute;
 }
+
+::-webkit-resizer {
+    border: 2px solid var(--additional-color-1);
+    background-color: var(--black-white-10);
+    width: 10px !important;
+    height: 10px !important;
+  }
 
 #thoughts-management {
     display: flex;
     justify-content: space-between;
-    width: 490px;
-    margin: 50px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    padding: 50px;
+    width: 100vw;
 }
 
 .thoughts-button {
@@ -268,6 +300,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     min-height: 110px;
     min-width: 110px;
     max-width: 110px;
+    max-height: 110px;
     background-color: var(--black-white-9);
     border: 1px solid var(--additional-color-1);
 }
@@ -305,8 +338,8 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 #modal-content input[type="text"] {
     border-bottom: 1px solid var(--black-white-1);
-    padding:0;
-    padding-top:15px;
+    padding: 0;
+    padding-top: 15px;
     margin: 0;
     height: 40px;
     width: 100%;
@@ -323,6 +356,30 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 /* thoughts page----------*/
 
 /* shared---------- */
+
+body::-webkit-scrollbar-track, .scrollbar::-webkit-scrollbar-track
+{
+    /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+    background-color: var(--black-white-10);
+}
+
+body::-webkit-scrollbar, .scrollbar::-webkit-scrollbar
+{
+    width: 14px;
+    background-color: var(--additional-color-1);
+}
+
+body::-webkit-scrollbar-corner, .scrollbar::-webkit-scrollbar-corner
+{
+    width: 14px;
+    background-color: var(--additional-color-1);
+}
+
+body::-webkit-scrollbar-thumb, .scrollbar::-webkit-scrollbar-thumb
+{
+    background-color: var(--additional-color-1);
+    border: 1px solid var(--additional-color-1);
+}
 
 .close {
     cursor: pointer;

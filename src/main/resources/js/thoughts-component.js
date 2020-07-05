@@ -8,6 +8,7 @@ export class ThoughtsComponent {
         this.newTagButton = document.getElementById('new-tag-button');
         this.creationModal = document.getElementById('creation-modal');
         this.closeModal = document.getElementById('close-modal');
+        this.resizeGrid = document.getElementById('resize-grid');
     }
 
     registerHandlers() {
@@ -44,6 +45,13 @@ export class ThoughtsComponent {
         this.closeModal.addEventListener('click', e => {
             this.creationModal.style.display = 'none';
         })
+        this.resizeGrid.addEventListener('change', e => {
+            // if (checkbox.checked) {
+            //     resizeObserver.observe(divElem);
+            // } else {
+            //     resizeObserver.unobserve(divElem);
+            // }
+        });
     }
 
     swap(container, dragging, hoverElement) {

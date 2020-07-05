@@ -34,18 +34,23 @@
             </div>
         </nav>
         <div id="thoughts-wrapper">
-            <div id="thoughts-grid">
-                <div th:each="thought: ${model.thoughts}" class="tile draggable" draggable="true" th:text="${thought.name}"></div>
-            </div>
+                <div id="thoughts-grid" class="scrollbar">
+                    <div id="drag-me">drag me</div>
+                    <div th:each="thought: ${model.thoughts}" class="tile draggable" draggable="true"
+                        th:text="${thought.name}"></div>
+                    <div id="saveBlock">save me</div>
+                    <div id="resize-handle">resize me</div>
+                </div>
 
             <div id="thoughts-management">
                 <button class="button thoughts-button" id="new-tag-button">New tag</button>
                 <button class="button thoughts-button" id="new-thought-button">New thought</button>
+                <input type="checkbox" value="resize grid" class = "button thoughts-button" id="resize-grid">
             </div>
             <div id="creation-modal">
                 <div id="modal-content" class="text-right">
                     <div class="close" id="close-modal">&times;</div>
-                    <form class = "creation-form" action="/thoughts" method="POST" autocomplete="off">
+                    <form class="creation-form" action="/thoughts" method="POST" autocomplete="off">
                         <input class="font-18" placeholder="Name" type="text" name="name">
                         <input type="submit" class="button" value="create">
                     </form>
