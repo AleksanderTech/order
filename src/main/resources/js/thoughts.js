@@ -48,7 +48,7 @@ const ro = new ResizeObserver(entries => {
     }
 });
 
-document.getElementById('parent-tag-id-input').
+document.getElementById('parent-tag-id-input');
 
 document.getElementById('resize-grid').addEventListener('change', e => {
     if (document.getElementById('resize-grid').checked) {

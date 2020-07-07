@@ -10,7 +10,7 @@ public class Tag {
     public Long parentTagId;
     public LocalDateTime createdAt;
 
-    public Tag(long id, String name, long userId, long parentTagId, LocalDateTime createdAt) {
+    public Tag(long id, String name, long userId, Long parentTagId, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.userId = userId;
@@ -27,7 +27,7 @@ public class Tag {
         private long id;
         private String name;
         private long userId;
-        private long parentTagId;
+        private Long parentTagId;
         private LocalDateTime createdAt;
 
         public Builder id(long id) {
@@ -45,7 +45,7 @@ public class Tag {
             return this;
         }
 
-        public Builder parentTagId(long parentTagId) {
+        public Builder parentTagId(Long parentTagId) {
             this.parentTagId = parentTagId;
             return this;
         }

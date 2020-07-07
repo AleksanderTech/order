@@ -5,6 +5,7 @@ import com.order.service.TagService;
 import com.order.validator.Validators;
 import com.order.view.Presenter;
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -38,5 +39,10 @@ public class TagHandler extends Handler {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    @Override
+    public void handle(Context ctx) {
+
     }
 }

@@ -41,7 +41,13 @@ public abstract class Handler {
         });
     }
 
+    public void setHeaders(Context ctx) {
+        ctx.header(CONTENT_TYPE, TEXT_HTML);
+    }
+
     public void post(String path, Javalin javalin, Consumer<Context> consumer) {
         javalin.post(path, consumer::accept);
     }
+
+    public abstract void handle(Context ctx);
 }

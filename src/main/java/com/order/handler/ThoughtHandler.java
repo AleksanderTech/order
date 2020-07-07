@@ -7,6 +7,7 @@ import com.order.view.Presenter;
 import com.order.view.Views;
 import com.order.view.model.ThoughtVM;
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -68,5 +69,10 @@ public class ThoughtHandler extends Handler {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    @Override
+    public void handle(Context ctx) {
+
     }
 }

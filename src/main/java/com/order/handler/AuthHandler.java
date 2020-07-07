@@ -8,6 +8,7 @@ import com.order.view.Views;
 import com.order.view.model.SignInVM;
 import com.order.view.model.SignUpVM;
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,5 +72,10 @@ public class AuthHandler extends Handler {
             invalidateSession(ctx);
             ctx.res.sendRedirect("/");
         });
+    }
+
+    @Override
+    public void handle(Context ctx) {
+
     }
 }

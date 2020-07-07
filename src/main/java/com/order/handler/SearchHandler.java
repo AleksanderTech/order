@@ -3,6 +3,7 @@ package com.order.handler;
 import com.order.view.Presenter;
 import com.order.view.Views;
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 
 public class SearchHandler extends Handler {
 
@@ -17,5 +18,10 @@ public class SearchHandler extends Handler {
         get("/search", lin, context -> {
             context.result(presenter.template(Views.SEARCH));
         });
+    }
+
+    @Override
+    public void handle(Context ctx) {
+
     }
 }

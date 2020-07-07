@@ -3,6 +3,7 @@ package com.order.handler;
 import com.order.view.Presenter;
 import com.order.view.Views;
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 
 public class WelcomeHandler extends Handler {
 
@@ -14,8 +15,11 @@ public class WelcomeHandler extends Handler {
 
     @Override
     public void register(Javalin lin) {
-        get("/", lin, ctx -> {
-            ctx.result(presenter.template(Views.WELCOME));
-        });
+        lin.get(Routes.WELCOME_ROUTE, this::handle);
+    }
+    @Override
+    public void handle(Context ctx) {
+        setHeaders(ctx);
+        ctx.result(presenter.template(Views.WELCOME));
     }
 }

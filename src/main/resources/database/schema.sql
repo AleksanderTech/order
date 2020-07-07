@@ -11,6 +11,7 @@ create table if not exists thought (
     name varchar(100) not null,
     content text,
     user_id bigint references order_user(id),
+    sort_order_id bigint references sort_order(id) on delete cascade,
     created_at timestamp not null default now(),
     modified_at timestamp
 );
@@ -20,7 +21,13 @@ create table if not exists tag (
     name varchar(100) unique,
     parent_tag_id bigint references tag(id),
     user_id bigint references order_user(id),
+    sort_order_id bigint references sort_order(id) on delete cascade,
     created_at timestamp not null default now()
+);
+
+create table if not exists sort_order (
+    id bigserial primary key,
+    value bigint not null,
 );
 
 create table if not exists thought_tag (

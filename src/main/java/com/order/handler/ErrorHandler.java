@@ -3,6 +3,7 @@ package com.order.handler;
 import com.order.view.Presenter;
 import com.order.view.Views;
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 
 public class ErrorHandler extends Handler {
 
@@ -17,5 +18,10 @@ public class ErrorHandler extends Handler {
         get("/error", lin, ctx -> {
             ctx.result(presenter.template(Views.ERROR));
         });
+    }
+
+    @Override
+    public void handle(Context ctx) {
+
     }
 }
