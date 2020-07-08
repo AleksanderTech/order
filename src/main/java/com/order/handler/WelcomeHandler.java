@@ -15,10 +15,10 @@ public class WelcomeHandler extends Handler {
 
     @Override
     public void register(Javalin lin) {
-        lin.get(Routes.WELCOME_ROUTE, this::handle);
+        lin.get(Routes.WELCOME_ROUTE, this::welcome);
     }
-    @Override
-    public void handle(Context ctx) {
+
+    public void welcome(Context ctx) {
         setHeaders(ctx);
         ctx.result(presenter.template(Views.WELCOME));
     }

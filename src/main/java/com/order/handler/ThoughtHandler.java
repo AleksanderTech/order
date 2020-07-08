@@ -70,9 +70,4 @@ public class ThoughtHandler extends Handler {
             }
         });
     }
-
-    @Override
-    public void handle(Context ctx) {
-
-    }
 }

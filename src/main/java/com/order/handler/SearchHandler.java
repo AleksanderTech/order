@@ -20,8 +20,4 @@ public class SearchHandler extends Handler {
         });
     }
 
-    @Override
-    public void handle(Context ctx) {
-
-    }
 }

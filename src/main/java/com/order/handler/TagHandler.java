@@ -41,8 +41,4 @@ public class TagHandler extends Handler {
         });
     }
 
-    @Override
-    public void handle(Context ctx) {
-
-    }
 }

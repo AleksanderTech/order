@@ -1,6 +1,5 @@
 package com.order.handler;
 
-import com.order.model.User;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -41,6 +40,14 @@ public abstract class Handler {
         });
     }
 
+    protected void ifOrElse(boolean condition, Runnable ifAction, Runnable elseAction) {
+        if (condition) {
+            ifAction.run();
+        } else {
+            elseAction.run();
+        }
+    }
+
     public void setHeaders(Context ctx) {
         ctx.header(CONTENT_TYPE, TEXT_HTML);
     }
@@ -48,6 +55,4 @@ public abstract class Handler {
     public void post(String path, Javalin javalin, Consumer<Context> consumer) {
         javalin.post(path, consumer::accept);
     }
-
-    public abstract void handle(Context ctx);
 }

@@ -7,9 +7,11 @@ import com.order.view.Presenter;
 import com.order.view.Views;
 import com.order.view.model.SignInVM;
 import com.order.view.model.SignUpVM;
+import com.order.view.model.ViewModel;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,52 +32,70 @@ public class AuthHandler extends Handler {
 
     @Override
     public void register(Javalin lin) {
-
-        get("/sign-in", lin, ctx -> {
-            ctx.html(presenter.template(Views.SIGN_IN, new SignInVM(new HashMap<>())));
-        });
-
-        get("/sign-up", lin, ctx -> {
-            ctx.html(presenter.template(Views.SIGN_UP, new SignUpVM(new HashMap<>())));
-        });
-
-        lin.post("/sign-in", ctx -> {
-            String username = ctx.formParam(PARAMETER_USERNAME);
-            String password = ctx.formParam(PARAMETER_PASSWORD);
-            Map<String, String> errors = Validators.signIn(username, password);
-            if (!errors.isEmpty()) {
-                ctx.html(presenter.template(Views.SIGN_IN, new SignInVM(errors)));
-            } else {
-                var user = new User(username, password);
-                user = authService.signIn(user);
-                newSession(ctx, user.id);
-                ctx.res.sendRedirect("/thoughts");
-            }
-        });
-
-        lin.post("/sign-up", ctx -> {
-            String username = ctx.formParam(PARAMETER_USERNAME);
-            String email = ctx.formParam(PARAMETER_EMAIL);
-            String password = ctx.formParam(PARAMETER_PASSWORD);
-            String confirmPassword = ctx.formParam(PARAMETER_CONFIRM_PASSWORD);
-            Map<String, String> errors = Validators.signUp(username, email, password, confirmPassword);
-            if (!errors.isEmpty()) {
-                ctx.html(presenter.template(Views.SIGN_UP, new SignUpVM(errors)));
-            } else {
-                var user = new User(username, email, password);
-                authService.signUp(user);
-                ctx.res.sendRedirect("/");
-            }
-        });
-
-        lin.post("/sign-out", ctx -> {
-            invalidateSession(ctx);
-            ctx.res.sendRedirect("/");
-        });
+        lin.get(Routes.SIGN_IN_ROUTE, this::signInGet);
+        lin.get(Routes.SIGN_UP_ROUTE, this::signUpGet);
+        lin.post(Routes.SIGN_IN_ROUTE, this::signInPost);
+        lin.post(Routes.SIGN_UP_ROUTE, this::signUpPost);
+        lin.post(Routes.SIGN_OUT_ROUTE, this::signOutPost);
     }
 
-    @Override
-    public void handle(Context ctx) {
+    void signInGet(Context ctx) {
+        ctx.html(presenter.template(Views.SIGN_IN, new SignInVM(new HashMap<>())));
+    }
 
+    void signUpGet(Context ctx) {
+        ctx.html(presenter.template(Views.SIGN_UP, new SignUpVM(new HashMap<>())));
+    }
+
+    void signInPost(Context ctx) {
+        String username = ctx.formParam(PARAMETER_USERNAME);
+        String password = ctx.formParam(PARAMETER_PASSWORD);
+        Map<String, String> errors = Validators.signIn(username, password);
+        ifOrElse(!errors.isEmpty(),
+                () ->
+                        errorPage(ctx, new SignInVM(errors)),
+                () -> {
+                    var user = new User(username, password);
+                    user = authService.signIn(user);
+                    newSession(ctx, user.id);
+                    redirect(ctx);
+                });
+    }
+
+    void signUpPost(Context ctx) {
+        String username = ctx.formParam(PARAMETER_USERNAME);
+        String email = ctx.formParam(PARAMETER_EMAIL);
+        String password = ctx.formParam(PARAMETER_PASSWORD);
+        String confirmPassword = ctx.formParam(PARAMETER_CONFIRM_PASSWORD);
+        Map<String, String> errors = Validators.signUp(username, email, password, confirmPassword);
+        ifOrElse(!errors.isEmpty(),
+                () ->
+                        errorPage(ctx, new SignUpVM(errors)),
+                () -> {
+                    var user = new User(username, email, password);
+                    authService.signUp(user);
+                    redirect(ctx);
+                });
+    }
+
+    private void redirect(Context ctx) {
+        try {
+            ctx.res.sendRedirect(Routes.THOUGHTS_ROUTE);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void errorPage(Context ctx, ViewModel<?> viewModel) {
+        ctx.html(presenter.template(Views.SIGN_UP, viewModel));
+    }
+
+    public void signOutPost(Context ctx) {
+        invalidateSession(ctx);
+        try {
+            ctx.res.sendRedirect(Routes.WELCOME_ROUTE);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

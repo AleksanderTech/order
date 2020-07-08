@@ -22,8 +22,4 @@ public class ThoughtAndTagHandler extends Handler {
         });
     }
 
-    @Override
-    public void handle(Context ctx) {
-
-    }
 }

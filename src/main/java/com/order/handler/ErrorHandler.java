@@ -20,8 +20,5 @@ public class ErrorHandler extends Handler {
         });
     }
 
-    @Override
-    public void handle(Context ctx) {
 
-    }
 }
