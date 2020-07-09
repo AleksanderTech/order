@@ -22,4 +22,24 @@ class AuthHandlerTest {
         Mockito.verify(javalin).post(Mockito.eq(Routes.SIGN_UP_ROUTE), Mockito.any(io.javalin.http.Handler.class));
         Mockito.verify(javalin).post(Mockito.eq(Routes.SIGN_OUT_ROUTE), Mockito.any(io.javalin.http.Handler.class));
     }
+
+    @Test
+    void signInGet() {
+
+    }
+
+    @Test
+    void signUpGet() {
+
+    }
+
+    @Test
+    void errorPage() {
+
+    }
+
+    @Test
+    void signOutPost() {
+
+    }
 }

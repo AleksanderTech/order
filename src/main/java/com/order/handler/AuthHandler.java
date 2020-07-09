@@ -2,6 +2,7 @@ package com.order.handler;
 
 import com.order.model.User;
 import com.order.service.AuthService;
+import com.order.service.Response;
 import com.order.validator.Validators;
 import com.order.view.Presenter;
 import com.order.view.Views;
@@ -56,9 +57,18 @@ public class AuthHandler extends Handler {
                         errorPage(ctx, new SignInVM(errors)),
                 () -> {
                     var user = new User(username, password);
-                    user = authService.signIn(user);
+                    Response<User> userResponse = authService.signIn(user);
+                    user = userResponse.getValue();
+                    if(user == null){
+                        userResponse.getErrors().forEach(System.out::println);
+                        redirect(ctx,Views.ERROR);
+                        return;
+                    }
+                    // zwracany response ktory posiada T wartosc czyli usera i liste exceptionow jesli nie jest pusta
+                    // to zwroc
+                    // resolve
                     newSession(ctx, user.id);
-                    redirect(ctx);
+                    redirect(ctx,Views.THOUGHTS);
                 });
     }
 
@@ -74,13 +84,13 @@ public class AuthHandler extends Handler {
                 () -> {
                     var user = new User(username, email, password);
                     authService.signUp(user);
-                    redirect(ctx);
+                    redirect(ctx,Views.THOUGHTS);
                 });
     }
 
-    private void redirect(Context ctx) {
+    private void redirect(Context ctx,String route) {
         try {
-            ctx.res.sendRedirect(Routes.THOUGHTS_ROUTE);
+            ctx.res.sendRedirect(route);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
