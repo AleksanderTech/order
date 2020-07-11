@@ -7,7 +7,6 @@ import com.order.view.Presenter;
 import com.order.view.Views;
 import com.order.view.model.ThoughtVM;
 import io.javalin.Javalin;
-import io.javalin.http.Context;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -38,7 +37,6 @@ public class ThoughtHandler extends Handler {
                     }
                 } else {
                     List<Thought> thoughts = thoughtService.getByUserId(userId);
-                    System.out.println(thoughts);
                     context.result(presenter.template(Views.THOUGHTS, new ThoughtVM(thoughts)));
                 }
             }

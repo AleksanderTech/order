@@ -4,6 +4,7 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.function.Consumer;
 
 public abstract class Handler {
@@ -48,7 +49,15 @@ public abstract class Handler {
         }
     }
 
-    public void setHeaders(Context ctx) {
+    protected void redirect(Context ctx, String route) {
+        try {
+            ctx.res.sendRedirect(route);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected void setHeaders(Context ctx) {
         ctx.header(CONTENT_TYPE, TEXT_HTML);
     }
 

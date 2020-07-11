@@ -1,14 +1,17 @@
 package com.order.handler;
 
+import com.order.error.Errors;
+import com.order.error.HttpStatus;
+import com.order.error.OrderException;
 import com.order.model.User;
 import com.order.service.AuthService;
 import com.order.service.Response;
 import com.order.validator.Validators;
 import com.order.view.Presenter;
 import com.order.view.Views;
+import com.order.view.model.ErrorVM;
 import com.order.view.model.SignInVM;
 import com.order.view.model.SignUpVM;
-import com.order.view.model.ViewModel;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -40,39 +43,35 @@ public class AuthHandler extends Handler {
         lin.post(Routes.SIGN_OUT_ROUTE, this::signOutPost);
     }
 
-    void signInGet(Context ctx) {
+    public void signInGet(Context ctx) {
         ctx.html(presenter.template(Views.SIGN_IN, new SignInVM(new HashMap<>())));
     }
 
-    void signUpGet(Context ctx) {
+    public void signUpGet(Context ctx) {
         ctx.html(presenter.template(Views.SIGN_UP, new SignUpVM(new HashMap<>())));
     }
 
-    void signInPost(Context ctx) {
+    public void signInPost(Context ctx) {
         String username = ctx.formParam(PARAMETER_USERNAME);
         String password = ctx.formParam(PARAMETER_PASSWORD);
         Map<String, String> errors = Validators.signIn(username, password);
         ifOrElse(!errors.isEmpty(),
                 () ->
-                        errorPage(ctx, new SignInVM(errors)),
+                        ctx.html(presenter.template(Views.SIGN_IN, new SignInVM(errors))),
                 () -> {
                     var user = new User(username, password);
                     Response<User> userResponse = authService.signIn(user);
                     user = userResponse.getValue();
-                    if(user == null){
-                        userResponse.getErrors().forEach(System.out::println);
-                        redirect(ctx,Views.ERROR);
+                    if (user == null) {
+                        ctx.html(presenter.template(Views.ERROR, new ErrorVM(HttpStatus.NOT_FOUND.getStatusCode(), userResponse.getErrors())));
                         return;
                     }
-                    // zwracany response ktory posiada T wartosc czyli usera i liste exceptionow jesli nie jest pusta
-                    // to zwroc
-                    // resolve
                     newSession(ctx, user.id);
-                    redirect(ctx,Views.THOUGHTS);
+                    redirect(ctx, Views.THOUGHTS);
                 });
     }
 
-    void signUpPost(Context ctx) {
+    public void signUpPost(Context ctx) {
         String username = ctx.formParam(PARAMETER_USERNAME);
         String email = ctx.formParam(PARAMETER_EMAIL);
         String password = ctx.formParam(PARAMETER_PASSWORD);
@@ -80,24 +79,12 @@ public class AuthHandler extends Handler {
         Map<String, String> errors = Validators.signUp(username, email, password, confirmPassword);
         ifOrElse(!errors.isEmpty(),
                 () ->
-                        errorPage(ctx, new SignUpVM(errors)),
+                        ctx.html(presenter.template(Views.SIGN_UP, new SignUpVM(errors))),
                 () -> {
                     var user = new User(username, email, password);
                     authService.signUp(user);
-                    redirect(ctx,Views.THOUGHTS);
+                    redirect(ctx, Views.THOUGHTS);
                 });
-    }
-
-    private void redirect(Context ctx,String route) {
-        try {
-            ctx.res.sendRedirect(route);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void errorPage(Context ctx, ViewModel<?> viewModel) {
-        ctx.html(presenter.template(Views.SIGN_UP, viewModel));
     }
 
     public void signOutPost(Context ctx) {

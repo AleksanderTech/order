@@ -28,4 +28,8 @@ public class Response<T> {
     public static <T> Response<T> withErrors(String... errors) {
         return new Response<>(null, Arrays.asList(errors));
     }
+
+    public static <T> Response<T> withErrors(List<String> errors) {
+        return new Response<>(null, errors);
+    }
 }

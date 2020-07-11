@@ -83,6 +83,21 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     word-spacing: 10px;
 }
 
+#errors {
+    max-width: 450px;
+    list-style-type: disc;
+}
+
+.error {
+    color: var(--black-white-1);
+    font-size: 20px;
+    text-align: left;
+    letter-spacing: 3px;
+    word-spacing: 8px;
+    word-wrap: break-word;
+    color: var(--alert-color);
+}
+
 #welcome-wrapper {
     display: flex;
     flex-direction: column;
