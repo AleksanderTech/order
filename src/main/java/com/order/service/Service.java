@@ -10,7 +10,17 @@ public class Service {
         try {
             return Response.of(supplier.get());
         } catch (OrderException e) {
-            return Response.withErrors(e.getErrors());
+            e.printStackTrace();
+            return Response.withStatus(e.getStatus(), e.getErrors());
+        }
+    }
+
+    protected <T> Response<T> response(Runnable action) {
+        try {
+            action.run();
+            return Response.empty();
+        } catch (OrderException e) {
+            return Response.withStatus(e.getStatus(), e.getErrors());
         }
     }
 }

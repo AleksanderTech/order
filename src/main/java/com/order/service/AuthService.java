@@ -5,7 +5,6 @@ import com.order.error.HttpStatus;
 import com.order.error.OrderException;
 import com.order.model.User;
 import com.order.repository.SqlUserRepository;
-import com.sun.net.httpserver.HttpsServer;
 
 public class AuthService extends Service {
 
@@ -21,8 +20,12 @@ public class AuthService extends Service {
         return response(() -> signInAction(user));
     }
 
+    public Response<Void> signUp(User user) {
+        return response(() -> signUpAction(user));
+    }
+
     public User signInAction(User user) {
-        User originalUser = userRepository.getByUsername(user.username).orElseThrow(() -> new OrderException(HttpStatus.NOT_FOUND, Errors.USER_NOT_FOUND));
+        User originalUser = userRepository.getByEmail(user.email).orElseThrow(() -> new OrderException(HttpStatus.NOT_FOUND, Errors.USER_NOT_FOUND));
         if (hasher.validatePassword(user.password, originalUser.password)) {
             return originalUser;
         } else {
@@ -30,11 +33,11 @@ public class AuthService extends Service {
         }
     }
 
-    public void signUp(User user) {
-        userRepository.getByUsername(user.username)
+    public void signUpAction(User user) {
+        userRepository.getByEmail(user.email)
                 .ifPresentOrElse(
                         us -> {
-                            throw new OrderException(HttpStatus.CONFLICT, Errors.USERNAME_ALREADY_EXISTS);
+                            throw new OrderException(HttpStatus.CONFLICT, Errors.EMAIL_EXISTS);
                         },
                         () -> {
                             user.password = hasher.hash(user.password);

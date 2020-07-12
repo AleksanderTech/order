@@ -15,9 +15,9 @@
             <form id="sign-in-form" action="/sign-in" method="post" autocomplete="off">
                 <div class="line"></div>
                 <div class="bg-color-10 mar-b-3 form-content">
-                    <input class="mar-1 pad-t-2 pad-b-0-5" type="text" id="sign-in-username" placeholder="Username"
-                        name="username">
-                    <div th:if="${model.errors.containsKey('username')}" th:text="${model.errors.get('username')}"
+                    <input class="mar-1 pad-t-2 pad-b-0-5" type="text" id="sign-in-email" placeholder="Email"
+                        name="email">
+                    <div th:if="${model.errors.containsKey('email')}" th:text="${model.errors.get('email')}"
                         class="alert mar-l-1"></div>
                     <br>
                     <input class="mar-1 pad-t-2 pad-b-0-5" type="password" placeholder="Password" name="password">
@@ -25,7 +25,7 @@
                         class="alert mar-l-1"></div>
                     <br>
                 </div>
-                <div id="buttons">
+                <div class="buttons">
                     <button class="button" type="button" onclick="location.href='/'">
                         Back
                     </button>

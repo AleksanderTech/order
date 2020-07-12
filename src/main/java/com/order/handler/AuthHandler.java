@@ -1,15 +1,12 @@
 package com.order.handler;
 
 import com.order.error.Errors;
-import com.order.error.HttpStatus;
-import com.order.error.OrderException;
 import com.order.model.User;
 import com.order.service.AuthService;
 import com.order.service.Response;
 import com.order.validator.Validators;
 import com.order.view.Presenter;
 import com.order.view.Views;
-import com.order.view.model.ErrorVM;
 import com.order.view.model.SignInVM;
 import com.order.view.model.SignUpVM;
 import io.javalin.Javalin;
@@ -38,9 +35,14 @@ public class AuthHandler extends Handler {
     public void register(Javalin lin) {
         lin.get(Routes.SIGN_IN_ROUTE, this::signInGet);
         lin.get(Routes.SIGN_UP_ROUTE, this::signUpGet);
+        lin.get(Routes.SIGN_UP_SUCCESS_ROUTE, this::signUpSuccess);
         lin.post(Routes.SIGN_IN_ROUTE, this::signInPost);
         lin.post(Routes.SIGN_UP_ROUTE, this::signUpPost);
         lin.post(Routes.SIGN_OUT_ROUTE, this::signOutPost);
+    }
+
+    private void signUpSuccess(Context ctx) {
+        ctx.html(presenter.template(Views.SIGN_UP, SignUpVM.withMessages(Map.of(Message.ACCOUNT_CREATED.name(), Message.ACCOUNT_CREATED.getMessage()))));
     }
 
     public void signInGet(Context ctx) {
@@ -48,27 +50,14 @@ public class AuthHandler extends Handler {
     }
 
     public void signUpGet(Context ctx) {
-        ctx.html(presenter.template(Views.SIGN_UP, new SignUpVM(new HashMap<>())));
+        ctx.html(presenter.template(Views.SIGN_UP, SignUpVM.emptyInstance()));
     }
 
     public void signInPost(Context ctx) {
-        String username = ctx.formParam(PARAMETER_USERNAME);
+        String email = ctx.formParam(PARAMETER_EMAIL);
         String password = ctx.formParam(PARAMETER_PASSWORD);
-        Map<String, String> errors = Validators.signIn(username, password);
-        ifOrElse(!errors.isEmpty(),
-                () ->
-                        ctx.html(presenter.template(Views.SIGN_IN, new SignInVM(errors))),
-                () -> {
-                    var user = new User(username, password);
-                    Response<User> userResponse = authService.signIn(user);
-                    user = userResponse.getValue();
-                    if (user == null) {
-                        ctx.html(presenter.template(Views.ERROR, new ErrorVM(HttpStatus.NOT_FOUND.getStatusCode(), userResponse.getErrors())));
-                        return;
-                    }
-                    newSession(ctx, user.id);
-                    redirect(ctx, Views.THOUGHTS);
-                });
+        Map<String, String> errors = Validators.signIn(email, password);
+        signIn(email, password, errors, ctx);
     }
 
     public void signUpPost(Context ctx) {
@@ -77,14 +66,7 @@ public class AuthHandler extends Handler {
         String password = ctx.formParam(PARAMETER_PASSWORD);
         String confirmPassword = ctx.formParam(PARAMETER_CONFIRM_PASSWORD);
         Map<String, String> errors = Validators.signUp(username, email, password, confirmPassword);
-        ifOrElse(!errors.isEmpty(),
-                () ->
-                        ctx.html(presenter.template(Views.SIGN_UP, new SignUpVM(errors))),
-                () -> {
-                    var user = new User(username, email, password);
-                    authService.signUp(user);
-                    redirect(ctx, Views.THOUGHTS);
-                });
+        signUp(username, email, password, errors, ctx);
     }
 
     public void signOutPost(Context ctx) {
@@ -93,6 +75,55 @@ public class AuthHandler extends Handler {
             ctx.res.sendRedirect(Routes.WELCOME_ROUTE);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void signIn(String email, String password, Map<String, String> errors, Context ctx) {
+        if (!errors.isEmpty()) {
+            ctx.html(presenter.template(Views.SIGN_IN, new SignInVM(errors)));
+        } else {
+            var user = new User(email, password);
+            Response<User> userResponse = authService.signIn(user);
+            resolveSignInResponse(ctx, errors, user, userResponse);
+        }
+    }
+
+    public void signUp(String username, String email, String password, Map<String, String> errors, Context ctx) {
+        if (!errors.isEmpty()) {
+            ctx.html(presenter.template(Views.SIGN_UP, SignUpVM.withErrors(errors)));
+        } else {
+            var user = new User(username, email, password);
+            Response<Void> response = authService.signUp(user);
+            resolveSignUpResponse(response, ctx, errors);
+        }
+    }
+
+    public void resolveSignInResponse(Context ctx, Map<String, String> errors, User user, Response<User> response) {
+        if (response.hasErrors()) {
+            if (response.getErrors().contains(Errors.USER_NOT_FOUND)) {
+                errors.put(Validators.EMAIL, Errors.USER_NOT_FOUND);
+            }
+            if (response.getErrors().contains(Errors.INCORRECT_PASSWORD)) {
+                errors.put(Validators.PASSWORD, Errors.INCORRECT_PASSWORD);
+            }
+            ctx.html(presenter.template(Views.SIGN_IN, new SignInVM(errors)));
+        } else {
+            newSession(ctx, user.id);
+            redirect(ctx, Views.THOUGHTS);
+        }
+    }
+
+    public void resolveSignUpResponse(Response<Void> response, Context ctx, Map<String, String> errors) {
+        if (response.hasErrors()) {
+            if (response.getErrors().contains(Errors.EMAIL_EXISTS)) {
+                errors.put(Validators.EMAIL, Errors.EMAIL_EXISTS);
+            }
+            ctx.html(presenter.template(Views.SIGN_UP, SignUpVM.withErrors(errors)));
+        } else {
+            Map<String, String> messages = new HashMap<>();
+            messages.put(Message.ACCOUNT_CREATED.name(), Message.ACCOUNT_CREATED.getMessage());
+            ctx.html(presenter.template(Views.SIGN_UP, new SignUpVM(messages, errors)));
+            redirect(ctx, Views.SIGN_UP_SUCCESS);
         }
     }
 }

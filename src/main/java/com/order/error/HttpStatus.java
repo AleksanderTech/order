@@ -1,7 +1,11 @@
 package com.order.error;
 
 public enum HttpStatus {
-    NOT_FOUND(404), CONFLICT(409), INTERNAL_SERVER_ERROR(500), UNAUTHORIZED(401);
+    NOT_FOUND(404),
+    CONFLICT(409),
+    INTERNAL_SERVER_ERROR(500),
+    UNAUTHORIZED(401),
+    OK(200);
 
     private final int statusCode;
 

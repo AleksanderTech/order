@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script defer type ="module" src="sign-up.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <script defer type="module" src="/sign-up.js"></script>
 </head>
 
 <body>
@@ -17,24 +17,39 @@
                 <div class="line "></div>
                 <div class="bg-color-10 mar-b-2 form-content">
                     <input class="mar-1 pad-t-2 pad-b-0-5" type="text" placeholder="Username" name="username">
-                    <div th:if="${model.errors.containsKey('username')}" th:text="${model.errors.get('username')}" class="alert mar-l-1"></div>
+                    <div th:if="${model.errors.containsKey('username')}" th:text="${model.errors.get('username')}"
+                        class="alert mar-l-1"></div>
                     <br>
                     <input class="mar-1 pad-t-2 pad-b-0-5" type="text" placeholder="Email" name="email">
-                    <div th:if="${model.errors.containsKey('email')}" th:text="${model.errors.get('email')}" class="alert mar-l-1"></div>
+                    <div th:if="${model.errors.containsKey('email')}" th:text="${model.errors.get('email')}"
+                        class="alert mar-l-1"></div>
                     <br>
                     <input class="mar-1 pad-t-2 pad-b-0-5" type="password" placeholder="Password" name="password">
-                    <div th:if="${model.errors.containsKey('password')}" th:text="${model.errors.get('password')}" class="alert mar-l-1"></div>
+                    <div th:if="${model.errors.containsKey('password')}" th:text="${model.errors.get('password')}"
+                        class="alert mar-l-1"></div>
                     <br>
                     <input class="mar-1 pad-t-2 pad-b-0-5" type="password" placeholder="Confirm Password"
                         name="confirm-password">
-                        <div th:if="${model.errors.containsKey('confirm-password')}" th:text="${model.errors.get('confirm-password')}" class="alert mar-l-1"></div>
-                    </div>
-                <div id="buttons">
+                    <div th:if="${model.errors.containsKey('confirm-password')}"
+                        th:text="${model.errors.get('confirm-password')}" class="alert mar-l-1"></div>
+                </div>
+                <div class="buttons">
                     <button class="button back" type="button" onclick="location.href='/'">Back</button>
                     <button class="button" type="submit">Sign up</button>
                 </div>
             </form>
         </div>
+        <div th:if="${model.messages.containsKey('ACCOUNT_CREATED')}" id="account-created-modal" class="modal">
+            <div class="modal-content text-right">
+                <div class="close" id="close-modal">&times;</div>
+                <h3 class="text-center" th:text="${model.messages.get('ACCOUNT_CREATED')}"></h3>
+                <div class="buttons">
+                    <button class="button back" type="button" onclick="location.href='/sign-up'">Back</button>
+                    <button class="button" type="button" onclick="location.href='/sign-in'">Sign in</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

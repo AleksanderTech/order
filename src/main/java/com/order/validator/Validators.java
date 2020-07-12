@@ -9,10 +9,10 @@ import java.util.regex.Pattern;
 
 public class Validators {
 
-    private static final String USERNAME = "username";
-    private static final String EMAIL = "email";
-    private static final String PASSWORD = "password";
-    private static final String CONFIRM_PASSWORD = "confirm-password";
+    public static final String USERNAME = "username";
+    public static final String EMAIL = "email";
+    public static final String PASSWORD = "password";
+    public static final String CONFIRM_PASSWORD = "confirm-password";
 
     private static final String passwordRange = ".{8,30}";
     private static final String minimumOneNumber = ".*[0-9].*";
@@ -51,9 +51,9 @@ public class Validators {
         return Objects.isNull(value) || value.isBlank();
     }
 
-    public static Map<String, String> signIn(String username, String password) {
+    public static Map<String, String> signIn(String email, String password) {
         Map<String, String> errors = new HashMap<>();
-        applyMessage(username, USERNAME, ValidationError.USERNAME, errors, Validators::validUsername);
+        applyMessage(email, EMAIL, ValidationError.EMAIL, errors, Validators::validEmail);
         applyMessage(password, PASSWORD, ValidationError.PASSWORD, errors, Validators::validPassword);
         return errors;
     }

@@ -17,9 +17,9 @@ public class SqlUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> getByUsername(String username) {
+    public Optional<User> getByEmail(String email) {
         return dsl.selectFrom(ORDER_USER)
-                .where(ORDER_USER.USERNAME.eq(username))
+                .where(ORDER_USER.EMAIL.eq(email))
                 .fetchOptional()
                 .map(record -> new User(record.getId(),record.getUsername(), record.getEmail(), record.getPassword(), record.getIsActive()));
     }
