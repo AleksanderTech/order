@@ -1,5 +1,7 @@
 package com.order.validator;
 
+import com.order.error.Errors;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,22 +55,22 @@ public class Validators {
 
     public static Map<String, String> signIn(String email, String password) {
         Map<String, String> errors = new HashMap<>();
-        applyMessage(email, EMAIL, ValidationError.EMAIL, errors, Validators::validEmail);
-        applyMessage(password, PASSWORD, ValidationError.PASSWORD, errors, Validators::validPassword);
+        applyMessage(email, EMAIL, Errors.EMAIL, errors, Validators::validEmail);
+        applyMessage(password, PASSWORD, Errors.PASSWORD, errors, Validators::validPassword);
         return errors;
     }
 
     public static Map<String, String> signUp(String username, String email, String password, String confirmPassword) {
         Map<String, String> errors = new HashMap<>();
-        applyMessage(username, USERNAME, ValidationError.USERNAME, errors, Validators::validUsername);
-        applyMessage(email, EMAIL, ValidationError.EMAIL, errors, Validators::validEmail);
-        applyMessage(password, PASSWORD, ValidationError.PASSWORD, errors, Validators::validPassword);
+        applyMessage(username, USERNAME, Errors.USERNAME, errors, Validators::validUsername);
+        applyMessage(email, EMAIL, Errors.EMAIL, errors, Validators::validEmail);
+        applyMessage(password, PASSWORD, Errors.PASSWORD, errors, Validators::validPassword);
         if (!isEmpty(confirmPassword)) {
             if (!Validators.validConfirmPassword(password, confirmPassword)) {
-                errors.put(CONFIRM_PASSWORD, ValidationError.CONFIRM_PASSWORD);
+                errors.put(CONFIRM_PASSWORD, Errors.CONFIRM_PASSWORD);
             }
         } else {
-            errors.put(CONFIRM_PASSWORD, ValidationError.EMPTY);
+            errors.put(CONFIRM_PASSWORD, Errors.EMPTY);
         }
         return errors;
     }
@@ -79,7 +81,7 @@ public class Validators {
                 errors.put(field, message);
             }
         } else {
-            errors.put(field, ValidationError.EMPTY);
+            errors.put(field, Errors.EMPTY);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.order.handler;
 
 import com.order.error.Errors;
+import com.order.error.HttpStatus;
 import com.order.model.User;
 import com.order.service.AuthService;
 import com.order.service.Response;
@@ -80,6 +81,7 @@ public class AuthHandler extends Handler {
 
     public void signIn(String email, String password, Map<String, String> errors, Context ctx) {
         if (!errors.isEmpty()) {
+            ctx.status(HttpStatus.BAD_REQUEST.getStatusCode());
             ctx.html(presenter.template(Views.SIGN_IN, new SignInVM(errors)));
         } else {
             var user = new User(email, password);
@@ -90,6 +92,7 @@ public class AuthHandler extends Handler {
 
     public void signUp(String username, String email, String password, Map<String, String> errors, Context ctx) {
         if (!errors.isEmpty()) {
+            ctx.status(HttpStatus.BAD_REQUEST.getStatusCode());
             ctx.html(presenter.template(Views.SIGN_UP, SignUpVM.withErrors(errors)));
         } else {
             var user = new User(username, email, password);
@@ -106,6 +109,7 @@ public class AuthHandler extends Handler {
             if (response.getErrors().contains(Errors.INCORRECT_PASSWORD)) {
                 errors.put(Validators.PASSWORD, Errors.INCORRECT_PASSWORD);
             }
+            ctx.status(response.getHttpStatus().getStatusCode());
             ctx.html(presenter.template(Views.SIGN_IN, new SignInVM(errors)));
         } else {
             newSession(ctx, user.id);
@@ -120,9 +124,7 @@ public class AuthHandler extends Handler {
             }
             ctx.html(presenter.template(Views.SIGN_UP, SignUpVM.withErrors(errors)));
         } else {
-            Map<String, String> messages = new HashMap<>();
-            messages.put(Message.ACCOUNT_CREATED.name(), Message.ACCOUNT_CREATED.getMessage());
-            ctx.html(presenter.template(Views.SIGN_UP, new SignUpVM(messages, errors)));
+            ctx.status(response.getHttpStatus().getStatusCode());
             redirect(ctx, Views.SIGN_UP_SUCCESS);
         }
     }
