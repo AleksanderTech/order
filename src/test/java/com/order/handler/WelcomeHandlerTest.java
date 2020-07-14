@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 class WelcomeHandlerTest {
-    private static final String TEXT_HTML = "text/html";
-    private static final String CONTENT_TYPE = "Content-Type";
+
     private static final TemplatePresenter templatePresenter = Mockito.mock(TemplatePresenter.class);
 
     @Test
@@ -26,6 +25,6 @@ class WelcomeHandlerTest {
         WelcomeHandler welcomeHandler = new WelcomeHandler(templatePresenter);
         Mockito.when(templatePresenter.template(Mockito.eq(Views.WELCOME))).thenReturn("welcome");
         welcomeHandler.welcome(context);
-        Mockito.verify(context).result("welcome");
+        Mockito.verify(context).html("welcome");
     }
 }

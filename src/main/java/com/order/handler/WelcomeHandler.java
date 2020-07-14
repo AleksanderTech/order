@@ -19,7 +19,6 @@ public class WelcomeHandler extends Handler {
     }
 
     public void welcome(Context ctx) {
-        setHeaders(ctx);
-        ctx.result(presenter.template(Views.WELCOME));
+        ctx.html(presenter.template(Views.WELCOME));
     }
 }

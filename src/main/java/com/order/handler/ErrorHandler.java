@@ -33,13 +33,13 @@ public class ErrorHandler extends Handler {
 
     public void handleException(Exception exception, Context ctx) {
         exception.printStackTrace();
-        setHeaders(ctx);
-        ctx.result(presenter.template(Views.ERROR, new ErrorVM(HttpStatus.INTERNAL_SERVER_ERROR.getStatusCode(), Errors.INTERNAL_SERVER_ERROR)));
+        ctx.status(HttpStatus.INTERNAL_SERVER_ERROR.getStatusCode());
+        ctx.html(presenter.template(Views.ERROR, new ErrorVM(HttpStatus.INTERNAL_SERVER_ERROR.getStatusCode(), Errors.INTERNAL_SERVER_ERROR)));
     }
 
     public void handleOrderException(OrderException orderException, Context ctx) {
         orderException.printStackTrace();
-        setHeaders(ctx);
-        ctx.result(presenter.template(Views.ERROR, new ErrorVM(orderException.getStatus().getStatusCode(), orderException.getErrors())));
+        ctx.status(orderException.getStatus().getStatusCode());
+        ctx.html(presenter.template(Views.ERROR, new ErrorVM(orderException.getStatus().getStatusCode(), orderException.getErrors())));
     }
 }

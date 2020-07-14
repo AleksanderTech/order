@@ -34,20 +34,12 @@ public abstract class Handler {
         newSession.setAttribute(USER_ID, userId);
     }
 
-    public void get(String path, Javalin javalin, Consumer<Context> consumer) {
-        javalin.get(path, ctx -> {
-            ctx.header(CONTENT_TYPE, TEXT_HTML);
-            consumer.accept(ctx);
-        });
-    }
-
-    protected void ifOrElse(boolean condition, Runnable ifAction, Runnable elseAction) {
-        if (condition) {
-            ifAction.run();
-        } else {
-            elseAction.run();
-        }
-    }
+//    public void get(String path, Javalin javalin, Consumer<Context> consumer) {
+//        javalin.get(path, ctx -> {
+//            ctx.header(CONTENT_TYPE, TEXT_HTML);
+//            consumer.accept(ctx);
+//        });
+//    }
 
     protected void redirect(Context ctx, String route) {
         try {
@@ -57,11 +49,7 @@ public abstract class Handler {
         }
     }
 
-    protected void setHeaders(Context ctx) {
-        ctx.header(CONTENT_TYPE, TEXT_HTML);
-    }
-
-    public void post(String path, Javalin javalin, Consumer<Context> consumer) {
-        javalin.post(path, consumer::accept);
-    }
+//    public void post(String path, Javalin javalin, Consumer<Context> consumer) {
+//        javalin.post(path, consumer::accept);
+//    }
 }

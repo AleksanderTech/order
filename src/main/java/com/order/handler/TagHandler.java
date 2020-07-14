@@ -23,7 +23,7 @@ public class TagHandler extends Handler {
 
     @Override
     public void register(Javalin lin) {
-        post("/tags", lin, context -> {
+        lin.post("/tags", context -> {
             try {
                 String userIdName = "userId";
                 Long userId = null;

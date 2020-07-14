@@ -10,16 +10,16 @@ public class ThoughtAndTagHandler extends Handler {
 
     @Override
     public void register(Javalin lin) {
-        get("/api/thoughts-and-tags", lin, context -> {
-            Long userId = null;
-            String userIdName = "userId";
-            if (context.sessionAttribute(userIdName) != null) {
-                userId = context.sessionAttribute(userIdName);
-//                List<Thought> thoughts = ta.getByUserId(userId);
-//                context.json(JsonMapper.json(thoughts));
-            }
-            // todo
-        });
+//        get("/api/thoughts-and-tags", lin, context -> {
+//            Long userId = null;
+//            String userIdName = "userId";
+//            if (context.sessionAttribute(userIdName) != null) {
+//                userId = context.sessionAttribute(userIdName);
+////                List<Thought> thoughts = ta.getByUserId(userId);
+////                context.json(JsonMapper.json(thoughts));
+//            }
+//            // todo
+//        });
     }
 
 }

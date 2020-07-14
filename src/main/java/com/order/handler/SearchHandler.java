@@ -15,9 +15,8 @@ public class SearchHandler extends Handler {
 
     @Override
     public void register(Javalin lin) {
-        get("/search", lin, context -> {
+        lin.get("/search", context -> {
             context.result(presenter.template(Views.SEARCH));
         });
     }
-
 }

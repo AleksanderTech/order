@@ -18,6 +18,8 @@ public class ThoughtService {
     }
 
     public void create(Thought thought) {
+
+        System.out.println(thought);
         thoughtRepository.create(thought);
     }
 }

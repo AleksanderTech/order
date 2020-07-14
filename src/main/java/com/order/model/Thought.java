@@ -7,7 +7,9 @@ public class Thought {
     public long id;
     public String name;
     public String content;
+    public String tagName;
     public long userId;
+    public long sortOrderId;
     public LocalDateTime createdAt;
     public LocalDateTime modifiedAt;
 
@@ -16,11 +18,13 @@ public class Thought {
         this.content = content;
     }
 
-    public Thought(long id, String name, String content, long userId, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public Thought(long id, String name, String content, String tagName, long userId, long sortOrderId, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.name = name;
         this.content = content;
+        this.tagName = tagName;
         this.userId = userId;
+        this.sortOrderId = sortOrderId;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
@@ -34,7 +38,9 @@ public class Thought {
         private long id;
         private String name;
         private String content;
+        private String tagName;
         private long userId;
+        private long sortOrderId;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
 
@@ -53,8 +59,18 @@ public class Thought {
             return this;
         }
 
+        public Builder tagName(String tagName) {
+            this.tagName = tagName;
+            return this;
+        }
+
         public Builder userId(long userId) {
             this.userId = userId;
+            return this;
+        }
+
+        public Builder sortOrderId(long sortOrderId) {
+            this.sortOrderId = sortOrderId;
             return this;
         }
 
@@ -69,7 +85,7 @@ public class Thought {
         }
 
         public Thought build() {
-            return new Thought(this.id, this.name, this.content, this.userId, this.createdAt, this.modifiedAt);
+            return new Thought(this.id, this.name, this.content, this.tagName, this.userId, this.sortOrderId, this.createdAt, this.modifiedAt);
         }
     }
 
@@ -79,7 +95,9 @@ public class Thought {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", content='" + content + '\'' +
+                ", tagName='" + tagName + '\'' +
                 ", userId=" + userId +
+                ", sortOrderId=" + sortOrderId +
                 ", createdAt=" + createdAt +
                 ", modifiedAt=" + modifiedAt +
                 '}';

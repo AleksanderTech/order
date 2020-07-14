@@ -24,7 +24,7 @@ public class ThoughtHandler extends Handler {
 
     @Override
     public void register(Javalin lin) {
-        get("/thoughts", lin, context -> {
+        lin.get("/thoughts", context -> {
             Long userId;
             String userIdName = "userId";
             if (context.sessionAttribute(userIdName) != null) {
@@ -37,12 +37,11 @@ public class ThoughtHandler extends Handler {
                     }
                 } else {
                     List<Thought> thoughts = thoughtService.getByUserId(userId);
-                    context.result(presenter.template(Views.THOUGHTS, new ThoughtVM(thoughts)));
+                    context.html(presenter.template(Views.THOUGHTS, new ThoughtVM(thoughts)));
                 }
             }
         });
-
-        get("/api/thoughts", lin, context -> {
+        lin.get("api/thoughts", context -> {
             Long userId = null;
             String userIdName = "userId";
             if (context.sessionAttribute(userIdName) != null) {
@@ -50,18 +49,34 @@ public class ThoughtHandler extends Handler {
                 List<Thought> thoughts = thoughtService.getByUserId(userId);
                 context.json(JsonMapper.json(thoughts));
             }
-            // todo
         });
-
-        post("/thoughts", lin, context -> {
+        lin.post("/thoughts", context -> {
             try {
                 String userIdName = "userId";
                 Long userId = null;
                 if (context.sessionAttribute(userIdName) != null) {
                     userId = context.sessionAttribute(userIdName);
-                    String name = context.formParam("name");
-                    thoughtService.create(Thought.builder().name(name).userId(userId).createdAt(LocalDateTime.now()).build());
-                    context.res.sendRedirect("thoughts");
+                    if (userId == null) {
+                        try {
+                            context.res.sendRedirect("error");
+                        } catch (IOException e) {
+                            throw new RuntimeException("redirection failed");
+                        }
+                    } else {
+                        String name = context.formParam("thought-name");
+                        String tagName = context.formParam("tag-name");
+
+                        thoughtService.create(
+                                Thought.builder().
+                                        name(name).
+                                        tagName(tagName).
+                                        userId(userId).
+                                        createdAt(LocalDateTime.now())
+                                        .build()
+                        );
+
+                        context.res.sendRedirect("thoughts");
+                    }
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

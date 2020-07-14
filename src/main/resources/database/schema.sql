@@ -6,29 +6,30 @@ create table order_user (
      is_active boolean not null default false
 );
 
+create table if not exists sort_order (
+    id bigserial primary key,
+    value bigint not null
+);
+
 create table if not exists thought (
     id bigserial primary key,
     name varchar(100) not null,
     content text,
     user_id bigint references order_user(id),
-    sort_order_id bigint references sort_order(id) on delete cascade,
+    sort_order_id bigint not null references sort_order(id) on delete cascade,
     created_at timestamp not null default now(),
     modified_at timestamp
 );
 
 create table if not exists tag (
     id bigserial primary key,
-    name varchar(100) unique,
-    parent_tag_id bigint references tag(id),
+    name varchar(100) not null,
+    parent_tag_id bigint references tag(id) not null,
     user_id bigint references order_user(id),
-    sort_order_id bigint references sort_order(id) on delete cascade,
+    sort_order_id bigint not null references sort_order(id) on delete cascade,
     created_at timestamp not null default now()
 );
 
-create table if not exists sort_order (
-    id bigserial primary key,
-    value bigint not null,
-);
 
 create table if not exists thought_tag (
     thought_id bigint references thought(id),

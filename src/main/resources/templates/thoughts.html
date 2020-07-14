@@ -35,6 +35,7 @@
         </nav>
         <div id="thoughts-wrapper">
             <div id="thoughts-grid" class="scrollbar">
+                
                 <div id="drag-me">drag me</div>
                 <div th:each="thought: ${model.thoughts}" class="tile draggable" draggable="true"
                     th:text="${thought.name}"></div>
@@ -51,7 +52,8 @@
                 <div class="modal-content text-right">
                     <div class="close" id="close-modal">&times;</div>
                     <form id="thoughts-form" class="creation-form" action="/thoughts" method="POST" autocomplete="off">
-                        <input class="font-18" placeholder="Name" type="text" name="name">
+                        <input class="font-18" placeholder="Name" type="text" name="thought-name">
+                        <input class="font-18" placeholder="Tag name" type="text" name="tag-name">
                         <input type="submit" class="button" value="create">
                     </form>
                     <form id="tags-form" class="creation-form" action="/tags" method="POST" autocomplete="off">

@@ -112,7 +112,7 @@ public class AuthHandler extends Handler {
             ctx.status(response.getHttpStatus().getStatusCode());
             ctx.html(presenter.template(Views.SIGN_IN, new SignInVM(errors)));
         } else {
-            newSession(ctx, user.id);
+            newSession(ctx, response.getValue().id);
             redirect(ctx, Views.THOUGHTS);
         }
     }
