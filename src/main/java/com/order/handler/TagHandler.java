@@ -30,6 +30,7 @@ public class TagHandler extends Handler {
                 if (context.sessionAttribute(userIdName) != null) {
                     userId = context.sessionAttribute(userIdName);
                     String parentTagIdString = context.formParam("parent-tag-id");
+                    System.out.println("parent tag id: "+parentTagIdString);
                     Long parentTagId = Validators.isEmpty(parentTagIdString) ? -1 : Long.parseLong(parentTagIdString);
                     String name = context.formParam("name");
                     tagService.create(Tag.builder().name(name).userId(userId).parentTagId(parentTagId).createdAt(LocalDateTime.now()).build());
