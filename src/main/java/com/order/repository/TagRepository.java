@@ -9,9 +9,7 @@ import org.jooq.impl.DSL;
 import java.util.Objects;
 
 import static com.order.database.jooq.Tables.SORT_ORDER;
-import static com.order.database.jooq.Tables.THOUGHT_TAG;
 import static com.order.database.jooq.tables.Tag.TAG;
-import static com.order.database.jooq.tables.Thought.THOUGHT;
 
 
 public class TagRepository {
