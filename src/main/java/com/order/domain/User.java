@@ -1,4 +1,4 @@
-package com.order.model;
+package com.order.domain;
 
 public class User {
 

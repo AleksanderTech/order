@@ -24,7 +24,6 @@ export class ThoughtsComponent {
         this.dragMe = document.getElementById('drag-me');
         this.thoughtsWrapper = document.getElementById('thoughts-wrapper');
         this.thoughtsGrid = document.getElementById('thoughts-grid');
-
     }
 
     registerHandlers() {
@@ -72,7 +71,7 @@ export class ThoughtsComponent {
             //     resizeObserver.unobserve(divElem);
             // }
         });
-        this.dragMe.addEventListener('mousedown', e=>{
+        this.dragMe.addEventListener('mousedown', e => {
             this.pos3 = e.clientX;
             this.pos4 = e.clientY;
             document.onmouseup = this.closeDragElement;
@@ -106,7 +105,7 @@ export class ThoughtsComponent {
             this.save();
         });
     }
-   
+
     dragElements() {
         this.dragElement(this.thoughtsGrid);
     }
@@ -124,27 +123,27 @@ export class ThoughtsComponent {
         this.currentTagId = tagId;
     }
 
-  
-     addBorder() {
+
+    addBorder() {
         this.thoughtsWrapper.classList.add('dashed-border');
         this.thoughtsGrid.classList.add('dashed-border');
     }
-    
-     removeBorder() {
+
+    removeBorder() {
         this.thoughtsWrapper.classList.remove('dashed-border');
         this.thoughtsGrid.classList.remove('dashed-border');
     }
-    
-     outOfBounds() {
+
+    outOfBounds() {
         this.thoughtsWrapper.classList.remove('dashed-border');
         this.thoughtsWrapper.classList.add('alert-border');
     }
-    
+
     inBounds() {
         this.thoughtsWrapper.classList.remove('alert-border');
         this.thoughtsWrapper.classList.add('dashed-border');
     }
-  
+
     isOutOfBounds(element, parent) {
         let elementBox = element.getBoundingClientRect();
         let parentBox = parent.getBoundingClientRect();
@@ -157,14 +156,14 @@ export class ThoughtsComponent {
         let rightPar = parentBox.right;
         return topElem < topPar || leftElem < leftPar || rightElem > rightPar;
     }
-    
+
     dragElement(element) {
         element.style.left = this.pos1 + 'px';
         element.style.top = this.pos2 + 'px';
         // this.dragMe.addEventListener('mousedown', this.dragMouseDown);
         // this.dragMe.addEventListener('mousedown', dragMouseDown);
     }
-    
+
     dragMouseDown(e) {
         // this.addBorder()
         this.pos3 = e.clientX;
@@ -172,14 +171,14 @@ export class ThoughtsComponent {
         document.onmouseup = this.closeDragElement;
         document.onmousemove = this.elementDrag;
     }
-    
+
     elementDrag(e) {
         // if (this.isOutOfBounds(this.thoughtsGrid, this.thoughtsGrid.parentElement)) {
         //     this.outOfBounds();
         // } else {
         //     this.inBounds();
         // }
-        let thoughtsGrid=document.getElementById('thoughts-grid');
+        let thoughtsGrid = document.getElementById('thoughts-grid');
         this.pos1 = this.pos3 - e.clientX;
         this.pos2 = this.pos4 - e.clientY;
         this.pos3 = e.clientX;
@@ -187,10 +186,16 @@ export class ThoughtsComponent {
         thoughtsGrid.style.top = (thoughtsGrid.offsetTop - this.pos2) + "px";
         thoughtsGrid.style.left = (thoughtsGrid.offsetLeft - this.pos1) + "px";
     }
-    
+
     closeDragElement() {
         document.onmouseup = null;
         document.onmousemove = null;
         // this.removeBorder();
+    }
+    // ---------------------------------rest----------------------------
+    fetchTags() {
+        fetch('http://localhost:7000/api/tag')
+            .then(res => res.json())
+            .then(res => console.log(res));
     }
 }

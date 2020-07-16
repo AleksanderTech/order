@@ -2,7 +2,7 @@ package com.order.handler;
 
 import com.order.error.Errors;
 import com.order.error.HttpStatus;
-import com.order.model.User;
+import com.order.domain.User;
 import com.order.service.AuthService;
 import com.order.service.Response;
 import com.order.validator.Validators;

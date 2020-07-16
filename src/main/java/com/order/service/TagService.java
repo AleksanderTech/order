@@ -1,7 +1,10 @@
 package com.order.service;
 
-import com.order.model.Tag;
+import com.order.domain.Tag;
 import com.order.repository.TagRepository;
+import com.order.model.OrderedTag;
+
+import java.util.List;
 
 public class TagService {
 
@@ -16,5 +19,9 @@ public class TagService {
             tag.parentTagId = null;
         }
         tagRepository.create(tag);
+    }
+
+    public List<OrderedTag> orderedTagsByUserId(long userId) {
+        return tagRepository.orderedTagsByUserId(userId);
     }
 }

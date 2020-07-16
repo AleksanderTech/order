@@ -24,7 +24,7 @@ create table if not exists thought (
 create table if not exists tag (
     id bigserial primary key,
     name varchar(100) not null,
-    parent_tag_id bigint references tag(id) not null,
+    parent_tag_id bigint references tag(id),
     user_id bigint references order_user(id),
     sort_order_id bigint not null references sort_order(id) on delete cascade,
     created_at timestamp not null default now()
@@ -33,8 +33,8 @@ create table if not exists tag (
 
 create table if not exists thought_tag (
     thought_id bigint references thought(id),
-    tag_name varchar(100) references tag(name) on update cascade on delete cascade,
-    primary key(thought_id,tag_name)
+    tag_id bigint references tag(id) on update cascade on delete cascade,
+    primary key(thought_id,tag_id)
 );
 
 create table if not exists image (

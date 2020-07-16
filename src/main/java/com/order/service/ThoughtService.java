@@ -1,6 +1,7 @@
 package com.order.service;
 
-import com.order.model.Thought;
+import com.order.model.OrderedThought;
+import com.order.model.ThoughtRequest;
 import com.order.repository.ThoughtRepository;
 
 import java.util.List;
@@ -13,13 +14,11 @@ public class ThoughtService {
         this.thoughtRepository = thoughtRepository;
     }
 
-    public List<Thought> getByUserId(long id) {
-        return thoughtRepository.getByUserId(id);
+    public List<OrderedThought> orderedThoughtsBy(long userId, long tagId) {
+        return thoughtRepository.orderedThoughtsBy(userId,tagId);
     }
 
-    public void create(Thought thought) {
-
-        System.out.println(thought);
+    public void create(ThoughtRequest thought) {
         thoughtRepository.create(thought);
     }
 }

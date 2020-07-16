@@ -1,4 +1,4 @@
-package com.order.model;
+package com.order.domain;
 
 import java.time.LocalDateTime;
 
@@ -7,7 +7,6 @@ public class Thought {
     public long id;
     public String name;
     public String content;
-    public String tagName;
     public long userId;
     public long sortOrderId;
     public LocalDateTime createdAt;
@@ -18,11 +17,10 @@ public class Thought {
         this.content = content;
     }
 
-    public Thought(long id, String name, String content, String tagName, long userId, long sortOrderId, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public Thought(long id, String name, String content, long userId, long sortOrderId, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.name = name;
         this.content = content;
-        this.tagName = tagName;
         this.userId = userId;
         this.sortOrderId = sortOrderId;
         this.createdAt = createdAt;
@@ -38,7 +36,6 @@ public class Thought {
         private long id;
         private String name;
         private String content;
-        private String tagName;
         private long userId;
         private long sortOrderId;
         private LocalDateTime createdAt;
@@ -59,10 +56,6 @@ public class Thought {
             return this;
         }
 
-        public Builder tagName(String tagName) {
-            this.tagName = tagName;
-            return this;
-        }
 
         public Builder userId(long userId) {
             this.userId = userId;
@@ -85,21 +78,7 @@ public class Thought {
         }
 
         public Thought build() {
-            return new Thought(this.id, this.name, this.content, this.tagName, this.userId, this.sortOrderId, this.createdAt, this.modifiedAt);
+            return new Thought(this.id, this.name, this.content,  this.userId, this.sortOrderId, this.createdAt, this.modifiedAt);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Thought{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", content='" + content + '\'' +
-                ", tagName='" + tagName + '\'' +
-                ", userId=" + userId +
-                ", sortOrderId=" + sortOrderId +
-                ", createdAt=" + createdAt +
-                ", modifiedAt=" + modifiedAt +
-                '}';
     }
 }

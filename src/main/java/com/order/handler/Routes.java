@@ -8,4 +8,6 @@ public class Routes {
     public static final String SIGN_UP_SUCCESS_ROUTE = "/sign-up/success";
     public static final String SIGN_OUT_ROUTE = "/sign-out";
     public static final String THOUGHTS_ROUTE = "/thoughts";
+    public static final String TAG_API = "/api/tag";
+    public static final String THOUGHT_API = "/api/thought";
 }

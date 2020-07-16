@@ -2,61 +2,60 @@ package com.order.model;
 
 import java.time.LocalDateTime;
 
-public class Tag {
-
+public class OrderedTag {
     public long id;
     public String name;
-    public long userId;
     public Long parentTagId;
+    public Long orderValue;
     public LocalDateTime createdAt;
 
-    public Tag(long id, String name, long userId, Long parentTagId, LocalDateTime createdAt) {
+    public OrderedTag(long id, String name, Long parentTagId, Long orderValue, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
-        this.userId = userId;
         this.parentTagId = parentTagId;
+        this.orderValue = orderValue;
         this.createdAt = createdAt;
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public static OrderedTag.Builder builder() {
+        return new OrderedTag.Builder();
     }
 
     public static class Builder {
 
         private long id;
         private String name;
-        private long userId;
         private Long parentTagId;
+        private Long orderValue;
         private LocalDateTime createdAt;
 
-        public Builder id(long id) {
+        public OrderedTag.Builder id(long id) {
             this.id = id;
             return this;
         }
 
-        public Builder name(String name) {
+        public OrderedTag.Builder name(String name) {
             this.name = name;
             return this;
         }
 
-        public Builder userId(long userId) {
-            this.userId = userId;
+        public OrderedTag.Builder orderValue(Long orderValue) {
+            this.orderValue = orderValue;
             return this;
         }
 
-        public Builder parentTagId(Long parentTagId) {
+        public OrderedTag.Builder parentTagId(Long parentTagId) {
             this.parentTagId = parentTagId;
             return this;
         }
 
-        public Builder createdAt(LocalDateTime createdAt) {
+        public OrderedTag.Builder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
-        public Tag build() {
-            return new Tag(this.id, this.name, this.userId, this.parentTagId, this.createdAt);
+        public OrderedTag build() {
+            return new OrderedTag(this.id, this.name, this.parentTagId, this.orderValue, this.createdAt);
         }
     }
 }

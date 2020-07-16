@@ -1,6 +1,6 @@
 package com.order.repository;
 
-import com.order.model.User;
+import com.order.domain.User;
 
 import java.util.Optional;
 

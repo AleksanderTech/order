@@ -1,15 +1,16 @@
 package com.order.handler;
 
 import com.order.JsonMapper;
-import com.order.model.Thought;
+import com.order.model.OrderedThought;
+import com.order.model.ThoughtRequest;
 import com.order.service.ThoughtService;
 import com.order.view.Presenter;
 import com.order.view.Views;
 import com.order.view.model.ThoughtVM;
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class ThoughtHandler extends Handler {
@@ -36,20 +37,12 @@ public class ThoughtHandler extends Handler {
                         throw new RuntimeException("redirection failed");
                     }
                 } else {
-                    List<Thought> thoughts = thoughtService.getByUserId(userId);
+                    List<OrderedThought> thoughts = thoughtService.orderedThoughtsBy(userId, 1L);
                     context.html(presenter.template(Views.THOUGHTS, new ThoughtVM(thoughts)));
                 }
             }
         });
-        lin.get("api/thoughts", context -> {
-            Long userId = null;
-            String userIdName = "userId";
-            if (context.sessionAttribute(userIdName) != null) {
-                userId = context.sessionAttribute(userIdName);
-                List<Thought> thoughts = thoughtService.getByUserId(userId);
-                context.json(JsonMapper.json(thoughts));
-            }
-        });
+
         lin.post("/thoughts", context -> {
             try {
                 String userIdName = "userId";
@@ -64,17 +57,15 @@ public class ThoughtHandler extends Handler {
                         }
                     } else {
                         String name = context.formParam("thought-name");
-                        String tagName = context.formParam("tag-name");
+                        long tagId = Long.parseLong(context.formParam("tag-id"));
 
                         thoughtService.create(
-                                Thought.builder().
-                                        name(name).
-                                        tagName(tagName).
-                                        userId(userId).
-                                        createdAt(LocalDateTime.now())
+                                ThoughtRequest.builder()
+                                        .name(name)
+                                        .tagId(tagId)
+                                        .userId(userId)
                                         .build()
                         );
-
                         context.res.sendRedirect("thoughts");
                     }
                 }
@@ -82,5 +73,16 @@ public class ThoughtHandler extends Handler {
                 throw new RuntimeException(e);
             }
         });
+        lin.get(Routes.THOUGHT_API, this::orderedUserThoughtsByTagId);
+    }
+
+    public void orderedUserThoughtsByTagId(Context context) {
+        Long userId = null;
+        if (context.sessionAttribute("userId") != null) {
+            userId = context.sessionAttribute("userId");
+            long tagId = context.queryParam("tag-id").length() > 0 ? Long.parseLong(context.queryParam("tag-id")) : -1;
+            List<OrderedThought> thoughts = thoughtService.orderedThoughtsBy(userId, tagId);
+            context.json(JsonMapper.json(thoughts));
+        }
     }
 }

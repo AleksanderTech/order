@@ -1,6 +1,6 @@
 package com.order.handler;
 
-import com.order.model.Tag;
+import com.order.domain.Tag;
 import com.order.service.TagService;
 import com.order.validator.Validators;
 import com.order.view.Presenter;
@@ -9,7 +9,6 @@ import io.javalin.http.Context;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public class TagHandler extends Handler {
 
@@ -30,7 +29,7 @@ public class TagHandler extends Handler {
                 if (context.sessionAttribute(userIdName) != null) {
                     userId = context.sessionAttribute(userIdName);
                     String parentTagIdString = context.formParam("parent-tag-id");
-                    System.out.println("parent tag id: "+parentTagIdString);
+                    System.out.println("parent tag id: " + parentTagIdString);
                     Long parentTagId = Validators.isEmpty(parentTagIdString) ? -1 : Long.parseLong(parentTagIdString);
                     String name = context.formParam("name");
                     tagService.create(Tag.builder().name(name).userId(userId).parentTagId(parentTagId).createdAt(LocalDateTime.now()).build());
@@ -40,6 +39,11 @@ public class TagHandler extends Handler {
                 throw new RuntimeException(e);
             }
         });
+        lin.get(Routes.TAG_API, this::tagsByUserId);
     }
 
+    public void tagsByUserId(Context context) {
+        long  userId = context.sessionAttribute("userId");
+        context.json(tagService.orderedTagsByUserId(userId));
+    }
 }

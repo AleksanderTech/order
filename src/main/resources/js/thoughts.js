@@ -10,6 +10,8 @@ modeManager.loadUserMode();
 navigationComponent.registerHandlers();
 thoughtsComponent.registerHandlers();
 thoughtsComponent.dragElements();
+thoughtsComponent.fetchTags();
+
 
 // function save() {
 //     localStorage.setItem('pos1', pos1);

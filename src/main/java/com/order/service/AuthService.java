@@ -3,7 +3,7 @@ package com.order.service;
 import com.order.error.Errors;
 import com.order.error.HttpStatus;
 import com.order.error.OrderException;
-import com.order.model.User;
+import com.order.domain.User;
 import com.order.repository.SqlUserRepository;
 
 public class AuthService extends Service {
