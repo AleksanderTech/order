@@ -5,12 +5,10 @@ import io.javalin.http.Context;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.function.Consumer;
+import java.util.Optional;
 
 public abstract class Handler {
 
-    private static final String TEXT_HTML = "text/html";
-    private static final String CONTENT_TYPE = "Content-Type";
     private static final int SESSION_INACTIVE_INTERVAL = 60 * 60 * 12;
     private static final String USER_ID = "userId";
 
@@ -24,6 +22,10 @@ public abstract class Handler {
         return session;
     }
 
+    public Optional<Long> userId(Context context) {
+        return Optional.ofNullable(context.sessionAttribute("userId"));
+    }
+
     public void newSession(Context ctx, long userId) {
         HttpSession oldHttpSession = ctx.req.getSession(false);
         if (oldHttpSession != null) {
@@ -34,13 +36,6 @@ public abstract class Handler {
         newSession.setAttribute(USER_ID, userId);
     }
 
-//    public void get(String path, Javalin javalin, Consumer<Context> consumer) {
-//        javalin.get(path, ctx -> {
-//            ctx.header(CONTENT_TYPE, TEXT_HTML);
-//            consumer.accept(ctx);
-//        });
-//    }
-
     protected void redirect(Context ctx, String route) {
         try {
             ctx.res.sendRedirect(route);
@@ -48,8 +43,4 @@ public abstract class Handler {
             throw new RuntimeException(e);
         }
     }
-
-//    public void post(String path, Javalin javalin, Consumer<Context> consumer) {
-//        javalin.post(path, consumer::accept);
-//    }
 }

@@ -1,4 +1,4 @@
-import { NavigationComponent } from './navigation-component.js';
+import { NavigationComponent } from './component/navigation-component.js';
 import { ModeManager } from './mode-manager.js';
 
 const modeManager = new ModeManager();

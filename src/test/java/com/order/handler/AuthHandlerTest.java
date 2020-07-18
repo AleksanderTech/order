@@ -1,5 +1,6 @@
 package com.order.handler;
 
+import com.order.handler.handlers.AuthHandler;
 import com.order.service.AuthService;
 import com.order.view.Presenter;
 import io.javalin.Javalin;

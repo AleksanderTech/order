@@ -5,23 +5,22 @@ import com.order.config.AppProperties;
 import com.order.config.PropertiesLoader;
 import com.order.config.ThymeleafConfig;
 import com.order.handler.*;
+import com.order.handler.handlers.*;
 import com.order.repository.SqlUserRepository;
 import com.order.repository.TagRepository;
 import com.order.repository.ThoughtRepository;
+import com.order.rest.handler.TagRestHandler;
+import com.order.rest.handler.ThoughtRestHandler;
 import com.order.service.AuthService;
 import com.order.service.Hasher;
 import com.order.service.TagService;
 import com.order.service.ThoughtService;
 import com.order.view.TemplatePresenter;
 import io.javalin.Javalin;
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.session.DefaultSessionCache;
 import org.eclipse.jetty.server.session.FileSessionDataStore;
 import org.eclipse.jetty.server.session.SessionCache;
 import org.eclipse.jetty.server.session.SessionHandler;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -91,10 +90,11 @@ public class App {
         var startHandler = new WelcomeHandler(presenter);
         var authHandler = new AuthHandler(presenter, authService);
         var errorHandler = new ErrorHandler(presenter);
-        var thoughtsHandler = new ThoughtHandler(presenter, thoughtService);
+        var thoughtsHandler = new ThoughtsHandler(presenter, thoughtService);
         var searchHandler = new SearchHandler(presenter);
-        var tagHandler = new TagHandler(presenter, tagService);
-        return List.of(startHandler, authHandler, errorHandler, thoughtsHandler, searchHandler, tagHandler);
+        var tagRestHandler = new TagRestHandler(tagService);
+        var thoughtRestHandler = new ThoughtRestHandler(thoughtService);
+        return List.of(startHandler, authHandler, errorHandler, thoughtsHandler, searchHandler, tagRestHandler, thoughtRestHandler);
     }
 
     private static Properties loadProperties(String... args) {

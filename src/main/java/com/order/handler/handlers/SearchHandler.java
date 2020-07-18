@@ -1,5 +1,7 @@
-package com.order.handler;
+package com.order.handler.handlers;
 
+import com.order.handler.Handler;
+import com.order.handler.Routes;
 import com.order.view.Presenter;
 import com.order.view.Views;
 import io.javalin.Javalin;
@@ -15,8 +17,10 @@ public class SearchHandler extends Handler {
 
     @Override
     public void register(Javalin lin) {
-        lin.get("/search", context -> {
-            context.result(presenter.template(Views.SEARCH));
-        });
+        lin.get(Routes.SEARCH_ROUTE, this::searchView);
+    }
+
+    public void searchView(Context context) {
+        context.html(presenter.template(Views.SEARCH));
     }
 }

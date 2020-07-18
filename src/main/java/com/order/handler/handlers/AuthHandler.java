@@ -1,8 +1,11 @@
-package com.order.handler;
+package com.order.handler.handlers;
 
 import com.order.error.Errors;
 import com.order.error.HttpStatus;
 import com.order.domain.User;
+import com.order.handler.Handler;
+import com.order.handler.Message;
+import com.order.handler.Routes;
 import com.order.service.AuthService;
 import com.order.service.Response;
 import com.order.validator.Validators;
@@ -86,7 +89,7 @@ public class AuthHandler extends Handler {
         } else {
             var user = new User(email, password);
             Response<User> userResponse = authService.signIn(user);
-            resolveSignInResponse(ctx, errors, user, userResponse);
+            resolveSignInResponse(ctx, errors, userResponse);
         }
     }
 
@@ -101,7 +104,7 @@ public class AuthHandler extends Handler {
         }
     }
 
-    public void resolveSignInResponse(Context ctx, Map<String, String> errors, User user, Response<User> response) {
+    public void resolveSignInResponse(Context ctx, Map<String, String> errors, Response<User> response) {
         if (response.hasErrors()) {
             if (response.getErrors().contains(Errors.USER_NOT_FOUND)) {
                 errors.put(Validators.EMAIL, Errors.USER_NOT_FOUND);

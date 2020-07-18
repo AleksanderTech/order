@@ -10,4 +10,5 @@ public class Errors {
     public static final String PASSWORD = "Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter,1 number, 1 special character.";
     public static final String CONFIRM_PASSWORD = "Password confirmation does not match.";
     public static final String EMPTY = "Cannot be empty.";
+    public static final String UNAUTHORIZED = "Unathorized - Your are not allowed to this resource.";
 }

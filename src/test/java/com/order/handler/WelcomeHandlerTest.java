@@ -1,5 +1,6 @@
 package com.order.handler;
 
+import com.order.handler.handlers.WelcomeHandler;
 import com.order.view.TemplatePresenter;
 import com.order.view.Views;
 import io.javalin.Javalin;

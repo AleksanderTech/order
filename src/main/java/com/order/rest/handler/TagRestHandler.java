@@ -1,6 +1,8 @@
-package com.order.handler;
+package com.order.rest.handler;
 
 import com.order.domain.Tag;
+import com.order.handler.Handler;
+import com.order.handler.Routes;
 import com.order.service.TagService;
 import com.order.validator.Validators;
 import com.order.view.Presenter;
@@ -10,13 +12,11 @@ import io.javalin.http.Context;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-public class TagHandler extends Handler {
+public class TagRestHandler extends Handler {
 
-    private final Presenter presenter;
     private final TagService tagService;
 
-    public TagHandler(Presenter presenter, TagService tagService) {
-        this.presenter = presenter;
+    public TagRestHandler(TagService tagService) {
         this.tagService = tagService;
     }
 
@@ -39,7 +39,7 @@ public class TagHandler extends Handler {
                 throw new RuntimeException(e);
             }
         });
-        lin.get(Routes.TAG_API, this::tagsByUserId);
+        lin.get(Routes.API_TAG, this::tagsByUserId);
     }
 
     public void tagsByUserId(Context context) {

@@ -1,4 +1,4 @@
-import * as modes from './modes.js';
+import * as modes from '../modes.js';
 
 export class NavigationComponent {
 
