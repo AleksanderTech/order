@@ -2,7 +2,7 @@ package com.order.handler.handlers;
 
 import com.order.error.Errors;
 import com.order.error.HttpStatus;
-import com.order.domain.User;
+import com.order.entity.User;
 import com.order.handler.Handler;
 import com.order.handler.Message;
 import com.order.handler.Routes;

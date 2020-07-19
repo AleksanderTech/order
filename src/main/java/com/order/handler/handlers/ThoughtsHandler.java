@@ -3,7 +3,6 @@ package com.order.handler.handlers;
 import com.order.handler.Handler;
 import com.order.handler.Routes;
 import com.order.model.OrderedThought;
-import com.order.model.ThoughtRequest;
 import com.order.service.ThoughtService;
 import com.order.view.Presenter;
 import com.order.view.Views;
@@ -31,7 +30,7 @@ public class ThoughtsHandler extends Handler {
 
     public void thoughtsTemplate(Context context) {
         Long userId;
-        String userIdName = "userId";
+        String userIdName = "user-id";
         if (context.sessionAttribute(userIdName) != null) {
             userId = context.sessionAttribute(userIdName);
             if (userId == null) {

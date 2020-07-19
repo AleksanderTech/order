@@ -12,4 +12,5 @@ public class Routes {
     public static final String API_TAG = "/api/tag";
     public static final String API_THOUGHT = "/api/thought";
     public static final String API_THOUGHT_SEARCH_ROUTE = "/api/thought/search";
+    public static final String API_THOUGHT_VIEW_METRICS = "/api/thought/view-metrics";
 }

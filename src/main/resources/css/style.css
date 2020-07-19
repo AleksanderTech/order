@@ -21,6 +21,12 @@
     --additional-color-1: #2a9df4;
     --alert-color: #f34343;
     --tree-image-width: 450px;
+    --thoughts-grid-width: 550px;
+    --thoughts-grid-height: 'fit-content';
+    --thoughts-grid-left: 0;
+    --thoughts-grid-top: 0;
+    --thoughts-grid-right: 0;
+    --thoughts-grid-bottom: 0;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     background-color: var(--black-white-10);
     color: var(--black-white-1);
@@ -254,15 +260,45 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 /* navigation----------*/
 
 /* thoughts page----------*/
+#management-list-wrapper {
+    overflow: hidden;
+}
+
+#management {
+    overflow: hidden;
+    position: fixed;
+    left: 0; 
+    right: 0; 
+    bottom: 30px;
+    font-size: 20px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    margin-left: auto; 
+    margin-right: auto; 
+}
+
+#management-list {
+    overflow: hidden;
+}
+
+.show-management {
+    transform: translateY(-40%);
+    transition: transform 1s ease;
+}
+
+.hide-management {
+    transform: translateY(120%);
+    list-style-type: none;
+    transition: transform 0.6s ease;
+    overflow: hidden;
+}
+
+#thoughts-component {
+    height: 100vh;
+}
 
 #thoughts-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 100vw;
-    margin: 0 auto;
-    width: calc(100vw - 4vw);
-    height: 100vh;
+    width: 100vw;
     position: relative;
 }
 
@@ -277,15 +313,20 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 }
 
 #thoughts-grid {
-    display: grid;
-    /* grid-template-columns: repeat(4, 110px); */
-    grid-template-columns: repeat( auto-fill, minmax(110px, 1fr));
-    grid-template-rows: repeat(auto-fill, minmax(110px, 1fr));
     grid-gap: 30px;
+    margin: 0 auto;
     resize: both;
     overflow: auto;
-    /* border:1px solid black; */
-    position: absolute;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat( auto-fill, minmax(110px, 4fr));
+    grid-template-rows: repeat(auto-fill, minmax(110px, 4fr));
+    width: var(--thoughts-grid-width);
+    height: var(--thoughts-grid-height);
+    left: var(--thoughts-grid-left) !important;
+    top: var(--thoughts-grid-top) !important;
+    right: var(--thoughts-grid-right) !important;
+    bottom: var(--thoughts-grid-bottom) !important;
 }
 
 ::-webkit-resizer {
@@ -293,16 +334,6 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     background-color: var(--black-white-10);
     width: 10px !important;
     height: 10px !important;
-}
-
-#thoughts-management {
-    display: flex;
-    justify-content: space-between;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    padding: 50px;
-    width: 100vw;
 }
 
 .thoughts-button {
@@ -358,6 +389,19 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 .creation-form {
     display: flex;
+}
+
+#new-tag-button {
+    position: fixed;
+    left: 50px;
+    bottom: 50px;
+    ;
+}
+
+#new-thought-button {
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
 }
 
 /* thoughts page----------*/
@@ -454,7 +498,7 @@ body::-webkit-scrollbar-thumb, .scrollbar::-webkit-scrollbar-thumb {
     font-weight: bold;
     letter-spacing: 2px;
     text-align: center;
-    margin:1px;
+    margin: 1px;
     border: none;
     outline: none;
     min-width: 110px;

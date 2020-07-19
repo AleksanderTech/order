@@ -35,19 +35,18 @@
         </nav>
         <div id="thoughts-wrapper">
             <div id="thoughts-grid" class="scrollbar">
-                
-                <div id="drag-me">drag me</div>
-                <div th:each="thought: ${model.thoughts}" class="tile draggable" draggable="true"
-                    th:text="${thought.name}"></div>
-                <div id="saveBlock">save me</div>
-                <div id="resize-handle">resize me</div>
             </div>
+            <div id="management" class="col text-black text-center w-33 pad-3">
+                <div id="management-list-wrapper">
+                    <ul id="management-list" class="hide-management">
+                        <li class="mar-t-2" id="change-layout"> <span class="pointer">Change layout</span></li>
+                    </ul>
+                </div>
+                <div id="management-label"><span class="pointer">Management</span></div>
+            </div>
+            <!-- <button class="button thoughts-button" id="new-tag-button">New tag</button>
+                <button class="button thoughts-button" id="new-thought-button">New thought</button> -->
 
-            <div id="thoughts-management">
-                <button class="button thoughts-button" id="new-tag-button">New tag</button>
-                <button class="button thoughts-button" id="new-thought-button">New thought</button>
-                <input type="checkbox" value="resize grid" class="button thoughts-button" id="resize-grid">
-            </div>
             <div id="creation-modal" class="modal display-none">
                 <div class="modal-content text-right">
                     <div class="close" id="close-modal">&times;</div>
@@ -56,7 +55,7 @@
                         <input class="font-18" placeholder="Tag id" type="text" name="tag-id">
                         <input type="submit" class="button" value="create">
                     </form>
-                    <form id="tags-form" class="creation-form" action="/tags" method="POST" autocomplete="off">
+                    <form id="tags-form" class="creation-form" action="/api/tag" method="POST" autocomplete="off">
                         <input class="font-18" placeholder="Name" type="text" name="name">
                         <input id="parent-tag-id-input" type="text" name="parent-tag-id">
                         <input type="submit" class="button" value="create">

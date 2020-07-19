@@ -1,12 +1,12 @@
 package com.order.repository;
 
 import com.order.database.jooq.tables.records.SortOrderRecord;
-import com.order.domain.Tag;
+import com.order.entity.Tag;
 import com.order.model.OrderedTag;
-import org.jooq.DSLContext;
-import org.jooq.Record;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,23 +23,20 @@ public class TagRepository {
     }
 
     public List<OrderedTag> orderedTagsByUserId(long userId) {
-        return dslContext
-                .select(TAG.ID, TAG.NAME, TAG.PARENT_TAG_ID, TAG.CREATED_AT, SORT_ORDER.VALUE)
-                .from(TAG)
-                .join(SORT_ORDER)
-                .on(TAG.SORT_ORDER_ID.eq(SORT_ORDER.ID))
+        return tagSortOrderJoin()
                 .where(TAG.PARENT_TAG_ID.isNull())
                 .and(TAG.USER_ID.eq(userId))
                 .orderBy(SORT_ORDER.VALUE.desc())
-                    .fetch(record -> OrderedTag.builder()
-                            .id(record.get(TAG.ID))
-                            .name(record.get(TAG.NAME))
-                            .parentTagId(record.get(TAG.PARENT_TAG_ID))
-                            .createdAt(record.get(TAG.CREATED_AT))
-                            .orderValue(record.getValue(SORT_ORDER.VALUE))
-                            .build());
+                .fetch(this::mapToOrderedTag);
     }
 
+    public List<OrderedTag> orderedTagsByUserAndTagId(long userId, long tagId) {
+        return tagSortOrderJoin()
+                .where(TAG.PARENT_TAG_ID.eq(tagId))
+                .and(TAG.USER_ID.eq(userId))
+                .orderBy(SORT_ORDER.VALUE.desc())
+                .fetch(this::mapToOrderedTag);
+    }
 
     public void create(Tag tag) {
         dslContext.transaction(configuration -> {
@@ -64,5 +61,23 @@ public class TagRepository {
                     .values(tag.name, tag.userId, tag.parentTagId, sortOrderRecord.getId())
                     .execute();
         });
+    }
+
+    private SelectOnConditionStep<Record5<Long, String, Long, LocalDateTime, Long>> tagSortOrderJoin() {
+        return dslContext
+                .select(TAG.ID, TAG.NAME, TAG.PARENT_TAG_ID, TAG.CREATED_AT, SORT_ORDER.VALUE)
+                .from(TAG)
+                .join(SORT_ORDER)
+                .on(TAG.SORT_ORDER_ID.eq(SORT_ORDER.ID));
+    }
+
+    private OrderedTag mapToOrderedTag(Record record) {
+        return OrderedTag.builder()
+                .id(record.get(TAG.ID))
+                .name(record.get(TAG.NAME))
+                .parentTagId(record.get(TAG.PARENT_TAG_ID))
+                .createdAt(record.get(TAG.CREATED_AT))
+                .orderValue(record.getValue(SORT_ORDER.VALUE))
+                .build();
     }
 }

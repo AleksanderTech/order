@@ -1,3 +1,5 @@
+import { element } from "../html-builder.js";
+
 export class ThoughtsComponent {
     pos1 = 0;
     pos2 = 0;
@@ -9,8 +11,9 @@ export class ThoughtsComponent {
         }
     });
 
-    constructor(componentId) {
+    constructor(componentId, thoughtsMetricsManager) {
         this.currentTagId = null;
+        this.thoughtsMetricsManager = thoughtsMetricsManager;
         this.thoughtsElement = document.getElementById(componentId);
         this.tiles = document.querySelectorAll('.tile');
         this.thoughtsGrid = document.getElementById('thoughts-grid');
@@ -24,9 +27,15 @@ export class ThoughtsComponent {
         this.dragMe = document.getElementById('drag-me');
         this.thoughtsWrapper = document.getElementById('thoughts-wrapper');
         this.thoughtsGrid = document.getElementById('thoughts-grid');
+        this.managementList = document.getElementById('management-list');
+        this.managementLabel = document.getElementById('management-label');
+        this.changeLayoutItem = document.getElementById('change-layout');
     }
 
     registerHandlers() {
+        this.managementLabel.addEventListener('click', this.toggleList.bind(this));
+        this.managementList.addEventListener('mouseleave', this.closeList.bind(this));
+        this.changeLayoutItem.addEventListener('click', this.changeLayout.bind(this));
         this.thoughtsGrid.addEventListener('dragover', e => {
             e.preventDefault();
         });
@@ -50,65 +59,99 @@ export class ThoughtsComponent {
                 this.swap(this.thoughtsGrid, dragging, tile);
             })
         });
-        this.newThoughtButton.addEventListener('click', e => {
-            this.creationModal.style.display = 'block';
-            this.thoughtsForm.style.display = 'block';
-        })
+        // this.newThoughtButton.addEventListener('click', e => {
+        //     this.creationModal.style.display = 'block';
+        //     this.thoughtsForm.style.display = 'block';
+        // })
 
-        this.newTagButton.addEventListener('click', e => {
-            this.creationModal.style.display = 'block';
-            this.tagsForm.style.display = 'block';
-        })
+        // this.newTagButton.addEventListener('click', e => {
+        //     this.creationModal.style.display = 'block';
+        //     this.tagsForm.style.display = 'block';
+        // })
         this.closeModal.addEventListener('click', e => {
             this.thoughtsForm.style.display = 'none';
             this.tagsForm.style.display = 'none';
             this.creationModal.style.display = 'none';
         })
-        this.resizeGrid.addEventListener('change', e => {
-            // if (checkbox.checked) {
-            //     resizeObserver.observe(divElem);
-            // } else {
-            //     resizeObserver.unobserve(divElem);
-            // }
-        });
-        this.dragMe.addEventListener('mousedown', e => {
-            this.pos3 = e.clientX;
-            this.pos4 = e.clientY;
-            document.onmouseup = this.closeDragElement;
-            document.onmousemove = this.elementDrag;
-        });
-        document.getElementById('parent-tag-id-input');
-        document.getElementById('resize-grid').addEventListener('change', e => {
-            if (document.getElementById('resize-grid').checked) {
-                this.ro.observe(document.getElementById('thoughts-grid'));
-                this.addBorder();
-            } else {
-                this.ro.unobserve(document.getElementById('thoughts-grid'));
-                this.removeBorder();
-            }
-        });
-        document.getElementById('resize-handle').addEventListener('mousedown', e => {
+        // this.resizeGrid.addEventListener('change', e => {
+        //     // if (checkbox.checked) {
+        //     //     resizeObserver.observe(divElem);
+        //     // } else {
+        //     //     resizeObserver.unobserve(divElem);
+        //     // }
+        // });
+        // this.dragMe.addEventListener('mousedown', e => {
+        //     this.pos3 = e.clientX;
+        //     this.pos4 = e.clientY;
+        //     document.onmouseup = this.closeDragElement;
+        //     document.onmousemove = this.elementDrag;
+        // });
+        // document.getElementById('parent-tag-id-input');
+        // document.getElementById('resize-grid').addEventListener('change', e => {
+        //     if (document.getElementById('resize-grid').checked) {
+        //         this.ro.observe(document.getElementById('thoughts-grid'));
+        //         this.addBorder();
+        //     } else {
+        //         this.ro.unobserve(document.getElementById('thoughts-grid'));
+        //         this.removeBorder();
+        //     }
+        // });
+        // document.getElementById('resize-handle').addEventListener('mousedown', e => {
 
-            this.addBorder();
-            console.log('adding');
+        //     this.addBorder();
+        //     console.log('adding');
 
-            this.ro.observe(document.getElementById('thoughts-grid'));
-        });
-        document.getElementById('resize-handle').addEventListener('mouseup', e => {
+        //     this.ro.observe(document.getElementById('thoughts-grid'));
+        // });
+        // document.getElementById('resize-handle').addEventListener('mouseup', e => {
 
-            console.log('removing');
-            this.removeBorder();
-            this.ro.unobserve(document.getElementById('thoughts-grid'));
+        //     console.log('removing');
+        //     this.removeBorder();
+        //     this.ro.unobserve(document.getElementById('thoughts-grid'));
 
-        });
-        document.getElementById('saveBlock').addEventListener('click', e => {
-            this.save();
-        });
+        // });
+        // document.getElementById('saveBlock').addEventListener('click', e => {
+        //     this.save();
+        // });
+    }
+
+    changeLayout() {
+        console.log('change layout');
+        console.log(this.thoughtsMetricsManager);
+        this.addBorder();
+        // let thoughtsMetrics = new ThoughtsMetrics();
+        // thoughtsMetrics.leftPosition = 120;
+        // thoughtsMetrics.topPosition = 120;
+        // thoughtsMetrics.rightPosition = 120;
+        // thoughtsMetrics.bottomPosition = 120;
+        // thoughtsMetrics.width = 120;
+        // thoughtsMetrics.height = 120;
+        // console.log(thoughtsMetrics);
+
+        // // thoughtsMetricsManager.savePosition(thoughtsMetrics)
+        // thoughtsMetricsManager.fetchUserPosition().then(pos => console.log(pos));
+    }
+
+    toggleList() {
+        if (this.isOpened) {
+            this.closeList();
+        } else {
+            this.managementList.classList.add('show-management');
+            this.managementList.classList.remove('hide-management');
+            this.isOpened = true;
+        }
+    }
+
+    closeList() {
+        this.managementList.classList.add('hide-management');
+        this.managementList.classList.remove('show-management');
+        this.isOpened = false;
     }
 
     dragElements() {
         this.dragElement(this.thoughtsGrid);
     }
+
     swap(container, dragging, hoverElement) {
         const afterDragging = dragging.nextElementSibling;
         container.insertBefore(dragging, hoverElement);
@@ -196,6 +239,25 @@ export class ThoughtsComponent {
     fetchTags() {
         fetch('http://localhost:7000/api/tag')
             .then(res => res.json())
-            .then(res => console.log(res));
+            .then(tags => {
+                this.drawTags(tags)
+            });
+    }
+    // class="tile draggable" draggable="true"
+
+    drawTags(tags) {
+        for (let tag of tags) {
+            let tagDiv = element('div');
+            let classAttr = document.createAttribute('class');
+            classAttr.value = 'tile draggable';
+            tagDiv.setAttributeNode(classAttr);
+            let draggableAttr = document.createAttribute('draggable');
+            draggableAttr.value = 'true';
+            tagDiv.setAttributeNode(draggableAttr);
+            tagDiv.innerHTML = `<h2>${tag.name}</h2>`;
+            this.thoughtsGrid.appendChild(tagDiv);
+            console.log(this.thoughtsGrid);
+
+        }
     }
 }

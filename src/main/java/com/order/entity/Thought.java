@@ -1,4 +1,4 @@
-package com.order.domain;
+package com.order.entity;
 
 import java.time.LocalDateTime;
 

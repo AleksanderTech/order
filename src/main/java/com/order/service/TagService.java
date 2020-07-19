@@ -1,6 +1,6 @@
 package com.order.service;
 
-import com.order.domain.Tag;
+import com.order.entity.Tag;
 import com.order.repository.TagRepository;
 import com.order.model.OrderedTag;
 

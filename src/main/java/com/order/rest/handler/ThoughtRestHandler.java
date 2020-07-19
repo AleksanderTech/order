@@ -1,9 +1,7 @@
 package com.order.rest.handler;
 
 import com.order.JsonMapper;
-import com.order.error.Errors;
-import com.order.error.HttpStatus;
-import com.order.error.OrderException;
+import com.order.entity.ThoughtsViewMetrics;
 import com.order.handler.Handler;
 import com.order.handler.Routes;
 import com.order.model.OrderedThought;
@@ -27,18 +25,32 @@ public class ThoughtRestHandler extends Handler {
     public void register(Javalin lin) {
         lin.get(Routes.API_THOUGHT, this::findThoughts);
         lin.post(Routes.API_THOUGHT, this::createThought);
+        lin.get(Routes.API_THOUGHT_VIEW_METRICS, this::thoughtsViewMetrics);
+        lin.post(Routes.API_THOUGHT_VIEW_METRICS, this::saveThoughtsViewMetrics);
     }
 
     public void findThoughts(Context context) {
-        Long userId = userId(context).orElseThrow(() -> new OrderException(HttpStatus.UNAUTHORIZED, Errors.UNAUTHORIZED));
+        long userId = userId(context);
         long tagId = context.queryParam("tag-id").length() > 0 ? Long.parseLong(context.queryParam("tag-id")) : -1;
         List<OrderedThought> thoughts = thoughtService.orderedThoughtsBy(userId, tagId);
         context.json(JsonMapper.json(thoughts));
     }
 
+    public void thoughtsViewMetrics(Context context) {
+        long userId = userId(context);
+        ThoughtsViewMetrics thoughtsViewMetrics = thoughtService.viewMetrics(userId);
+        context.json(JsonMapper.json(thoughtsViewMetrics));
+    }
+
+    public void saveThoughtsViewMetrics(Context context) {
+        long userId = userId(context);
+        ThoughtsViewMetrics thoughtsViewMetrics = context.bodyAsClass(ThoughtsViewMetrics.class);
+        thoughtService.saveViewMetrics(userId, thoughtsViewMetrics);
+    }
+
     public void createThought(Context context) {
         try {
-            String userIdName = "userId";
+            String userIdName = "user-id";
             Long userId = null;
             if (context.sessionAttribute(userIdName) != null) {
                 userId = context.sessionAttribute(userIdName);

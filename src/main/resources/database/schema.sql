@@ -49,4 +49,15 @@ create table if not exists thought_thought_link (
     primary key(thought_id,thought_link_id)
 );
 
+create table if not exists thoughts_view_metrics (
+    id bigserial primary key,
+    left_position integer not null,
+    top_position integer not null,
+    right_position integer not null,
+    bottom_position integer not null,
+    width integer not null,
+    height integer not null,
+    user_id bigint not null references order_user(id)
+);
+
 
