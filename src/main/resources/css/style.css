@@ -346,7 +346,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 }
 
 .hovered {
-    background-color: var(--black-white-1);
+    background-color: var(--additional-color-1) !important;
 }
 
 .draggable {
@@ -354,7 +354,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 }
 
 .dragging {
-    background-color: var(--black-white-3);
+    background-color: var(--black-white-8) !important;
 }
 
 #thoughts-form {

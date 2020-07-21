@@ -6,6 +6,7 @@ export class ThoughtsComponent {
     pos3 = 0;
     pos4 = 0;
     layoutChangeMode = false;
+    isHovered = 0;
     ro = new ResizeObserver(entries => {
         for (let entry of entries) {
             entry.target.classList.add('dashed-border');
@@ -40,27 +41,6 @@ export class ThoughtsComponent {
         this.thoughtsGrid.addEventListener('dragover', e => {
             e.preventDefault();
         });
-        this.tiles.forEach(tile => {
-            tile.addEventListener('dragstart', e => {
-                tile.classList.add('dragging');
-            })
-            tile.addEventListener('dragend', e => {
-                tile.classList.remove('dragging');
-                tile.classList.remove('hovered');
-            })
-            tile.addEventListener('dragleave', e => {
-                tile.classList.remove('hovered');
-            })
-            tile.addEventListener('dragenter', e => {
-                tile.classList.add('hovered');
-            })
-            tile.addEventListener('drop', e => {
-                const dragging = document.querySelector('.dragging');
-                tile.classList.remove('hovered');
-                this.swap(this.thoughtsGrid, dragging, tile);
-            })
-        });
-
         this.newThoughtButton.addEventListener('click', e => {
             this.creationModal.style.display = 'block';
             this.thoughtsForm.style.display = 'block';
@@ -70,6 +50,7 @@ export class ThoughtsComponent {
             this.creationModal.style.display = 'block';
             this.tagsForm.style.display = 'block';
         })
+        
         this.closeModal.addEventListener('click', e => {
             this.thoughtsForm.style.display = 'none';
             this.tagsForm.style.display = 'none';
@@ -225,6 +206,7 @@ export class ThoughtsComponent {
     dragElement(element) {
         element.style.left = this.pos1 + 'px';
         element.style.top = this.pos2 + 'px';
+
         // this.dragMe.addEventListener('mousedown', this.dragMouseDown);
         // this.dragMe.addEventListener('mousedown', dragMouseDown);
     }
@@ -279,7 +261,7 @@ export class ThoughtsComponent {
         for (let tag of tags) {
             let tagDiv = element('div');
             let classAttr = document.createAttribute('class');
-            classAttr.value = 'tile ';
+            classAttr.value = 'tile';
             tagDiv.setAttributeNode(classAttr);
             let draggableAttr = document.createAttribute('draggable');
             draggableAttr.value = 'true';
@@ -304,7 +286,38 @@ export class ThoughtsComponent {
                 </div>
           `;
             this.thoughtsGrid.appendChild(tagDiv);
+            
         }
+        document.querySelectorAll('.tile').forEach(tile => {
+            tile.addEventListener('dragstart', e => {
+                tile.classList.add('dragging');
+            })
+            tile.addEventListener('dragend', e => {
+                tile.classList.remove('dragging');
+                tile.classList.remove('hovered');
+            })
+            tile.addEventListener('dragleave', e => {
+                this.isHovered--;
+                console.log(this.isHovered);
+                if(this.isHovered === 0){
+                    tile.classList.remove('hovered');
+                }
+                console.log('leaving');
+              
+            })
+            tile.addEventListener('dragenter', e => {
+                this.isHovered++;
+                console.log('entering');
+                tile.classList.add('hovered');
+            })
+            tile.addEventListener('drop', e => {
+                this.isHovered = 0;
+                console.log('asdasdasdasd');
+                const dragging = document.querySelector('.dragging');
+                tile.classList.remove('hovered');
+                this.swap(this.thoughtsGrid, dragging, tile);
+            })
+        });
     }
 
     drawThoughts(thoughts) {
