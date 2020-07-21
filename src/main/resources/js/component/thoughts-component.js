@@ -59,15 +59,16 @@ export class ThoughtsComponent {
                 this.swap(this.thoughtsGrid, dragging, tile);
             })
         });
-        // this.newThoughtButton.addEventListener('click', e => {
-        //     this.creationModal.style.display = 'block';
-        //     this.thoughtsForm.style.display = 'block';
-        // })
+       
+        this.newThoughtButton.addEventListener('click', e => {
+            this.creationModal.style.display = 'block';
+            this.thoughtsForm.style.display = 'block';
+        })
 
-        // this.newTagButton.addEventListener('click', e => {
-        //     this.creationModal.style.display = 'block';
-        //     this.tagsForm.style.display = 'block';
-        // })
+        this.newTagButton.addEventListener('click', e => {
+            this.creationModal.style.display = 'block';
+            this.tagsForm.style.display = 'block';
+        })
         this.closeModal.addEventListener('click', e => {
             this.thoughtsForm.style.display = 'none';
             this.tagsForm.style.display = 'none';
@@ -119,6 +120,7 @@ export class ThoughtsComponent {
         console.log('change layout');
         console.log(this.thoughtsMetricsManager);
         this.addBorder();
+        this.showResizeHandle();
         // let thoughtsMetrics = new ThoughtsMetrics();
         // thoughtsMetrics.leftPosition = 120;
         // thoughtsMetrics.topPosition = 120;
@@ -130,6 +132,14 @@ export class ThoughtsComponent {
 
         // // thoughtsMetricsManager.savePosition(thoughtsMetrics)
         // thoughtsMetricsManager.fetchUserPosition().then(pos => console.log(pos));
+    }
+
+    showResizeHandler(element) {
+        element.style.resize = 'both';
+    }
+
+    hideResizeHandle(element) {
+        element.style.resize = 'none';
     }
 
     toggleList() {
@@ -249,15 +259,30 @@ export class ThoughtsComponent {
         for (let tag of tags) {
             let tagDiv = element('div');
             let classAttr = document.createAttribute('class');
-            classAttr.value = 'tile draggable';
+            classAttr.value = 'tile ';
             tagDiv.setAttributeNode(classAttr);
             let draggableAttr = document.createAttribute('draggable');
             draggableAttr.value = 'true';
             tagDiv.setAttributeNode(draggableAttr);
-            tagDiv.innerHTML = `<h2>${tag.name}</h2>`;
+            if(tag.name.length > maxNameLength){
+                tag.name = tag.name.substring(0,maxNameLength)+'...';
+            }
+            tagDiv.innerHTML =
+            `
+                <div><div class="tile-name">${tag.name}</div></div>
+                <div class="tile-img-wrapper">
+                    <img src="../../ahash.png" alt="" class="tile-img">
+                </div>
+                <div class="bar">
+                    <div class="dot-menu">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="drag-icon draggable"></div>
+                </div>
+          `;
             this.thoughtsGrid.appendChild(tagDiv);
-            console.log(this.thoughtsGrid);
-
         }
     }
 }
