@@ -16,7 +16,11 @@
     --black-white-9: #F8F8F8;
     --black-white-10: #FFFFFF;
     --modal-background: #20202077;
+    --tile-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    --tile-shadow-hover: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     --tree-image: url('tree.png');
+    --hash-image: url('hash.png');
+    --fist-image: url('fist.png');
     --tree-long-image: url('tree-long.png');
     --additional-color-1: #2a9df4;
     --alert-color: #f34343;
@@ -388,7 +392,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     flex-direction: column;
     overflow: hidden;
     border-radius: 6px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: var(--tile-shadow);
     transition: 0.3s;
     min-height: 120px;
     min-width: 120px;
@@ -399,7 +403,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 }
 
 .tile:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: var(--tile-shadow-hover);
 }
 
 .dot-menu {
@@ -412,15 +416,15 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 .dot-menu .dot {
     width: 6px;
     height: 6px;
-    color: black;
+    color: var(--black-white-1);
     border-radius: 40%;
-    background-color: black;
+    background-color: var(--black-white-1);
     margin: 4px;
     float: left;
 }
 
 .drag-icon {
-    background: url('./fist.png');
+    background: var(--fist-image);
     background-size: contain;
     width: 32px;
     height: 32px;
@@ -430,7 +434,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 .tile-img-wrapper {
     width: 100%;
     padding: 10px;
-    border-bottom: 1px solid var(--black-white-1);
+    border-bottom: 1px solid var(--additional-color-1);
 }
 
 .tile-name{
@@ -439,13 +443,27 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     padding-top:5px; 
     overflow:hidden; 
     font-size:14px;
+    letter-spacing: 1px;
+    color: var(--additional-color-1);
 }
 
 .tile-img {
-    width: 60%;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 40px;
+    height: 40px;
     margin: 0 auto;
     text-align: center;
     display: block;
+}
+
+.tag-img{
+    background-image: var(--hash-image);
+}
+
+.thought-img{
+    background-image: var(--hash-image);
 }
 
 .bar {

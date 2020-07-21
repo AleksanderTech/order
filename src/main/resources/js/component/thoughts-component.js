@@ -5,6 +5,7 @@ export class ThoughtsComponent {
     pos2 = 0;
     pos3 = 0;
     pos4 = 0;
+    layoutChangeMode = false;
     ro = new ResizeObserver(entries => {
         for (let entry of entries) {
             entry.target.classList.add('dashed-border');
@@ -59,7 +60,7 @@ export class ThoughtsComponent {
                 this.swap(this.thoughtsGrid, dragging, tile);
             })
         });
-       
+
         this.newThoughtButton.addEventListener('click', e => {
             this.creationModal.style.display = 'block';
             this.thoughtsForm.style.display = 'block';
@@ -117,10 +118,18 @@ export class ThoughtsComponent {
     }
 
     changeLayout() {
-        console.log('change layout');
-        console.log(this.thoughtsMetricsManager);
-        this.addBorder();
-        this.showResizeHandle();
+        if (!this.layoutChangeMode) {
+            this.addBorder();
+            this.showResizeHandle(this.thoughtsGrid);
+            this.changeLayoutItem.innerText = 'Save layout';
+        } else {
+           this.removeBorder();
+           this.hideResizeHandle(this.thoughtsGrid);
+           this.saveLayout();
+           this.changeLayoutItem.innerText = 'Change layout';
+        }
+        this.layoutChangeMode = !this.layoutChangeMode;
+
         // let thoughtsMetrics = new ThoughtsMetrics();
         // thoughtsMetrics.leftPosition = 120;
         // thoughtsMetrics.topPosition = 120;
@@ -133,8 +142,11 @@ export class ThoughtsComponent {
         // // thoughtsMetricsManager.savePosition(thoughtsMetrics)
         // thoughtsMetricsManager.fetchUserPosition().then(pos => console.log(pos));
     }
-
-    showResizeHandler(element) {
+    saveLayout() {
+        console.log('save layout success');
+        this.hideResizeHandle(this.thoughtsGrid);
+    }
+    showResizeHandle(element) {
         element.style.resize = 'both';
     }
 
@@ -246,6 +258,14 @@ export class ThoughtsComponent {
         // this.removeBorder();
     }
     // ---------------------------------rest----------------------------
+    fetchThoughts() {
+        fetch('http://localhost:7000/api/thoughts')
+            .then(res => res.json())
+            .then(thoughts => {
+                this.drawThoughts(thoughts)
+            });
+    }
+
     fetchTags() {
         fetch('http://localhost:7000/api/tag')
             .then(res => res.json())
@@ -264,14 +284,41 @@ export class ThoughtsComponent {
             let draggableAttr = document.createAttribute('draggable');
             draggableAttr.value = 'true';
             tagDiv.setAttributeNode(draggableAttr);
-            if(tag.name.length > maxNameLength){
-                tag.name = tag.name.substring(0,maxNameLength)+'...';
+            let maxNameLength = 12;
+            if (tag.name.length > maxNameLength) {
+                tag.name = tag.name.substring(0, maxNameLength) + '...';
             }
             tagDiv.innerHTML =
-            `
+                `
                 <div><div class="tile-name">${tag.name}</div></div>
                 <div class="tile-img-wrapper">
-                    <img src="../../ahash.png" alt="" class="tile-img">
+                    <div class="tile-img tag-img"></div>
+                </div>
+                <div class="bar">
+                    <div class="dot-menu">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="drag-icon draggable"></div>
+                </div>
+          `;
+            this.thoughtsGrid.appendChild(tagDiv);
+        }
+    }
+
+    drawThoughts(thoughts) {
+        for (let thought of thoughts) {
+            let maxNameLength = 12;
+            if (tag.name.length > maxNameLength) {
+                tag.name = tag.name.substring(0, maxNameLength) + '...';
+            }
+            tagDiv.innerHTML =
+                `
+            <div class="tile" draggable="true">
+                <div><div class="tile-name">${thought.name}</div></div>
+                <div class="tile-img-wrapper">
+                    <div class="tile-img thought-img"></div>
                 </div>
                 <div class="bar">
                     <div class="dot-menu">
