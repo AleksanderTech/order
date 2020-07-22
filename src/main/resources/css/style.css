@@ -304,6 +304,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 #thoughts-wrapper {
     width: 100vw;
+    height: 70vh;
     position: relative;
 }
 
@@ -319,7 +320,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 #thoughts-grid {
     grid-gap: 30px;
-    margin: 0 auto;
+    /* margin: 0 auto; */
     resize: none;
     overflow: auto;
     position: relative;
@@ -328,10 +329,10 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     grid-template-rows: repeat(auto-fill, minmax(110px, 4fr));
     width: var(--thoughts-grid-width);
     height: var(--thoughts-grid-height);
-    left: var(--thoughts-grid-left) !important;
-    top: var(--thoughts-grid-top) !important;
-    right: var(--thoughts-grid-right) !important;
-    bottom: var(--thoughts-grid-bottom) !important;
+    left: var(--thoughts-grid-left);
+    top: var(--thoughts-grid-top);
+    right: var(--thoughts-grid-right);
+    bottom: var(--thoughts-grid-bottom);
 }
 
 ::-webkit-resizer {
@@ -339,6 +340,23 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     background-color: var(--black-white-10);
     width: 10px !important;
     height: 10px !important;
+}
+
+.drag-grid {
+    z-index: 99;
+    display: none;
+    cursor: move;
+    width: 45px;
+    height: 45px;
+    position: absolute;
+    right: 0;
+    bottom:0;
+    background: var(--fist-image);
+    padding:7px;
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border:1px solid var(--black-white-1);
 }
 
 .thoughts-button {
@@ -707,6 +725,10 @@ body::-webkit-scrollbar-thumb, .scrollbar::-webkit-scrollbar-thumb {
 
 .display-none {
     display: none;
+}
+
+.display-block {
+    display: block;
 }
 
 /* shared---------- */

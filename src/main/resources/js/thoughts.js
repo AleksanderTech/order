@@ -11,8 +11,7 @@ const thoughtsComponent = new ThoughtsComponent('thoughts-component', thoughtsMe
 
 modeManager.loadUserMode();
 navigationComponent.registerHandlers();
-thoughtsComponent.registerHandlers();
-thoughtsComponent.dragElements();
-thoughtsComponent.fetchTags();
+thoughtsComponent.init();
+
 
 

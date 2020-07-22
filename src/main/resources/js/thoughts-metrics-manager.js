@@ -7,18 +7,13 @@ export class ThoughtsMetricsManager {
 
     fetchUserPosition() {
         return fetch(buildUrl('thought', 'view-metrics'))
-            .then(res => res.json())
-    }
-
-    setPosition(position) {
-        // this.applyStyle(element, this.map(mode));
+        .then(res=>res.json());
     }
 
     savePosition(position) {
         fetch(buildUrl('thought', 'view-metrics'), {
             method: 'POST',
             body: JSON.stringify(position)
-        }).then(res => console.log(res));
+        });
     }
-
 }
