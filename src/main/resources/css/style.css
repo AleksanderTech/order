@@ -455,6 +455,10 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     border-bottom: 1px solid var(--additional-color-1);
 }
 
+.tile-img-wrapper{
+    cursor: pointer;
+}
+
 .tile-name{
     text-align:center; 
     padding-left: 5px; 
