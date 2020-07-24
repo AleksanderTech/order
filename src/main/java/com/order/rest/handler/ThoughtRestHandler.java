@@ -31,8 +31,8 @@ public class ThoughtRestHandler extends Handler {
 
     public void findThoughts(Context context) {
         long userId = userId(context);
-//        long tagId = context.queryParam("tag-id").length() > 0 ? Long.parseLong(context.queryParam("tag-id")) : -1;
-        long tagId = 2L;
+        long tagId = context.queryParam("tag-id").length() > 0 ? Long.parseLong(context.queryParam("tag-id")) : -1;
+//        long tagId = 2L;
         List<OrderedThought> thoughts = thoughtService.orderedThoughtsBy(userId, tagId);
         context.json(JsonMapper.json(thoughts));
     }

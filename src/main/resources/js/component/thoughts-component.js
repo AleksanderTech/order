@@ -6,11 +6,11 @@ class Router {
         this.routes = [];
     }
 
-    add(uri,data, content) {
+    add(uri, data, content) {
         this.routes.forEach(route => {
             if (route.uri === uri) {
                 // throw new Error(`the uri ${route.uri} already exists`);
-               return;
+                return;
             }
         });
         const route = {
@@ -22,7 +22,7 @@ class Router {
     }
 
     getRoute(uri) {
-        let routeResult={};
+        let routeResult = {};
         this.routes.forEach(route => {
             if (route.uri === uri) {
                 routeResult = route;
@@ -42,7 +42,7 @@ export class ThoughtsComponent {
     height = 450;
     layoutChangeMode = false;
     isHovered = 0;
-   
+
     constructor(componentId, thoughtsMetricsManager) {
         this.currentTagId = null;
         this.thoughtsMetricsManager = thoughtsMetricsManager;
@@ -66,12 +66,12 @@ export class ThoughtsComponent {
 
     init() {
         this.registerHandlers();
-        this.dragElements();
         this.fetchTags();
         this.setupGridPosition();
         window.onpopstate = () => {
             this.thoughtsGrid.innerHTML = this.route.getRoute(window.location.pathname).content;
             this.addTagHandlers(this.route.getRoute(window.location.pathname).data);
+            document.querySelector('.drag-grid').addEventListener('mousedown', this.dragMouseDown.bind(this));
         }
     }
 
@@ -81,7 +81,7 @@ export class ThoughtsComponent {
             pathName,
             window.location.origin + pathName
         );
-        this.route.add(pathName, contentWithData.data,contentWithData.content);
+        this.route.add(pathName, contentWithData.data, contentWithData.content);
         this.thoughtsGrid.innerHTML = this.route.getRoute(pathName).content;
     }
 
@@ -135,11 +135,11 @@ export class ThoughtsComponent {
     }
 
     showDragGridHandle() {
-        this.dragGridHandle.classList.add('display-block');
+        document.querySelector('.drag-grid').classList.add('display-block');
     }
 
     hideDragGridHandle() {
-        this.dragGridHandle.classList.remove('display-block');
+        document.querySelector('.drag-grid').classList.remove('display-block');
     }
 
     changeLayout() {
@@ -149,15 +149,10 @@ export class ThoughtsComponent {
             this.showDragGridHandle();
             this.absolute(this.thoughtsGrid);
             this.changeLayoutItem.innerText = 'Save layout';
+            this.layoutChangeMode = !this.layoutChangeMode;
         } else {
-            this.removeBorder();
-            this.hideResizeHandle(this.thoughtsGrid);
             this.saveLayout();
-            this.hideDragGridHandle()
-            this.relative(this.thoughtsGrid);
-            this.changeLayoutItem.innerText = 'Change layout';
         }
-        this.layoutChangeMode = !this.layoutChangeMode;
     }
 
     absolute(element) {
@@ -169,6 +164,9 @@ export class ThoughtsComponent {
     }
 
     saveLayout() {
+        if (this.isOutOfBounds(this.thoughtsGrid, this.thoughtsGrid.parentElement)) {
+            return;
+        }
         this.hideResizeHandle(this.thoughtsGrid);
         let thoughtsMetrics = new ThoughtsMetrics();
         let box = this.thoughtsGrid.getBoundingClientRect();
@@ -179,6 +177,12 @@ export class ThoughtsComponent {
         thoughtsMetrics.width = box.width;
         thoughtsMetrics.height = box.height;
         this.thoughtsMetricsManager.savePosition(thoughtsMetrics)
+        this.removeBorder();
+        this.hideResizeHandle(this.thoughtsGrid);
+        this.hideDragGridHandle()
+        this.relative(this.thoughtsGrid);
+        this.changeLayoutItem.innerText = 'Change layout';
+        this.layoutChangeMode = !this.layoutChangeMode;
     }
 
     showResizeHandle(element) {
@@ -293,12 +297,21 @@ export class ThoughtsComponent {
                 if (thoughts) {
                     this.navigate('/thoughts/tag', { content: this.drawThoughts(thoughts), data: thoughts });
                     this.addTagHandlers(thoughts);
+                    document.querySelector('.drag-grid').addEventListener('mousedown', this.dragMouseDown.bind(this));
                 }
-            });
+            }).catch(err => {
+                console.log(err);
+                this.noThoughts()
+            })
     }
 
     goToTag(tag) {
         this.fetchThoughts(tag.id);
+    }
+
+    noThoughts() {
+        this.thoughtsWrapper.innerHTML =
+            `<h2 class="text-center">There is no any thoughts</h2>`;
     }
 
     fetchTags() {
@@ -307,6 +320,7 @@ export class ThoughtsComponent {
             .then(tags => {
                 this.navigate(window.location.pathname, { content: this.drawTags(tags), data: tags });
                 this.addTagHandlers(tags);
+                document.querySelector('.drag-grid').addEventListener('mousedown', this.dragMouseDown.bind(this));
             });
     }
 
@@ -333,9 +347,9 @@ export class ThoughtsComponent {
                 </div>
                 </div>`;
         }
-        return tagsPage;
+        return tagsPage + '<div class="drag-grid"></div>';
     }
-    
+
     addTagHandlers(tags) {
         document.querySelectorAll('.tile').forEach(tagDiv => {
             tagDiv.addEventListener('dragstart', e => {
@@ -362,10 +376,11 @@ export class ThoughtsComponent {
                 this.swap(this.thoughtsGrid, dragging, tagDiv);
             })
             tagDiv.addEventListener('click', e => {
-                let tag = tags.find(tag=>tag.name === tagDiv.querySelector('.tile-name').innerText);
+                let tag = tags.find(tag => tag.name === tagDiv.querySelector('.tile-name').innerText);
                 this.goToTag(tag);
             });
         });
+        // this.dragElements();
     }
 
     drawThoughts(thoughts) {
@@ -392,7 +407,7 @@ export class ThoughtsComponent {
             </div>
                 </div>`;
             }
-            return thoughtsPage;
+            return thoughtsPage + '<div class="drag-grid"></div>';
         }
     }
 }
