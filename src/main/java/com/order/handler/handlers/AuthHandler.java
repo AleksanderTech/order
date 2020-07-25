@@ -58,16 +58,12 @@ public class AuthHandler extends Handler {
     }
 
     public void before(Context ctx) {
-        System.out.println("helloł");
-        System.out.println(ctx.path());
         if (blackList.contains(ctx.path())) {
-            System.out.println("helloł");
             HttpSession session = ctx.req.getSession(false);
             if (session == null) {
                 throw new OrderException(HttpStatus.UNAUTHORIZED, Errors.UNAUTHORIZED);
             }
         }
-        System.out.println("go !");
     }
 
     private void signUpSuccess(Context ctx) {

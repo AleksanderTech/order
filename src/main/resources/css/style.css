@@ -576,20 +576,22 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     border: 1px solid var(--additional-color-1);
 }
 
-.information {
+.information-component {
+    border-radius: 6px;
+    border: 1px solid var(--additional-color-1);
     position: fixed;
     left: 0;
     right: 0;
     z-index: 9999;
-    width: 60vw;
-    height: 100px;
+    width: 50vw;
+    min-height: 90px;
     margin: 100px auto;
+    box-shadow: var(--tile-shadow);
     background-color: var(--black-white-8-1);
 }
 
 .close {
     cursor: pointer;
-    margin-bottom: 30px;
     color: var(--black-white-10);
     font-size: 25px;
 }

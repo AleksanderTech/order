@@ -1,4 +1,5 @@
 import { ThoughtsMetrics } from '../model/thoughts-metrics.js';
+import { InformationComponent } from './information-component.js';
 
 class Router {
     constructor() {
@@ -79,6 +80,7 @@ export class ThoughtsComponent {
         this.managementLabel = document.getElementById('management-label');
         this.changeLayoutItem = document.getElementById('change-layout');
         this.dragGridHandle = document.querySelector('.drag-grid');
+        this.information = new InformationComponent(document.querySelector('.information-component'));
     }
 
     init() {
@@ -135,13 +137,14 @@ export class ThoughtsComponent {
             this.editorModal.classList.add('display-none')
         });
 
-        document.getElementById('back-thought-button').addEventListener('click',()=>{
+        document.getElementById('back-thought-button').addEventListener('click', () => {
             this.editorModal.classList.add('display-none')
         });
 
-        document.getElementById('save-thought-button').addEventListener('click',()=>{
+        document.getElementById('save-thought-button').addEventListener('click', () => {
             this.saveThoughtContent();
         });
+        // this.information().
     }
 
     setupGridPosition() {
@@ -169,7 +172,7 @@ export class ThoughtsComponent {
         document.documentElement.style.setProperty('--thoughts-grid-bottom', metrics.bottomPosition + 'px');
     }
 
-    saveThoughtContent(){
+    saveThoughtContent() {
         console.log('saving !');
         this.information.show('The Thought has been remembered');
     }
@@ -347,7 +350,7 @@ export class ThoughtsComponent {
         }
     }
 
-    openEditor(){
+    openEditor() {
         document.getElementById('editor-modal').classList.remove('display-none');
     }
 
