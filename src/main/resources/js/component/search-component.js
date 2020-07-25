@@ -1,10 +1,10 @@
 export class SearchComponent {
 
 
-    constructor(componentId, thoughtRepository) {
+    constructor(componentId, thoughtService) {
         this.componentId = componentId;
-        this.thoughtRepository = thoughtRepository;
-        console.log(this.thoughtRepository);
+        this.thoughtService = thoughtService;
+        console.log(this.thoughtService);
         
         this.component = document.getElementById(this.componentId);
         this.searchByNameInput = document.getElementById('searchByNameInput');
@@ -17,7 +17,7 @@ export class SearchComponent {
     findMyThoughts(event) {
         console.log(event);
         
-        this.thoughtRepository.findMyThoughts().then(res => {
+        this.thoughtService.findMyThoughts().then(res => {
             console.log(res);
         });
     }

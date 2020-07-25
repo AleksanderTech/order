@@ -24,9 +24,14 @@ public class ErrorHandler extends Handler {
 
     @Override
     public void register(Javalin lin) {
+        lin.error(404, this::error404);
         lin.exception(Exception.class, this::handleException);
         lin.exception(OrderException.class, this::handleOrderException);
         lin.get(Routes.ERROR_ROUTE, this::errorGet);
+    }
+
+    public void error404(Context ctx) {
+        handleOrderException(new OrderException(HttpStatus.NOT_FOUND, Errors.NOT_FOUND), ctx);
     }
 
     public void errorGet(Context ctx) {

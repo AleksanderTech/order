@@ -3,6 +3,7 @@ package com.order.handler.handlers;
 import com.order.error.Errors;
 import com.order.error.HttpStatus;
 import com.order.entity.User;
+import com.order.error.OrderException;
 import com.order.handler.Handler;
 import com.order.handler.Message;
 import com.order.handler.Routes;
@@ -16,14 +17,24 @@ import com.order.view.model.SignUpVM;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AuthHandler extends Handler {
 
     private final Presenter presenter;
     private final AuthService authService;
+    private final List<String> blackList = List.of(
+            Routes.API_TAG,
+            Routes.API_THOUGHT,
+            Routes.API_THOUGHT_VIEW_METRICS,
+            Routes.THOUGHTS_ROUTE,
+            Routes.API_THOUGHT_SEARCH_ROUTE,
+            Routes.SEARCH_ROUTE
+    );
 
     private static final String PARAMETER_USERNAME = "username";
     private static final String PARAMETER_EMAIL = "email";
@@ -37,12 +48,26 @@ public class AuthHandler extends Handler {
 
     @Override
     public void register(Javalin lin) {
+        lin.before(this::before);
         lin.get(Routes.SIGN_IN_ROUTE, this::signInGet);
         lin.get(Routes.SIGN_UP_ROUTE, this::signUpGet);
         lin.get(Routes.SIGN_UP_SUCCESS_ROUTE, this::signUpSuccess);
         lin.post(Routes.SIGN_IN_ROUTE, this::signInPost);
         lin.post(Routes.SIGN_UP_ROUTE, this::signUpPost);
         lin.post(Routes.SIGN_OUT_ROUTE, this::signOutPost);
+    }
+
+    public void before(Context ctx) {
+        System.out.println("helloł");
+        System.out.println(ctx.path());
+        if (blackList.contains(ctx.path())) {
+            System.out.println("helloł");
+            HttpSession session = ctx.req.getSession(false);
+            if (session == null) {
+                throw new OrderException(HttpStatus.UNAUTHORIZED, Errors.UNAUTHORIZED);
+            }
+        }
+        System.out.println("go !");
     }
 
     private void signUpSuccess(Context ctx) {

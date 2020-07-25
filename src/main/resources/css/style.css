@@ -13,13 +13,15 @@
     --black-white-6: #B0B0B0;
     --black-white-7: #c8c8c8;
     --black-white-8: #DCDCDC;
+    --black-white-8-1: #EEEEEE;
     --black-white-9: #F8F8F8;
     --black-white-10: #FFFFFF;
-    --modal-background: #20202077;
+    --modal-background: #FFFFFFDD;
     --tile-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     --tile-shadow-hover: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     --tree-image: url('tree.png');
     --hash-image: url('hash.png');
+    --thought-image: url('thought.png');
     --fist-image: url('fist.png');
     --tree-long-image: url('tree-long.png');
     --additional-color-1: #2a9df4;
@@ -251,13 +253,13 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 .show-settings {
     transform: translateY(0);
-    transition: transform 1s ease;
+    transition: transform 0.6s ease;
 }
 
 .hide-settings {
     transform: translateY(-120%);
     list-style-type: none;
-    transition: transform 1s ease;
+    transition: transform 0.6s ease;
     overflow: hidden;
 }
 
@@ -288,7 +290,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 .show-management {
     transform: translateY(0);
-    transition: transform 1s ease;
+    transition: transform 0.6s ease;
 }
 
 .hide-management {
@@ -320,7 +322,6 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 #thoughts-grid {
     grid-gap: 30px;
-    /* margin: 0 auto; */
     resize: none;
     overflow: auto;
     position: relative;
@@ -350,13 +351,13 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     height: 45px;
     position: absolute;
     right: 0;
-    bottom:0;
+    bottom: 0;
     background: var(--fist-image);
-    padding:7px;
+    padding: 7px;
     background-size: 32px 32px;
     background-repeat: no-repeat;
     background-position: center;
-    border:1px solid var(--black-white-1);
+    border: 1px solid var(--black-white-1);
 }
 
 .thoughts-button {
@@ -383,18 +384,68 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     display: none;
 }
 
+.modal {
+    background-color: var(--modal-background);
+    z-index: 999;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
 .modal-content {
     width: 60%;
     margin: 200px auto;
     padding: 30px;
-    background-color: var(--black-white-10);
+    background-color: var(--black-white-1);
+}
+
+.editor-modal-content {
+    border-radius: 6px;
+    border: 1px solid var(--additional-color-1);
+    width: 40%;
+    margin: 100px auto;
+    background-color: var(--black-white-8);
+    height: 70vh;
+    resize: both;
+    overflow: auto;
+}
+
+.editor-buttons {
+    width: 90%;
+    margin: 10px auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.thought-content {
+    background-color: var(--black-white-8);
+    color: var(--black-white-2);
+    padding: 5px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    display: block;
+    width: 90%;
+    height: 70%;
+    resize: none;
+    line-height: 1.2;
+    font-size: 14px;
+    word-spacing: 1px;
+}
+
+.thought-content:focus {
+    outline: none !important;
+    border: 1px solid var(--additional-color-1);
 }
 
 .modal-content input[type="text"] {
-    border-bottom: 1px solid var(--black-white-1);
+    border-bottom: 1px solid var(--black-white-10);
     padding: 0;
     margin: 0;
     width: 80%;
+    color: var(--black-white-10);
 }
 
 .modal-content input::placeholder {
@@ -406,7 +457,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 }
 
 .tile {
-    display:flex;
+    display: flex;
     flex-direction: column;
     overflow: hidden;
     border-radius: 6px;
@@ -449,22 +500,30 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     float: left;
 }
 
+.no-thoughts-message {
+    position: absolute;
+    text-align: center;
+    left: 0;
+    right: 0;
+    margin: auto
+}
+
 .tile-img-wrapper {
     width: 100%;
     padding: 10px;
     border-bottom: 1px solid var(--additional-color-1);
 }
 
-.tile-img-wrapper{
+.tile-img-wrapper {
     cursor: pointer;
 }
 
-.tile-name{
-    text-align:center; 
-    padding-left: 5px; 
-    padding-top:5px; 
-    overflow:hidden; 
-    font-size:14px;
+.tile-name {
+    text-align: center;
+    padding-left: 5px;
+    padding-top: 5px;
+    overflow: hidden;
+    font-size: 14px;
     letter-spacing: 1px;
     color: var(--additional-color-1);
 }
@@ -480,12 +539,12 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     display: block;
 }
 
-.tag-img{
+.tag-img {
     background-image: var(--hash-image);
 }
 
-.thought-img{
-    background-image: var(--hash-image);
+.thought-img {
+    background-image: var(--thought-image);
 }
 
 .bar {
@@ -498,41 +557,40 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 /* shared---------- */
 
-body::-webkit-scrollbar-track, .scrollbar::-webkit-scrollbar-track {
-    /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+*::-webkit-scrollbar-track, .scrollbar::-webkit-scrollbar-track {
     background-color: var(--black-white-10);
 }
 
-body::-webkit-scrollbar, .scrollbar::-webkit-scrollbar {
+*::-webkit-scrollbar, .scrollbar::-webkit-scrollbar {
     width: 14px;
     background-color: var(--additional-color-1);
 }
 
-body::-webkit-scrollbar-corner, .scrollbar::-webkit-scrollbar-corner {
+*::-webkit-scrollbar-corner, .scrollbar::-webkit-scrollbar-corner {
     width: 14px;
     background-color: var(--additional-color-1);
 }
 
-body::-webkit-scrollbar-thumb, .scrollbar::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb, .scrollbar::-webkit-scrollbar-thumb {
     background-color: var(--additional-color-1);
     border: 1px solid var(--additional-color-1);
 }
 
-.modal {
-    background-color: var(--modal-background);
-    z-index: 999;
+.information {
     position: fixed;
     left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+    right: 0;
+    z-index: 9999;
+    width: 60vw;
+    height: 100px;
+    margin: 100px auto;
+    background-color: var(--black-white-8-1);
 }
 
 .close {
     cursor: pointer;
     margin-bottom: 30px;
-    color: var(--black-white-1);
+    color: var(--black-white-10);
     font-size: 25px;
 }
 
@@ -596,7 +654,20 @@ body::-webkit-scrollbar-thumb, .scrollbar::-webkit-scrollbar-thumb {
     border: 1px solid var(--additional-color-1);
 }
 
-.button:hover {
+.modal-button {
+    background-color: var(--black-white-10);
+    color: var(--black-white-1);
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-align: center;
+    border: none;
+    outline: none;
+    min-width: 110px;
+    padding: 12px 15px;
+    border: 1px solid var(--additional-color-1);
+}
+
+.button:hover, .modal-button:hover {
     cursor: pointer;
     color: var(--black-white-4);
 }
@@ -673,6 +744,10 @@ body::-webkit-scrollbar-thumb, .scrollbar::-webkit-scrollbar-thumb {
 
 .pad-b-0-5 {
     padding: 5px;
+}
+
+.pad-r-1 {
+    padding-right: 10px;
 }
 
 .pad-t-1 {

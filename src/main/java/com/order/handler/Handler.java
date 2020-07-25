@@ -27,7 +27,7 @@ public abstract class Handler {
 
     public long userId(Context context) {
         Long userId = context.sessionAttribute(USER_ID);
-        return Optional.ofNullable(userId).orElseThrow(()-> new OrderException(HttpStatus.UNAUTHORIZED, Errors.UNAUTHORIZED));
+        return Optional.ofNullable(userId).orElseThrow(() -> new OrderException(HttpStatus.UNAUTHORIZED, Errors.UNAUTHORIZED));
     }
 
     public Optional<Long> optionalUserId(Context context) {
