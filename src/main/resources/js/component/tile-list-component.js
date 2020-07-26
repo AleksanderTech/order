@@ -1,5 +1,6 @@
 import { ROUTER_INSTANCE } from '../router.js';
 import { InformationComponent } from './information-component.js';
+import { EVENTS } from '../events.js'
 
 export class TileListComponent {
 
@@ -81,7 +82,6 @@ export class TileListComponent {
     openEditor(thought) {
         document.getElementById('editor-modal').classList.remove('display-none');
         this.currentEntity = thought;
-
     }
 
     saveThought(thought) {
@@ -103,7 +103,7 @@ export class TileListComponent {
                     console.log('navigating');
                     this.navigate(`/thoughts/${tagId}`, { content: this.drawThoughts(thoughts), data: thoughts }, () => {
                         this.registerHandlers(thoughts);
-                        // document.querySelector('.drag-grid').addEventListener('mousedown', this.dragMouseDown.bind(this));
+                        EVENTS.emit();
                     });
                 } else {
                     this.noThoughts()
@@ -121,7 +121,7 @@ export class TileListComponent {
                 console.log(this.tags);
                 this.navigate(window.location.pathname, { content: this.drawTags(tags), data: tags }, () => {
                     this.registerHandlers(tags);
-                    // document.querySelector('.drag-grid').addEventListener('mousedown', this.dragMouseDown.bind(this));
+                    EVENTS.emit();
                 });
             });
     }

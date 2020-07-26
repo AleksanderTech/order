@@ -1,6 +1,7 @@
 import { ThoughtsMetrics } from '../model/thoughts-metrics.js';
 import { TileListComponent } from './tile-list-component.js';
 import { ROUTER_INSTANCE } from '../router.js';
+import { EVENTS } from '../events.js'
 
 export class ThoughtsComponent {
     pos1 = 0;
@@ -24,7 +25,6 @@ export class ThoughtsComponent {
         this.creationModal = document.getElementById('creation-modal');
         this.editorModal = document.getElementById('editor-modal');
         this.closeModal = document.getElementById('close-modal');
-        // this.closeEditor = document.getElementById('close-editor');
         this.resizeGrid = document.getElementById('resize-grid');
         this.tagsForm = document.getElementById('tags-form');
         this.thoughtsForm = document.getElementById('thoughts-form');
@@ -46,6 +46,11 @@ export class ThoughtsComponent {
             this.thoughtsGrid.innerHTML = route.content;
             route.callback();
         }
+        EVENTS.subscribe(this);
+    }
+
+    update() {
+        document.querySelector('.drag-grid').addEventListener('mousedown', this.dragMouseDown.bind(this));
     }
 
     navigate(pathName, contentWithData, callback) {
@@ -84,21 +89,12 @@ export class ThoughtsComponent {
             this.tagsForm.style.display = 'none';
             this.creationModal.style.display = 'none';
         });
-
-        // this.closeEditor.addEventListener('click', () => {
-        //     this.editorModal.classList.add('display-none')
-        // });
-
-        // document.getElementById('back-thought-button').addEventListener('click', () => {
-        //     this.editorModal.classList.add('display-none')
-        // });
-       
     }
 
     setupGridPosition() {
         this.thoughtsMetricsManager.fetchUserPosition()
             .then(res => {
-                let metrics = res; 
+                let metrics = res;
                 this.pos1 = metrics.leftPosition;
                 this.pos2 = metrics.topPosition;
                 this.pos3 = metrics.rightPosition;
