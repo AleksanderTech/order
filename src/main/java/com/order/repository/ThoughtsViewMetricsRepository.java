@@ -24,8 +24,6 @@ public class ThoughtsViewMetricsRepository {
                 THOUGHTS_VIEW_METRICS.WIDTH,
                 THOUGHTS_VIEW_METRICS.HEIGHT)
                 .from(THOUGHTS_VIEW_METRICS)
-                .join(ORDER_USER)
-                .on(THOUGHTS_VIEW_METRICS.USER_ID.eq(ORDER_USER.ID))
                 .where(THOUGHTS_VIEW_METRICS.USER_ID.eq(userId))
                 .fetchOptional(record -> ThoughtsViewMetrics.builder()
                         .leftPosition(record.getValue(THOUGHTS_VIEW_METRICS.LEFT_POSITION))

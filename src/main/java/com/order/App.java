@@ -18,6 +18,7 @@ import com.order.service.TagService;
 import com.order.service.ThoughtService;
 import com.order.view.TemplatePresenter;
 import io.javalin.Javalin;
+import io.javalin.plugin.json.JavalinJackson;
 import org.eclipse.jetty.server.session.DefaultSessionCache;
 import org.eclipse.jetty.server.session.FileSessionDataStore;
 import org.eclipse.jetty.server.session.SessionCache;
@@ -52,6 +53,7 @@ public class App {
             config.addStaticFiles(STYLE_PATH);
             config.addStaticFiles(JS_PATH);
         });
+        JavalinJackson.configure(JsonMapper.MAPPER);
 
         List<Handler> handlers = handlers(appProps);
         handlers.forEach(h -> h.register(lin));

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class JsonMapper {
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    public static final ObjectMapper MAPPER = new ObjectMapper();
 
     static {
         MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);

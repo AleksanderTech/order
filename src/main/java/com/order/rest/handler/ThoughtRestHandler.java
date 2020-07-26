@@ -6,6 +6,8 @@ import com.order.handler.Handler;
 import com.order.handler.Routes;
 import com.order.model.OrderedThought;
 import com.order.model.ThoughtRequest;
+import com.order.model.ThoughtResponse;
+import com.order.model.ThoughtSearch;
 import com.order.service.ThoughtService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -23,6 +25,7 @@ public class ThoughtRestHandler extends Handler {
     @Override
     public void register(Javalin lin) {
         lin.get(Routes.API_THOUGHT, this::findThoughts);
+        lin.get(Routes.API_THOUGHT_BY, this::findThoughtsBy);
         lin.post(Routes.API_THOUGHT, this::saveThought);
         lin.get(Routes.API_THOUGHT_VIEW_METRICS, this::thoughtsViewMetrics);
         lin.post(Routes.API_THOUGHT_VIEW_METRICS, this::saveThoughtsViewMetrics);
@@ -32,13 +35,25 @@ public class ThoughtRestHandler extends Handler {
         long userId = userId(context);
         long tagId = Long.parseLong(context.queryParam("tag-id"));
         List<OrderedThought> thoughts = thoughtService.orderedThoughtsBy(userId, tagId);
-        context.json(JsonMapper.json(thoughts));
+        context.json(thoughts);
+    }
+
+    public void findThoughtsBy(Context context) {
+        long userId = userId(context);
+        var thoughtSearch = ThoughtSearch.builder()
+                .userId(userId)
+                .name(context.queryParam("name"))
+                .content(context.queryParam("content"))
+                .tags(context.queryParams("tags"))
+                .build();
+        List<ThoughtResponse> thoughts = thoughtService.thoughtsBy(thoughtSearch);
+        context.json(thoughts);
     }
 
     public void thoughtsViewMetrics(Context context) {
         long userId = userId(context);
         ThoughtsViewMetrics thoughtsViewMetrics = thoughtService.viewMetrics(userId);
-        context.json(JsonMapper.json(thoughtsViewMetrics));
+        context.json(thoughtsViewMetrics);
     }
 
     public void saveThoughtsViewMetrics(Context context) {
@@ -48,17 +63,16 @@ public class ThoughtRestHandler extends Handler {
     }
 
     public void saveThought(Context context) {
-        long userId = userId(context);
-        String name = context.formParam("thought-name");
-        long tagId = Long.parseLong(context.formParam("tag-id"));
-        thoughtService.create(
+        ThoughtRequest thought = context.bodyAsClass(ThoughtRequest.class);
+        thoughtService.save(
                 ThoughtRequest.builder()
-                        .name(name)
-                        .tagId(tagId)
-                        .userId(userId)
+                        .id(thought.id)
+                        .name(thought.name)
+                        .content(thought.content)
+                        .tagId(thought.tagId)
+                        .userId(thought.userId)
                         .build()
         );
-        redirect(context, "thoughts");
     }
 }
 

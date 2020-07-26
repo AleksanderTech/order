@@ -1,28 +1,24 @@
-package com.order.entity;
+package com.order.model;
 
 import java.time.LocalDateTime;
 
-public class Thought {
+public class ThoughtResponse {
 
     public long id;
     public String name;
     public String content;
-    public long userId;
-    public long sortOrderId;
     public LocalDateTime createdAt;
     public LocalDateTime modifiedAt;
 
-    public Thought(long id, String content) {
+    public ThoughtResponse(long id, String content) {
         this.id = id;
         this.content = content;
     }
 
-    public Thought(long id, String name, String content, long userId, long sortOrderId, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public ThoughtResponse(long id, String name, String content, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.name = name;
         this.content = content;
-        this.userId = userId;
-        this.sortOrderId = sortOrderId;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
@@ -36,8 +32,6 @@ public class Thought {
         private long id;
         private String name;
         private String content;
-        private long userId;
-        private long sortOrderId;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
 
@@ -56,17 +50,6 @@ public class Thought {
             return this;
         }
 
-
-        public Builder userId(long userId) {
-            this.userId = userId;
-            return this;
-        }
-
-        public Builder sortOrderId(long sortOrderId) {
-            this.sortOrderId = sortOrderId;
-            return this;
-        }
-
         public Builder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
@@ -77,21 +60,8 @@ public class Thought {
             return this;
         }
 
-        public Thought build() {
-            return new Thought(this.id, this.name, this.content,  this.userId, this.sortOrderId, this.createdAt, this.modifiedAt);
+        public ThoughtResponse build() {
+            return new ThoughtResponse(this.id, this.name, this.content, this.createdAt, this.modifiedAt);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Thought{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", content='" + content + '\'' +
-                ", userId=" + userId +
-                ", sortOrderId=" + sortOrderId +
-                ", createdAt=" + createdAt +
-                ", modifiedAt=" + modifiedAt +
-                '}';
     }
 }

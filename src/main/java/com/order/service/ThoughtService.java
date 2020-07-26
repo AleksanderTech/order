@@ -6,6 +6,8 @@ import com.order.error.HttpStatus;
 import com.order.error.OrderException;
 import com.order.model.OrderedThought;
 import com.order.model.ThoughtRequest;
+import com.order.model.ThoughtResponse;
+import com.order.model.ThoughtSearch;
 import com.order.repository.ThoughtRepository;
 import com.order.repository.ThoughtsViewMetricsRepository;
 
@@ -25,8 +27,20 @@ public class ThoughtService {
         return thoughtRepository.orderedThoughtsBy(userId, tagId);
     }
 
+    public List<ThoughtResponse> thoughtsBy(ThoughtSearch thoughtSearch) {
+        return thoughtRepository.thoughtsBy(thoughtSearch);
+    }
+
     public void create(ThoughtRequest thought) {
         thoughtRepository.create(thought);
+    }
+
+    public void save(ThoughtRequest thought) {
+        if (thought.id > 0) {
+            thoughtRepository.save(thought);
+        } else {
+            thoughtRepository.create(thought);
+        }
     }
 
     public ThoughtsViewMetrics viewMetrics(long userId) {

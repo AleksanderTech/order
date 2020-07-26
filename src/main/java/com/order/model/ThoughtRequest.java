@@ -8,6 +8,9 @@ public class ThoughtRequest {
     public long userId;
     public long tagId;
 
+    public ThoughtRequest() {
+    }
+
     public ThoughtRequest(long id, String name, String content, long userId, long tagId) {
         this.id = id;
         this.name = name;
@@ -57,5 +60,16 @@ public class ThoughtRequest {
         public ThoughtRequest build() {
             return new ThoughtRequest(this.id, this.name, this.content, this.userId, this.tagId);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "ThoughtRequest{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", content='" + content + '\'' +
+                ", userId=" + userId +
+                ", tagId=" + tagId +
+                '}';
     }
 }

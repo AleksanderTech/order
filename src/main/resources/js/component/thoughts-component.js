@@ -1,53 +1,8 @@
 import { ThoughtsMetrics } from '../model/thoughts-metrics.js';
-import { InformationComponent } from './information-component.js';
-
-class Router {
-    constructor() {
-        this.routes = [];
-    }
-
-    add(uri, data, content, callback) {
-        // this.routes.forEach(route => {
-
-        // });
-        for (let route of this.routes) {
-            if (route.uri === uri) {
-                // throw new Error(`the uri ${route.uri} already exists`);
-                return;
-            }
-        }
-        const route = {
-            uri,
-            data,
-            content,
-            callback
-        }
-        this.routes.push(route);
-    }
-
-    thereIsNo(pathName) {
-        let thereIsNo = true;
-        this.routes.forEach(route => {
-            if (route.uri === pathName) {
-                thereIsNo = false;
-            }
-        });
-        return thereIsNo;
-    }
-
-    getRoute(uri) {
-        let routeResult = {};
-        this.routes.forEach(route => {
-            if (route.uri === uri) {
-                routeResult = route;
-            }
-        });
-        return routeResult;
-    }
-}
+import { TileListComponent } from './tile-list-component.js';
+import { ROUTER_INSTANCE } from '../router.js';
 
 export class ThoughtsComponent {
-    route = new Router();
     pos1 = 0;
     pos2 = 0;
     pos3 = 0;
@@ -55,7 +10,6 @@ export class ThoughtsComponent {
     width = 580;
     height = 450;
     layoutChangeMode = false;
-    isHovered = 0;
 
     constructor(componentId, thoughtsMetricsManager, thoughtsService, tagService) {
         this.currentTagId = null;
@@ -70,7 +24,7 @@ export class ThoughtsComponent {
         this.creationModal = document.getElementById('creation-modal');
         this.editorModal = document.getElementById('editor-modal');
         this.closeModal = document.getElementById('close-modal');
-        this.closeEditor = document.getElementById('close-editor');
+        // this.closeEditor = document.getElementById('close-editor');
         this.resizeGrid = document.getElementById('resize-grid');
         this.tagsForm = document.getElementById('tags-form');
         this.thoughtsForm = document.getElementById('thoughts-form');
@@ -80,17 +34,15 @@ export class ThoughtsComponent {
         this.managementLabel = document.getElementById('management-label');
         this.changeLayoutItem = document.getElementById('change-layout');
         this.dragGridHandle = document.querySelector('.drag-grid');
-        this.information = new InformationComponent(document.querySelector('.information-component'));
+        this.tileListComponent = new TileListComponent(this.thoughtsGrid, [], this.thoughtsService, this.tagService);
     }
 
     init() {
         this.registerHandlers();
-        this.fetchTags();
+        this.tileListComponent.fetchTags();
         this.setupGridPosition();
         window.onpopstate = () => {
-            console.log(window.location.pathname);
-            const route = this.route.getRoute(window.location.pathname);
-            console.log(route.content);
+            const route = ROUTER_INSTANCE.getRoute(window.location.pathname);
             this.thoughtsGrid.innerHTML = route.content;
             route.callback();
         }
@@ -102,10 +54,10 @@ export class ThoughtsComponent {
             pathName,
             window.location.origin + pathName
         );
-        if (this.route.thereIsNo(pathName)) {
-            this.route.add(pathName, contentWithData.data, contentWithData.content, callback);
+        if (ROUTER_INSTANCE.thereIsNo(pathName)) {
+            ROUTER_INSTANCE.add(pathName, contentWithData.data, contentWithData.content, callback);
         }
-        const currentRoute = this.route.getRoute(pathName)
+        const currentRoute = ROUTER_INSTANCE.getRoute(pathName)
         this.thoughtsGrid.innerHTML = currentRoute.content;
         currentRoute.callback();
     }
@@ -133,24 +85,20 @@ export class ThoughtsComponent {
             this.creationModal.style.display = 'none';
         });
 
-        this.closeEditor.addEventListener('click', () => {
-            this.editorModal.classList.add('display-none')
-        });
+        // this.closeEditor.addEventListener('click', () => {
+        //     this.editorModal.classList.add('display-none')
+        // });
 
-        document.getElementById('back-thought-button').addEventListener('click', () => {
-            this.editorModal.classList.add('display-none')
-        });
-
-        document.getElementById('save-thought-button').addEventListener('click', () => {
-            this.saveThoughtContent();
-        });
-        // this.information().
+        // document.getElementById('back-thought-button').addEventListener('click', () => {
+        //     this.editorModal.classList.add('display-none')
+        // });
+       
     }
 
     setupGridPosition() {
         this.thoughtsMetricsManager.fetchUserPosition()
             .then(res => {
-                let metrics = JSON.parse(res);
+                let metrics = res; 
                 this.pos1 = metrics.leftPosition;
                 this.pos2 = metrics.topPosition;
                 this.pos3 = metrics.rightPosition;
@@ -170,11 +118,6 @@ export class ThoughtsComponent {
         document.documentElement.style.setProperty('--thoughts-grid-top', metrics.topPosition + 'px');
         document.documentElement.style.setProperty('--thoughts-grid-right', metrics.rightPosition + 'px');
         document.documentElement.style.setProperty('--thoughts-grid-bottom', metrics.bottomPosition + 'px');
-    }
-
-    saveThoughtContent() {
-        console.log('saving !');
-        this.information.show('The Thought has been remembered');
     }
 
     showDragGridHandle() {
@@ -252,16 +195,6 @@ export class ThoughtsComponent {
         this.isOpened = false;
     }
 
-    swap(container, dragging, hoverElement) {
-        const afterDragging = dragging.nextElementSibling;
-        container.insertBefore(dragging, hoverElement);
-        if (hoverElement != afterDragging) {
-            container.insertBefore(hoverElement, afterDragging);
-        } else {
-            container.insertBefore(hoverElement, dragging);
-        }
-    }
-
     setCurrentTagId(tagId) {
         this.currentTagId = tagId;
     }
@@ -299,7 +232,6 @@ export class ThoughtsComponent {
     }
 
     dragMouseDown(e) {
-        console.log('dragging');
         this.pos3 = e.clientX;
         this.pos4 = e.clientY;
         document.onmouseup = this.closeDragElement.bind(this);
@@ -323,135 +255,5 @@ export class ThoughtsComponent {
     closeDragElement() {
         document.onmouseup = null;
         document.onmousemove = null;
-    }
-    // ---------------------------------rest----x------------------------
-    fetchThoughts(tagId) {
-        this.thoughtsService.findByTagId(tagId)
-            .then(thoughts => {
-                thoughts = JSON.parse(thoughts);
-                if (thoughts) {
-                    this.navigate(`/thoughts/${tagId}`, { content: this.drawThoughts(thoughts), data: thoughts }, () => {
-                        this.addTileHandlers(thoughts);
-                        document.querySelector('.drag-grid').addEventListener('mousedown', this.dragMouseDown.bind(this));
-                    });
-                }
-            }).catch(err => {
-                console.log(err);
-                this.noThoughts()
-            })
-    }
-
-    onTileClick(tagOrThought) {
-        console.log(tagOrThought);
-        if (tagOrThought.hasOwnProperty('parentTagId')) {
-            this.fetchThoughts(tagOrThought.id);
-        } else {
-            this.openEditor();
-        }
-    }
-
-    openEditor() {
-        document.getElementById('editor-modal').classList.remove('display-none');
-    }
-
-    noThoughts() {
-        this.thoughtsGrid.innerHTML =
-            `<h2 class="no-thoughts-message">There is no any thoughts</h2>`;
-    }
-
-    fetchTags() {
-        this.tagService.findMyTags()
-            .then(tags => {
-                this.navigate(window.location.pathname, { content: this.drawTags(tags), data: tags }, () => {
-                    this.addTileHandlers(tags);
-                    document.querySelector('.drag-grid').addEventListener('mousedown', this.dragMouseDown.bind(this));
-                });
-            });
-    }
-
-    drawTags(tags) {
-        let tagsPage = '';
-        for (let tag of tags) {
-            let maxNameLength = 12;
-            if (tag.name.length > maxNameLength) {
-                tag.name = tag.name.substring(0, maxNameLength) + '...';
-            }
-            tagsPage = tagsPage +
-                `<div class="tile" draggable="true">
-                <div><div class="tile-name">${tag.name}</div></div>
-                <div class="tile-img-wrapper">
-                    <div class="tile-img tag-img"></div>
-                </div>
-                <div class="bar">
-                    <div class="dot-menu">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                    <div class="drag-icon draggable"></div>
-                </div>
-                </div>`;
-        }
-        return tagsPage + '<div class="drag-grid"></div>';
-    }
-
-    addTileHandlers(thoughtsOrTags) {
-        document.querySelectorAll('.tile').forEach(tile => {
-            tile.addEventListener('dragstart', e => {
-                tile.classList.add('dragging');
-            })
-            tile.addEventListener('dragend', e => {
-                tile.classList.remove('dragging');
-                tile.classList.remove('hovered');
-            })
-            tile.addEventListener('dragleave', e => {
-                this.isHovered--;
-                if (this.isHovered === 0) {
-                    tile.classList.remove('hovered');
-                }
-            })
-            tile.addEventListener('dragenter', e => {
-                this.isHovered++;
-                tile.classList.add('hovered');
-            })
-            tile.addEventListener('drop', e => {
-                this.isHovered = 0;
-                const dragging = document.querySelector('.dragging');
-                tile.classList.remove('hovered');
-                this.swap(this.thoughtsGrid, dragging, tile);
-            })
-            tile.querySelector('.tile-img-wrapper').addEventListener('click', e => {
-                let thoughtOrTag = thoughtsOrTags.find(thoughtOrTag => thoughtOrTag.name === tile.querySelector('.tile-name').innerText);
-                this.onTileClick(thoughtOrTag);
-            });
-        });
-    }
-
-    drawThoughts(thoughts) {
-        let thoughtsPage = '';
-        if (thoughts && thoughts.length > 0) {
-            for (let thought of thoughts) {
-                let maxNameLength = 12;
-                if (thought.name.length > maxNameLength) {
-                    thought.name = thought.name.substring(0, maxNameLength) + '...';
-                }
-                thoughtsPage = thoughtsPage +
-                    `<div class="tile" draggable="true">
-            <div><div class="tile-name">${thought.name}</div></div>
-            <div class="tile-img-wrapper">
-                <div class="tile-img thought-img"></div>
-            </div>
-            <div class="bar">
-                <div class="dot-menu">
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                </div>
-                <div class="drag-icon draggable"></div>
-            </div>
-                </div>`;
-            }
-            return thoughtsPage + '<div class="drag-grid"></div>';
-        }
     }
 }
