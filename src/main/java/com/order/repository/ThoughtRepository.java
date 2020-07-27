@@ -72,9 +72,9 @@ public class ThoughtRepository {
                     .and(THOUGHT.NAME.like(thoughtSearch.name + "%"));
         }
         if (tags != null && tags.size()>0) {
-            Condition condition = TAG.NAME.eq(tags.get(0));
+            Condition condition = TAG.NAME.like(tags.get(0)+ "%");
             for (int i = 1; i < tags.size(); i++) {
-                condition = condition.or(TAG.NAME.eq(tags.get(i)));
+                condition = condition.or(TAG.NAME.like(tags.get(i)+ "%"));
             }
             query = query
                     .and(condition);

@@ -1,9 +1,13 @@
 import { TileListComponent } from '../component/tile-list-component.js';
 import { TagService } from '../service/tag-service.js';
+import * as Drawer from '../drawer.js';
 
 export class SearchComponent {
+
+    searchBy;
+
     constructor(componentId, thoughtService) {
-        this.isOpened=false;
+        this.isOpened = false;
         this.componentId = componentId;
         this.thoughtService = thoughtService;
         this.component = document.getElementById(this.componentId);
@@ -13,61 +17,61 @@ export class SearchComponent {
     }
 
     init() {
-        console.log(this.component);
-        this.drawSearchBy();
-        this.tileListComponent.fetchTags();
+        this.drawTheSearch()
         this.registerHandlers();
     }
 
-    drawSearchBy(){
-        this.searching.innerHTML =
-        `<div class="pad-2">
-        <input id = "by-name-input" class="font-20 input" placeholder="Find" type="text">
-        <div class="dropdown-label by">by
-        <div class="dropdown col text-black text-left w-33 pad-t-3">
-                <div class="overflow-hidden">
-                    <ul class="dropdown-list hide-dropdown">
-                        <li class="mar-t-2 pointer">Name</li>
-                        <li class="mar-t-2 pointer">Content</li>
-                        <li class="mar-t-2 pointer">Tags</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        </div>
-        `;
+    drawTheSearch() {
+        this.searching.innerHTML = Drawer.searchBy();
         const list = this.component.querySelector('.dropdown-list');
-        list.addEventListener('mouseleave', this.closeList.bind(this,list));
-        this.component.querySelector('.dropdown-label').addEventListener('click', this.toggleList.bind(this,list));;
+        const dropdown = this.component.querySelector('.dropdown');
+        const dropdownLabel = this.component.querySelector('.dropdown-label');
+        const dropdownItems = this.component.querySelectorAll('.dropdown-item');
+        list.addEventListener('mouseleave', this.closeList.bind(this, list, dropdown));
+        dropdownItems.forEach(item => item.addEventListener('click', e => {
+            this.searchBy = e.target.getAttribute('data-item-type');
+            this.component.querySelector('#find-input').removeAttribute('disabled');
+            this.component.querySelector('#by').textContent = `by ${this.searchBy}`;
+        }));
+        dropdownLabel.addEventListener('click', this.toggleList.bind(this, list, dropdown));
     }
 
-    toggleList(list) {
+    toggleList(list, dropdown) {
         if (this.isOpened) {
-            this.closeList(list);
+            this.closeList(list, dropdown);
         } else {
+            dropdown.style.width = ''
+            dropdown.style.height = '';
             list.classList.add('show-dropdown');
             list.classList.remove('hide-dropdown');
             this.isOpened = true;
         }
     }
 
-    closeList(list) {
+    closeList(list, dropdown) {
         list.classList.add('hide-dropdown');
         list.classList.remove('show-dropdown');
         this.isOpened = false;
+        setTimeout(() => {
+            dropdown.style.width = 0;
+            dropdown.style.height = 0;
+        }, 350);
     }
 
     registerHandlers() {
-        this.component.querySelector('#by-name-input').addEventListener('input', (e) => {
-            console.log(e.target.value);
+        this.component.querySelector('#find-input').addEventListener('input', e => {
+            let input = e.target.value;
+            if (input.trim().length > 0) {
+                this.findMyThoughts(this.searchBy, input);
+            } else if (input.trim().length == 0) {
+                this.findMyThoughts('', '');
+            }
         });
     }
 
-    // findMyThoughts(event) {
-    //     console.log(event);
-
-    //     this.thoughtService.findMyThoughts().then(res => {
-    //         console.log(res);
-    //     });
-    // }
+    findMyThoughts(findBy, input) {
+        this.thoughtService.findBy(findBy, input).then(res => {
+            this.tileListComponent.drawBareThoughts(res);
+        });
+    }
 }

@@ -13,7 +13,6 @@ export class InformationComponent {
     }
 
     show(information) {
-        console.log(information);
         this.informationComponent.style.display = 'block';
         this.information.innerText = information;
     }

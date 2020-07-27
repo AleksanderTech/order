@@ -3,7 +3,12 @@ import * as url from '../url-provider.js';
 
 export class ThoughtService {
 
-    findMyThoughts() {
+    findBy(findBy, value) {
+        return fetch(url.buildUrl('thought', `by?${findBy}=${value}`))
+            .then(res => res.json())
+    }
+
+    findAll() {
         return fetch(url.buildUrl('thought'))
             .then(res => res.json())
     }

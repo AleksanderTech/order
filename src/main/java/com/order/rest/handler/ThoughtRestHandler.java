@@ -43,7 +43,7 @@ public class ThoughtRestHandler extends Handler {
                 .userId(userId)
                 .name(context.queryParam("name"))
                 .content(context.queryParam("content"))
-                .tags(context.queryParams("tags"))
+                .tags(context.queryParams("tag"))
                 .build();
         List<ThoughtResponse> thoughts = thoughtService.thoughtsBy(thoughtSearch);
         context.json(thoughts);

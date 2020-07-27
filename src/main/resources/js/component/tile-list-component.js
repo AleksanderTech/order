@@ -18,7 +18,7 @@ export class TileListComponent {
         this.init();
     }
 
-    init(){
+    init() {
         this.registerHandlers(this.tileEntities);
     }
 
@@ -99,24 +99,23 @@ export class TileListComponent {
     }
 
     fetchThoughts(tagId) {
-        if(tagId){
+        if (tagId) {
             this.thoughtsService.findByTagId(tagId)
-            .then(thoughts => {
-                thoughts = thoughts; 
-                this.tileEntities = thoughts;
-                if (this.tileEntities.length > 0) {
-                    console.log('navigating');
-                    this.navigate(`/thoughts/${tagId}`, { content: this.drawThoughts(thoughts), data: thoughts }, () => {
-                        this.registerHandlers(thoughts);
-                        EVENTS.emit();
-                    });
-                } else {
+                .then(thoughts => {
+                    thoughts = thoughts;
+                    this.tileEntities = thoughts;
+                    if (this.tileEntities.length > 0) {
+                        this.navigate(`/thoughts/${tagId}`, { content: this.drawThoughts(thoughts), data: thoughts }, () => {
+                            this.registerHandlers(thoughts);
+                            EVENTS.emit();
+                        });
+                    } else {
+                        this.noThoughts()
+                    }
+                }).catch(err => {
+                    console.log(err);
                     this.noThoughts()
-                }
-            }).catch(err => {
-                console.log(err);
-                this.noThoughts()
-            })
+                })
         }
     }
 
@@ -124,12 +123,37 @@ export class TileListComponent {
         this.tagService.findMyTags()
             .then(tags => {
                 this.tags = tags;
-                console.log(this.tags);
                 this.navigate(window.location.pathname, { content: this.drawTags(tags), data: tags }, () => {
                     this.registerHandlers(tags);
                     EVENTS.emit();
                 });
             });
+    }
+    drawBareThoughts(thoughts) {
+        let thoughtsPage = '';
+            for (let thought of thoughts) {
+                let maxNameLength = 12;
+                if (thought.name.length > maxNameLength) {
+                    thought.name = thought.name.substring(0, maxNameLength) + '...';
+                }
+                thoughtsPage = thoughtsPage +
+                    `<div class="tile" data-thought-id=${thought.id}" draggable="true">
+            <div><div class="tile-name">${thought.name}</div></div>
+            <div class="tile-img-wrapper">
+                <div class="tile-img thought-img"></div>
+            </div>
+            <div class="bar">
+                <div class="dot-menu">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="drag-icon draggable"></div>
+            </div>
+                </div>
+                <div class="drag-grid"></div>`;
+            }
+            this.tileListComponent.innerHTML = thoughtsPage;
     }
 
     drawThoughts(thoughts) {
