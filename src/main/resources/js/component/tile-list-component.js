@@ -15,6 +15,10 @@ export class TileListComponent {
         this.thoughtsService = thoughtsService;
         this.tagService = tagService;
         this.isHovered = 0;
+        this.init();
+    }
+
+    init(){
         this.registerHandlers(this.tileEntities);
     }
 
@@ -95,7 +99,8 @@ export class TileListComponent {
     }
 
     fetchThoughts(tagId) {
-        this.thoughtsService.findByTagId(tagId)
+        if(tagId){
+            this.thoughtsService.findByTagId(tagId)
             .then(thoughts => {
                 thoughts = thoughts; 
                 this.tileEntities = thoughts;
@@ -112,6 +117,7 @@ export class TileListComponent {
                 console.log(err);
                 this.noThoughts()
             })
+        }
     }
 
     fetchTags() {

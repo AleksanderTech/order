@@ -1,6 +1,5 @@
 package com.order.rest.handler;
 
-import com.order.JsonMapper;
 import com.order.entity.ThoughtsViewMetrics;
 import com.order.handler.Handler;
 import com.order.handler.Routes;

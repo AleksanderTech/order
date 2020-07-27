@@ -35,12 +35,13 @@ export class ThoughtsComponent {
         this.changeLayoutItem = document.getElementById('change-layout');
         this.dragGridHandle = document.querySelector('.drag-grid');
         this.tileListComponent = new TileListComponent(this.thoughtsGrid, [], this.thoughtsService, this.tagService);
+        this.init();
     }
 
     init() {
         this.registerHandlers();
-        this.tileListComponent.fetchTags();
         this.setupGridPosition();
+        this.tileListComponent.fetchTags();
         window.onpopstate = () => {
             const route = ROUTER_INSTANCE.getRoute(window.location.pathname);
             this.thoughtsGrid.innerHTML = route.content;

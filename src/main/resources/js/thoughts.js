@@ -15,7 +15,7 @@ const thoughtsComponent = new ThoughtsComponent('thoughts-component', thoughtsMe
 
 modeManager.loadUserMode();
 navigationComponent.registerHandlers();
-thoughtsComponent.init();
+// thoughtsComponent.init();
 
 
 
