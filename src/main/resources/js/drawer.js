@@ -21,6 +21,64 @@ export function searchBy() {
     </div>
     `;
 }
+export function thoughtTiles(thoughts) {
+    let thoughtsPage = '';
+    for (let thought of thoughts) {
+        let maxNameLength = 11;
+        if (thought.name.length > maxNameLength) {
+            thought.name = thought.name.substring(0, maxNameLength) + '...';
+        }
+        thoughtsPage = thoughtsPage +
+            thoughtTile(thought);
+    }
+    return thoughtsPage;
+}
+
+export function thoughtTile(thought) {
+    return `<div class="tile" data-thought-id=${thought.id}" draggable="true">
+    <div><div class="tile-name">${thought.name}</div></div>
+    <div class="tile-img-wrapper">
+        <div class="tile-img thought-img"></div>
+    </div>
+    <div class="bar">
+        <div class="dot-menu">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="drag-icon draggable"></div>
+    </div>
+        </div>`;
+}
+
+export function tagTiles(tags) {
+    let tagsPage = '';
+    for (let tag of tags) {
+        let maxNameLength = 12;
+        if (tag.name.length > maxNameLength) {
+            tag.name = tag.name.substring(0, maxNameLength) + '...';
+        }
+        tagsPage = tagsPage + tagTile(tag);
+    }
+    return tagsPage+'<div class="drag-grid"></div>';
+}
+
+export function tagTile(tag) {
+    return `<div class="tile" data-tag-id="${tag.id}" draggable="true">
+    <div><div class="tile-name">${tag.name}</div></div>
+    <div class="tile-img-wrapper">
+        <div class="tile-img tag-img"></div>
+    </div>
+    <div class="bar">
+        <div class="dot-menu">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="drag-icon draggable"></div>
+    </div>
+    </div>`;
+}
 
 export function append(element, toElement) {
     toElement.append(divfromHtml(element));

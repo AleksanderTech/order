@@ -1,6 +1,7 @@
 import { ROUTER_INSTANCE } from '../router.js';
-import { EVENTS,TAG_SELECTED } from '../events.js'
+import { EVENTS, TAG_SELECTED } from '../events.js'
 import { INFORMATION } from '../component/information-component.js';
+import * as drawer from '../drawer.js';
 
 export class TileListComponent {
 
@@ -124,7 +125,7 @@ export class TileListComponent {
         this.tagService.findMyTags()
             .then(tags => {
                 this.tags = tags;
-                this.navigate(window.location.pathname, { content: this.drawTags(tags), data: tags }, () => {
+                this.navigate(window.location.pathname, { content: drawer.tagTiles(tags), data: tags }, () => {
                     this.registerHandlers(tags);
                     EVENTS.emit();
                 });
@@ -132,94 +133,25 @@ export class TileListComponent {
     }
 
     drawBareThoughts(thoughts) {
-        let thoughtsPage = '';
         if (thoughts && thoughts.length > 0) {
-            for (let thought of thoughts) {
-                let maxNameLength = 12;
-                if (thought.name.length > maxNameLength) {
-                    thought.name = thought.name.substring(0, maxNameLength) + '...';
-                }
-                thoughtsPage = thoughtsPage +
-                    `<div class="tile" data-thought-id=${thought.id}" draggable="true">
-            <div><div class="tile-name">${thought.name}</div></div>
-            <div class="tile-img-wrapper">
-                <div class="tile-img thought-img"></div>
-            </div>
-            <div class="bar">
-                <div class="dot-menu">
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                </div>
-                <div class="drag-icon draggable"></div>
-            </div>
-                </div>
-                <div class="drag-grid"></div>`;
-            }
-            this.tileListComponent.innerHTML = thoughtsPage;
+            this.tileListComponent.innerHTML = drawer.thoughtTiles(thoughts);
         } else {
             this.tileListComponent.innerHTML = '<h2 class="no-thoughts-message pad-3">No thoughts found</h2>'
         }
     }
 
     drawThoughts(thoughts) {
-        let thoughtsPage = '';
-        if (thoughts && thoughts.length > 0) {
-            for (let thought of thoughts) {
-                let maxNameLength = 12;
-                if (thought.name.length > maxNameLength) {
-                    thought.name = thought.name.substring(0, maxNameLength) + '...';
-                }
-                thoughtsPage = thoughtsPage +
-                    `<div class="tile" data-thought-id=${thought.id}" draggable="true">
-            <div><div class="tile-name">${thought.name}</div></div>
-            <div class="tile-img-wrapper">
-                <div class="tile-img thought-img"></div>
-            </div>
-            <div class="bar">
-                <div class="dot-menu">
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                </div>
-                <div class="drag-icon draggable"></div>
-            </div>
-                </div>`;
-            }
+        // if (thoughts && thoughts.length > 0) {
+            let thoughtsPage = drawer.thoughtTiles(thoughts);
             return thoughtsPage + '<div class="drag-grid"></div>';
-        }
-    }
-    drawTags(tags) {
-        let tagsPage = '';
-        for (let tag of tags) {
-            let maxNameLength = 12;
-            if (tag.name.length > maxNameLength) {
-                tag.name = tag.name.substring(0, maxNameLength) + '...';
-            }
-            tagsPage = tagsPage +
-                `<div class="tile" data-tag-id="${tag.id}" draggable="true">
-                <div><div class="tile-name">${tag.name}</div></div>
-                <div class="tile-img-wrapper">
-                    <div class="tile-img tag-img"></div>
-                </div>
-                <div class="bar">
-                    <div class="dot-menu">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                    <div class="drag-icon draggable"></div>
-                </div>
-                </div>`;
-        }
-        return tagsPage + '<div class="drag-grid"></div>';
+        // }
     }
 
     noThoughts() {
         window.history.pushState(
             {},
-            window.location.pathname+'/no-thoughts',
-            window.location.origin + window.location.pathname+'/no-thoughts'
+            window.location.pathname + '/no-thoughts',
+            window.location.origin + window.location.pathname + '/no-thoughts'
         );
         this.tileListComponent.innerHTML =
             `<h2 class="no-thoughts-message">There is no any thoughts</h2>`;
@@ -233,7 +165,7 @@ export class TileListComponent {
         );
         if (ROUTER_INSTANCE.thereIsNo(pathName)) {
             ROUTER_INSTANCE.add(pathName, contentWithData.data, contentWithData.content, callback);
-        }else{
+        } else {
             ROUTER_INSTANCE.set(pathName, contentWithData.data, contentWithData.content, callback);
         }
         const currentRoute = ROUTER_INSTANCE.getRoute(pathName)
