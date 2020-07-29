@@ -52,17 +52,9 @@
             <div id="creation-modal" class="modal display-none">
                 <div class="modal-content text-right">
                     <div class="close" id="close-modal">&times;</div>
-                    <!-- <form id="thoughts-form" class="creation-form" action="/api/thought" method="POST"
-                        autocomplete="off">
-                        <input class="font-18" placeholder="Name" type="text" name="thought-name">
-                        <input id="tag-id-input" class="font-18 display-none" placeholder="Tag id" type="text" name="tag-id">
-                        <input type="submit" class="button modal-button" value="create">
-                    </form> -->
                     <div id="thoughts-form" class="creation-form">
                     <input class="font-18" placeholder="Name" type="text" id="create-thought-input">
-                    <!-- <input type="submit" class="button modal-button" value="create"> -->
                     <button class="button modal-button" id="create-thought-button">create</button>
-
                     </div>
                     <form id="tags-form" class="creation-form" action="/api/tag" method="POST" autocomplete="off">
                         <input class="font-18" placeholder="Name" type="text" name="name">

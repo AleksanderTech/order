@@ -162,6 +162,10 @@ public class ThoughtRepository {
                         .modifiedAt(record.get(THOUGHT.MODIFIED_AT))
                         .build());
     }
+
+    public void deleteById(long thoughtId, long userId) {
+        dslContext.deleteFrom(THOUGHT).where(THOUGHT.ID.eq(thoughtId)).and(THOUGHT.USER_ID.eq(userId)).execute();
+    }
 }
 
 

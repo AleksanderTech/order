@@ -24,4 +24,10 @@ export class ThoughtService {
             body: JSON.stringify(thought)
         });
     }
+
+    delete(thoughtId) {
+        return fetch(url.buildUrl(`thought?id=${thoughtId}`),{
+            method: 'DELETE'
+        })
+    }
 }

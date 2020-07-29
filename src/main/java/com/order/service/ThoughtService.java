@@ -50,4 +50,8 @@ public class ThoughtService {
     public List<ThoughtResponse> findAll(long userId) {
         return thoughtRepository.findAll(userId);
     }
+
+    public void delete(long thoughtId,long userId) {
+        thoughtRepository.deleteById(thoughtId,userId);
+    }
 }

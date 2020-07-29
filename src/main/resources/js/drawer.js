@@ -21,6 +21,7 @@ export function searchBy() {
     </div>
     `;
 }
+
 export function thoughtTiles(thoughts) {
     let thoughtsPage = '';
     for (let thought of thoughts) {
@@ -31,7 +32,7 @@ export function thoughtTiles(thoughts) {
         thoughtsPage = thoughtsPage +
             thoughtTile(thought);
     }
-    return thoughtsPage;
+    return thoughtsPage + '<div class="drag-grid"></div>';
 }
 
 export function thoughtTile(thought) {
@@ -48,6 +49,13 @@ export function thoughtTile(thought) {
         </div>
         <div class="drag-icon draggable"></div>
     </div>
+    <div class="tile-menu display-none">
+     <ul>
+       <li class="tile-menu-item menu-item-delete">
+          delete
+       </li>
+     </ul>
+     </div>
         </div>`;
 }
 
@@ -60,7 +68,7 @@ export function tagTiles(tags) {
         }
         tagsPage = tagsPage + tagTile(tag);
     }
-    return tagsPage+'<div class="drag-grid"></div>';
+    return tagsPage + '<div class="drag-grid"></div>';
 }
 
 export function tagTile(tag) {
@@ -77,7 +85,18 @@ export function tagTile(tag) {
         </div>
         <div class="drag-icon draggable"></div>
     </div>
+    <div class="tile-menu display-none">
+     <ul>
+       <li class="tile-menu-item menu-item-delete">
+          delete
+       </li>
+     </ul>
+     </div>
     </div>`;
+}
+
+export function noThoughts(){
+    return '<h2 class="no-thoughts-message pad-3">No thoughts found</h2>';
 }
 
 export function append(element, toElement) {

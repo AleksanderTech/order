@@ -487,8 +487,9 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 .tile {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible;
     border-radius: 6px;
+    position: relative;
     box-shadow: var(--tile-shadow);
     transition: 0.3s;
     min-height: 120px;
@@ -501,6 +502,23 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 .tile:hover {
     box-shadow: var(--tile-shadow-hover);
+}
+
+.tile-menu-item {
+    font-weight: bold;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.tile-menu {
+    background-color: var(--modal-background);
+    border-radius: 6px;
+    position: absolute;
+    overflow: visible;
+    top: 120px;
+    z-index: 999;
+    border: 1px solid var(--additional-color-1);
+    width: 120px;
 }
 
 .dot-menu {
@@ -603,7 +621,7 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     font-size: 20px;
     font-weight: bold;
     padding-left: 20px;
-    margin:0;
+    margin: 0;
     min-width: 120px;
 }
 
@@ -642,8 +660,8 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     right: 0;
     z-index: 9999;
     width: 50vw;
-    min-height: 90px;
-    margin: 100px auto;
+    min-height: 80px;
+    margin: 90px auto;
     box-shadow: var(--tile-shadow);
     background-color: var(--black-white-8-1);
 }

@@ -32,7 +32,7 @@ create table if not exists tag (
 
 
 create table if not exists thought_tag (
-    thought_id bigint references thought(id),
+    thought_id bigint references thought(id) on delete cascade,
     tag_id bigint references tag(id) on update cascade on delete cascade,
     primary key(thought_id,tag_id)
 );

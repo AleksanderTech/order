@@ -6,6 +6,7 @@ import * as drawer from '../drawer.js';
 export class TileListComponent {
 
     currentEntity;
+    currentTagId;
 
     constructor(tileListComponent, tileEntities, thoughtsService, tagService) {
         this.tileListComponent = tileListComponent;
@@ -51,6 +52,13 @@ export class TileListComponent {
                 let thoughtOrTag = thoughtsOrTags.find(thoughtOrTag => thoughtOrTag.name === tile.querySelector('.tile-name').innerText);
                 this.onTileClick(thoughtOrTag);
             });
+            tile.querySelector('.dot-menu').addEventListener('click', () => {
+                tile.querySelector('.tile-menu').classList.toggle('display-none');
+                tile.querySelector('.menu-item-delete').addEventListener('click', () => {
+                    let thoughtOrTag = thoughtsOrTags.find(thoughtOrTag => thoughtOrTag.name === tile.querySelector('.tile-name').innerText);
+                    this.delete(thoughtOrTag);
+                });
+            })
         });
         document.getElementById('save-thought-button').addEventListener('click', (e) => {
             this.currentEntity.content = this.editorModal.querySelector('#editor-textarea').value;
@@ -63,6 +71,27 @@ export class TileListComponent {
         document.getElementById('back-thought-button').addEventListener('click', () => {
             this.editorModal.classList.add('display-none')
         });
+    }
+
+    delete(thoughtOrTag) {
+        if (thoughtOrTag.hasOwnProperty('parentTagId')) {
+        } else {
+            this.thoughtsService.delete(thoughtOrTag.id)
+                .then(() => {
+                    INFORMATION.show('The Thought has been deleted');
+                    this.thoughtsService.findByTagId(this.currentTagId)
+                        .then(thoughts => {
+                            this.drawBareThoughts(thoughts);
+                            this.registerHandlers(thoughts);
+                        }).catch(err => {
+                            console.log(err);
+                        })
+                })
+                .catch((err) => {
+                    INFORMATION.show('Error occured');
+                    console.log(err);
+                })
+        }
     }
 
     swap(container, dragging, hoverElement) {
@@ -79,6 +108,7 @@ export class TileListComponent {
         if (tagOrThought.hasOwnProperty('parentTagId')) {
             this.fetchThoughts(tagOrThought.id);
             EVENTS.emit(TAG_SELECTED, tagOrThought.id)
+            this.currentTagId = tagOrThought.id;
         } else {
             this.openEditor(tagOrThought);
         }
@@ -96,6 +126,7 @@ export class TileListComponent {
                 INFORMATION.show('The Thought has been remembered');
             })
             .catch(err => {
+                INFORMATION.show('Error occured');
                 console.log(err);
             })
     }
@@ -107,7 +138,7 @@ export class TileListComponent {
                     thoughts = thoughts;
                     this.tileEntities = thoughts;
                     if (this.tileEntities.length > 0) {
-                        this.navigate(`/thoughts/${tagId}`, { content: this.drawThoughts(thoughts), data: thoughts }, () => {
+                        this.navigate(`/thoughts/${tagId}`, { content: drawer.thoughtTiles(thoughts), data: thoughts }, () => {
                             this.registerHandlers(thoughts);
                             EVENTS.emit();
                         });
@@ -136,15 +167,8 @@ export class TileListComponent {
         if (thoughts && thoughts.length > 0) {
             this.tileListComponent.innerHTML = drawer.thoughtTiles(thoughts);
         } else {
-            this.tileListComponent.innerHTML = '<h2 class="no-thoughts-message pad-3">No thoughts found</h2>'
+            this.tileListComponent.innerHTML = drawer.noThoughts();
         }
-    }
-
-    drawThoughts(thoughts) {
-        // if (thoughts && thoughts.length > 0) {
-            let thoughtsPage = drawer.thoughtTiles(thoughts);
-            return thoughtsPage + '<div class="drag-grid"></div>';
-        // }
     }
 
     noThoughts() {
@@ -153,8 +177,9 @@ export class TileListComponent {
             window.location.pathname + '/no-thoughts',
             window.location.origin + window.location.pathname + '/no-thoughts'
         );
-        this.tileListComponent.innerHTML =
-            `<h2 class="no-thoughts-message">There is no any thoughts</h2>`;
+        document.querySelector('#new-thought').style.display = 'block';
+        document.querySelector('#new-tag').style.display = 'none';
+        this.tileListComponent.innerHTML = drawer.noThoughts();
     }
 
     navigate(pathName, contentWithData, callback) {

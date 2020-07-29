@@ -27,6 +27,7 @@ public class ThoughtRestHandler extends Handler {
         lin.get(Routes.API_THOUGHTS, this::findAllThoughts);
         lin.get(Routes.API_THOUGHT_BY, this::findThoughtsBy);
         lin.post(Routes.API_THOUGHT, this::saveThought);
+        lin.delete(Routes.API_THOUGHT, this::deleteThought);
         lin.get(Routes.API_THOUGHT_VIEW_METRICS, this::thoughtsViewMetrics);
         lin.post(Routes.API_THOUGHT_VIEW_METRICS, this::saveThoughtsViewMetrics);
     }
@@ -79,6 +80,11 @@ public class ThoughtRestHandler extends Handler {
                         .userId(userId(context))
                         .build()
         );
+    }
+
+    public void deleteThought(Context context) {
+        long thoughtId = Long.parseLong(context.queryParam("id"));
+        thoughtService.delete(thoughtId, userId(context));
     }
 }
 
