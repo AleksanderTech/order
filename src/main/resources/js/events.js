@@ -5,10 +5,11 @@ export class Events {
         this.subscribers.push(subscriber);
     }
 
-    emit(eventType) {
+    emit(eventType,data) {
         this.subscribers.forEach(su => {
-            su.update(eventType)
+            su.update(eventType,data)
         })
     }
 }
 export const EVENTS = new Events();
+export const TAG_SELECTED = 'TAG_SELECTED';

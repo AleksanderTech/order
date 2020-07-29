@@ -4,12 +4,8 @@ export class Router {
     }
 
     add(uri, data, content, callback) {
-        // this.routes.forEach(route => {
-
-        // });
         for (let route of this.routes) {
             if (route.uri === uri) {
-                // throw new Error(`the uri ${route.uri} already exists`);
                 return;
             }
         }
@@ -20,6 +16,20 @@ export class Router {
             callback
         }
         this.routes.push(route);
+    }
+
+    set(uri, data, content, callback) {
+        for (let i = 0; i < this.routes.length; i++) {
+            if (this.routes[i].uri === uri) {
+                const route = {
+                    uri,
+                    data,
+                    content,
+                    callback
+                }
+                this.routes[i] = route;
+            }
+        }
     }
 
     thereIsNo(pathName) {

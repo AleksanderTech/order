@@ -9,7 +9,7 @@ export class ThoughtService {
     }
 
     findAll() {
-        return fetch(url.buildUrl('thought'))
+        return fetch(url.buildUrl('thoughts'))
             .then(res => res.json())
     }
 

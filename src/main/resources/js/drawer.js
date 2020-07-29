@@ -10,9 +10,10 @@ export function searchBy() {
                 <div class="dropdown col text-black text-left w-33 pad-t-3">
                     <div class="overflow-hidden">
                      <ul class="dropdown-list hide-dropdown">
-                         <li class="mar-t-2 pointer dropdown-item" data-item-type="name">Name</li>
-                         <li class="mar-t-2 pointer dropdown-item" data-item-type="content">Content</li>
-                         <li class="mar-t-2 pointer dropdown-item" data-item-type="tag">Tag</li>
+                         <li class="mar-t-2 pointer dropdown-item" data-item-type="all">all</li>
+                         <li class="mar-t-2 pointer dropdown-item" data-item-type="name">name</li>
+                         <li class="mar-t-2 pointer dropdown-item" data-item-type="content">content</li>
+                         <li class="mar-t-2 pointer dropdown-item" data-item-type="tag">tag</li>
                      </ul>
                     </div>
                 </div>

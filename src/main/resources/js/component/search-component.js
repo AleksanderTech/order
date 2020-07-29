@@ -1,5 +1,6 @@
 import { TileListComponent } from '../component/tile-list-component.js';
 import { TagService } from '../service/tag-service.js';
+import { ThoughtService } from '../service/thought-service.js';
 import * as Drawer from '../drawer.js';
 
 export class SearchComponent {
@@ -11,7 +12,7 @@ export class SearchComponent {
         this.componentId = componentId;
         this.thoughtService = thoughtService;
         this.component = document.getElementById(this.componentId);
-        this.tileListComponent = new TileListComponent(document.getElementById('thoughts-grid'), [], this.thoughtsService, new TagService());
+        this.tileListComponent = new TileListComponent(document.getElementById('thoughts-grid'), [], this.thoughtService, new TagService());
         this.searching = this.component.querySelector('#searching');
         this.init();
     }
@@ -30,8 +31,14 @@ export class SearchComponent {
         list.addEventListener('mouseleave', this.closeList.bind(this, list, dropdown));
         dropdownItems.forEach(item => item.addEventListener('click', e => {
             this.searchBy = e.target.getAttribute('data-item-type');
-            this.component.querySelector('#find-input').removeAttribute('disabled');
-            this.component.querySelector('#by').textContent = `by ${this.searchBy}`;
+            const findInput = this.component.querySelector('#find-input');
+            if (this.searchBy === 'all') {
+                findInput.disabled = true;
+                this.findMyThoughts();
+            } else {
+                findInput.removeAttribute('disabled');
+            }
+            this.component.querySelector('#by').textContent = this.searchBy === 'all' ? 'all' : `by ${this.searchBy}`;
         }));
         dropdownLabel.addEventListener('click', this.toggleList.bind(this, list, dropdown));
     }
@@ -62,16 +69,23 @@ export class SearchComponent {
         this.component.querySelector('#find-input').addEventListener('input', e => {
             let input = e.target.value;
             if (input.trim().length > 0) {
-                this.findMyThoughts(this.searchBy, input);
+                this.findMyThoughts(input);
             } else if (input.trim().length == 0) {
                 this.findMyThoughts('', '');
             }
         });
     }
 
-    findMyThoughts(findBy, input) {
-        this.thoughtService.findBy(findBy, input).then(res => {
-            this.tileListComponent.drawBareThoughts(res);
-        });
+    findMyThoughts(input) {
+        if (this.searchBy === 'all') {
+            this.thoughtService.findAll().then(res => { this.drawThoughts(res); });
+        } else if (this.searchBy && input) {
+            this.thoughtService.findBy(this.searchBy, input).then(res => { this.drawThoughts(res); });
+        } else {this.drawThoughts(res); }
+    }
+
+    drawThoughts(res){
+        this.tileListComponent.drawBareThoughts(res);
+        this.tileListComponent.registerHandlers(res);
     }
 }

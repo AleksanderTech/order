@@ -1,6 +1,6 @@
 import { ROUTER_INSTANCE } from '../router.js';
-import { InformationComponent } from './information-component.js';
-import { EVENTS } from '../events.js'
+import { EVENTS,TAG_SELECTED } from '../events.js'
+import { INFORMATION } from '../component/information-component.js';
 
 export class TileListComponent {
 
@@ -8,7 +8,6 @@ export class TileListComponent {
 
     constructor(tileListComponent, tileEntities, thoughtsService, tagService) {
         this.tileListComponent = tileListComponent;
-        this.information = new InformationComponent(document.querySelector('.information-component'));
         this.tileEntities = tileEntities;
         this.closeEditor = document.getElementById('close-editor');
         this.editorModal = document.getElementById('editor-modal');
@@ -53,6 +52,7 @@ export class TileListComponent {
             });
         });
         document.getElementById('save-thought-button').addEventListener('click', (e) => {
+            this.currentEntity.content = this.editorModal.querySelector('#editor-textarea').value;
             this.saveThought(this.currentEntity);
         });
         this.closeEditor.addEventListener('click', () => {
@@ -76,22 +76,23 @@ export class TileListComponent {
 
     onTileClick(tagOrThought) {
         if (tagOrThought.hasOwnProperty('parentTagId')) {
-            // if (tagOrThought instanceof Tag) {
             this.fetchThoughts(tagOrThought.id);
+            EVENTS.emit(TAG_SELECTED, tagOrThought.id)
         } else {
             this.openEditor(tagOrThought);
         }
     }
 
     openEditor(thought) {
-        document.getElementById('editor-modal').classList.remove('display-none');
+        this.editorModal.classList.remove('display-none');
+        this.editorModal.querySelector('#editor-textarea').value = thought.content;
         this.currentEntity = thought;
     }
 
     saveThought(thought) {
         this.thoughtsService.save(thought)
             .then(() => {
-                this.information.show('The Thought has been remembered');
+                INFORMATION.show('The Thought has been remembered');
             })
             .catch(err => {
                 console.log(err);
@@ -129,8 +130,10 @@ export class TileListComponent {
                 });
             });
     }
+
     drawBareThoughts(thoughts) {
         let thoughtsPage = '';
+        if (thoughts && thoughts.length > 0) {
             for (let thought of thoughts) {
                 let maxNameLength = 12;
                 if (thought.name.length > maxNameLength) {
@@ -154,6 +157,9 @@ export class TileListComponent {
                 <div class="drag-grid"></div>`;
             }
             this.tileListComponent.innerHTML = thoughtsPage;
+        } else {
+            this.tileListComponent.innerHTML = '<h2 class="no-thoughts-message pad-3">No thoughts found</h2>'
+        }
     }
 
     drawThoughts(thoughts) {
@@ -210,6 +216,11 @@ export class TileListComponent {
     }
 
     noThoughts() {
+        window.history.pushState(
+            {},
+            window.location.pathname+'/no-thoughts',
+            window.location.origin + window.location.pathname+'/no-thoughts'
+        );
         this.tileListComponent.innerHTML =
             `<h2 class="no-thoughts-message">There is no any thoughts</h2>`;
     }
@@ -222,9 +233,18 @@ export class TileListComponent {
         );
         if (ROUTER_INSTANCE.thereIsNo(pathName)) {
             ROUTER_INSTANCE.add(pathName, contentWithData.data, contentWithData.content, callback);
+        }else{
+            ROUTER_INSTANCE.set(pathName, contentWithData.data, contentWithData.content, callback);
         }
         const currentRoute = ROUTER_INSTANCE.getRoute(pathName)
         this.tileListComponent.innerHTML = currentRoute.content;
         currentRoute.callback();
+        if (window.location.pathname === '/thoughts') {
+            document.querySelector('#new-thought').style.display = 'none';
+            document.querySelector('#new-tag').style.display = 'block';
+        } else {
+            document.querySelector('#new-thought').style.display = 'block';
+            document.querySelector('#new-tag').style.display = 'none';
+        }
     }
 }

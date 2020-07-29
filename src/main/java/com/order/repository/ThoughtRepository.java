@@ -71,10 +71,10 @@ public class ThoughtRepository {
             query = query
                     .and(THOUGHT.NAME.like(thoughtSearch.name + "%"));
         }
-        if (tags != null && tags.size()>0) {
-            Condition condition = TAG.NAME.like(tags.get(0)+ "%");
+        if (tags != null && tags.size() > 0) {
+            Condition condition = TAG.NAME.like(tags.get(0) + "%");
             for (int i = 1; i < tags.size(); i++) {
-                condition = condition.or(TAG.NAME.like(tags.get(i)+ "%"));
+                condition = condition.or(TAG.NAME.like(tags.get(i) + "%"));
             }
             query = query
                     .and(condition);
@@ -147,6 +147,20 @@ public class ThoughtRepository {
                         .where(THOUGHT.ID.eq(thoughtDb.id))
                         .execute(),
                 () -> create(thought));
+    }
+
+    public List<ThoughtResponse> findAll(long userId) {
+        return dslContext.select(THOUGHT.ID, THOUGHT.NAME, THOUGHT.CONTENT,
+                THOUGHT.CREATED_AT, THOUGHT.MODIFIED_AT)
+                .from(THOUGHT)
+                .where(THOUGHT.USER_ID.eq(userId))
+                .fetch(record -> ThoughtResponse.builder()
+                        .id(record.get(THOUGHT.ID))
+                        .name(record.get(THOUGHT.NAME))
+                        .content(record.get(THOUGHT.CONTENT))
+                        .createdAt(record.get(THOUGHT.CREATED_AT))
+                        .modifiedAt(record.get(THOUGHT.MODIFIED_AT))
+                        .build());
     }
 }
 

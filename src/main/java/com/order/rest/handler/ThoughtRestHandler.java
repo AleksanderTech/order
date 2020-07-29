@@ -24,10 +24,17 @@ public class ThoughtRestHandler extends Handler {
     @Override
     public void register(Javalin lin) {
         lin.get(Routes.API_THOUGHT, this::findThoughts);
+        lin.get(Routes.API_THOUGHTS, this::findAllThoughts);
         lin.get(Routes.API_THOUGHT_BY, this::findThoughtsBy);
         lin.post(Routes.API_THOUGHT, this::saveThought);
         lin.get(Routes.API_THOUGHT_VIEW_METRICS, this::thoughtsViewMetrics);
         lin.post(Routes.API_THOUGHT_VIEW_METRICS, this::saveThoughtsViewMetrics);
+    }
+
+    public void findAllThoughts(Context context) {
+        long userId = userId(context);
+        List<ThoughtResponse> thoughts = thoughtService.findAll(userId);
+        context.json(thoughts);
     }
 
     public void findThoughts(Context context) {
@@ -69,7 +76,7 @@ public class ThoughtRestHandler extends Handler {
                         .name(thought.name)
                         .content(thought.content)
                         .tagId(thought.tagId)
-                        .userId(thought.userId)
+                        .userId(userId(context))
                         .build()
         );
     }

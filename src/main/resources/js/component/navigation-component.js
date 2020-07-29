@@ -46,3 +46,4 @@ export class NavigationComponent {
         this.isOpened = false;
     }
 }
+

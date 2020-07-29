@@ -31,10 +31,6 @@ public class ThoughtService {
         return thoughtRepository.thoughtsBy(thoughtSearch);
     }
 
-    public void create(ThoughtRequest thought) {
-        thoughtRepository.create(thought);
-    }
-
     public void save(ThoughtRequest thought) {
         if (thought.id > 0) {
             thoughtRepository.save(thought);
@@ -49,5 +45,9 @@ public class ThoughtService {
 
     public void saveViewMetrics(long userId, ThoughtsViewMetrics thoughtsViewMetrics) {
         viewMetricsRepository.save(userId, thoughtsViewMetrics);
+    }
+
+    public List<ThoughtResponse> findAll(long userId) {
+        return thoughtRepository.findAll(userId);
     }
 }

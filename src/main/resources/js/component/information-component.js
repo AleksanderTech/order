@@ -21,3 +21,4 @@ export class InformationComponent {
         this.informationComponent.style.display = 'none';
     }
 }
+export const INFORMATION = new InformationComponent(document.querySelector('.information-component'));

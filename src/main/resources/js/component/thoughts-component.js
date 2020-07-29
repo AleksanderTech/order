@@ -1,7 +1,9 @@
 import { ThoughtsMetrics } from '../model/thoughts-metrics.js';
 import { TileListComponent } from './tile-list-component.js';
 import { ROUTER_INSTANCE } from '../router.js';
-import { EVENTS } from '../events.js'
+import { EVENTS, TAG_SELECTED } from '../events.js'
+import { Thought } from '../model/thought.js';
+import { INFORMATION } from '../component/information-component.js';
 
 export class ThoughtsComponent {
     pos1 = 0;
@@ -12,6 +14,7 @@ export class ThoughtsComponent {
     height = 450;
     layoutChangeMode = false;
 
+
     constructor(componentId, thoughtsMetricsManager, thoughtsService, tagService) {
         this.currentTagId = null;
         this.thoughtsMetricsManager = thoughtsMetricsManager;
@@ -20,6 +23,7 @@ export class ThoughtsComponent {
         this.thoughtsElement = document.getElementById(componentId);
         this.tiles = document.querySelectorAll('.tile');
         this.thoughtsGrid = document.getElementById('thoughts-grid');
+        this.thoughtsForm = document.getElementById('thoughts-form');
         this.newThoughtButton = document.getElementById('new-thought-button');
         this.newTagButton = document.getElementById('new-tag-button');
         this.creationModal = document.getElementById('creation-modal');
@@ -27,7 +31,6 @@ export class ThoughtsComponent {
         this.closeModal = document.getElementById('close-modal');
         this.resizeGrid = document.getElementById('resize-grid');
         this.tagsForm = document.getElementById('tags-form');
-        this.thoughtsForm = document.getElementById('thoughts-form');
         this.thoughtsWrapper = document.getElementById('thoughts-wrapper');
         this.thoughtsGrid = document.getElementById('thoughts-grid');
         this.managementList = document.getElementById('management-list');
@@ -46,26 +49,26 @@ export class ThoughtsComponent {
             const route = ROUTER_INSTANCE.getRoute(window.location.pathname);
             this.thoughtsGrid.innerHTML = route.content;
             route.callback();
+            if (window.location.pathname === '/thoughts') {
+                document.querySelector('#new-thought').style.display = 'none';
+                document.querySelector('#new-tag').style.display = 'block';
+            } else {
+                document.querySelector('#new-thought').style.display = 'block';
+                document.querySelector('#new-tag').style.display = 'none';
+            }
         }
         EVENTS.subscribe(this);
-    }
-
-    update() {
-        document.querySelector('.drag-grid').addEventListener('mousedown', this.dragMouseDown.bind(this));
-    }
-
-    navigate(pathName, contentWithData, callback) {
-        window.history.pushState(
-            {},
-            pathName,
-            window.location.origin + pathName
-        );
-        if (ROUTER_INSTANCE.thereIsNo(pathName)) {
-            ROUTER_INSTANCE.add(pathName, contentWithData.data, contentWithData.content, callback);
+        if (window.location.pathname === '/thoughts') {
+            this.thoughtsElement.querySelector('#new-thought').style.display = 'none';
         }
-        const currentRoute = ROUTER_INSTANCE.getRoute(pathName)
-        this.thoughtsGrid.innerHTML = currentRoute.content;
-        currentRoute.callback();
+    }
+
+    update(eventType, data) {
+        if (eventType === TAG_SELECTED) {
+            this.currentTagId = data
+        } else {
+            document.querySelector('.drag-grid').addEventListener('mousedown', this.dragMouseDown.bind(this));
+        }
     }
 
     registerHandlers() {
@@ -79,17 +82,39 @@ export class ThoughtsComponent {
             this.creationModal.style.display = 'block';
             this.thoughtsForm.style.display = 'block';
         });
-
+        this.thoughtsElement.querySelector('#create-thought-button').addEventListener('click', (e) => {
+            this.createThought(document.getElementById('create-thought-input').value);
+        });
         this.newTagButton.addEventListener('click', e => {
             this.creationModal.style.display = 'block';
             this.tagsForm.style.display = 'block';
         });
-
         this.closeModal.addEventListener('click', e => {
             this.thoughtsForm.style.display = 'none';
             this.tagsForm.style.display = 'none';
             this.creationModal.style.display = 'none';
         });
+    }
+
+    createThought(thoughtName) {
+        const thought = new Thought(null, thoughtName, null, this.currentTagId);
+        this.thoughtsService.save(thought)
+            .then(() => {
+                INFORMATION.show('The Thought has been created');
+                this.thoughtsService.findByTagId(this.currentTagId)
+                    .then(thoughts => {
+                        this.tileListComponent.drawBareThoughts(thoughts);
+                        this.tileListComponent.registerHandlers(thoughts);
+                    }).catch(err => {
+                        console.log(err);
+                    })
+
+                this.creationModal.style.display = 'none';
+            })
+            .catch(err => {
+                this.creationModal.style.display = 'none';
+                console.log(err);
+            });
     }
 
     setupGridPosition() {
