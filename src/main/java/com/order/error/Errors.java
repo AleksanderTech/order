@@ -12,4 +12,5 @@ public class Errors {
     public static final String CONFIRM_PASSWORD = "Password confirmation does not match.";
     public static final String EMPTY = "Cannot be empty.";
     public static final String UNAUTHORIZED = "Unathorized - Your are not allowed to this resource.";
+    public static final String CANNOT_DELETE_TAG = "Tag cannot be deleted until thoughts are assigned.";
 }

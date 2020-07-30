@@ -75,6 +75,27 @@ export class TileListComponent {
 
     delete(thoughtOrTag) {
         if (thoughtOrTag.hasOwnProperty('parentTagId')) {
+            this.tagService.delete(thoughtOrTag.id)
+                .then((status) => {
+                    if(status === 400){
+                        INFORMATION.show('The Tag cannot be deleted until thoughts are assigned');
+                    }else{
+                        INFORMATION.show('The Tag has been deleted');
+                        this.tagService.findMyTags()
+                            .then(tags => {
+                                this.tags = tags;
+                                this.navigate(window.location.pathname, { content: drawer.tagTiles(tags), data: tags }, () => {
+                                    this.registerHandlers(tags);
+                                    EVENTS.emit();
+                                });
+                            }).catch(err => {
+                                console.log(err);
+                            })
+                    }
+                }).catch((err) => {
+                    INFORMATION.show('Error occured');
+                    console.log(err);
+                })
         } else {
             this.thoughtsService.delete(thoughtOrTag.id)
                 .then(() => {

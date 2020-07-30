@@ -22,12 +22,12 @@ public class TagRestHandler extends Handler {
     public void register(Javalin lin) {
         lin.post(Routes.API_TAG, this::createTag);
         lin.get(Routes.API_TAG, this::findTags);
+        lin.delete(Routes.API_TAG, this::deleteTag);
     }
 
     public void createTag(Context context) {
         long userId = userId(context);
         String parentTagIdString = context.formParam("parent-tag-id");
-        System.out.println("parent tag id: " + parentTagIdString);
         Long parentTagId = Validators.isEmpty(parentTagIdString) ? -1 : Long.parseLong(parentTagIdString);
         String name = context.formParam("name");
         tagService.create(Tag.builder().name(name).userId(userId).parentTagId(parentTagId).createdAt(LocalDateTime.now()).build());
@@ -37,5 +37,10 @@ public class TagRestHandler extends Handler {
     public void findTags(Context context) {
         long userId = userId(context);
         context.json(tagService.orderedTagsByUserId(userId));
+    }
+
+    public void deleteTag(Context context) {
+        long tagId = Long.parseLong(context.queryParam("id"));
+        tagService.delete(tagId, userId(context));
     }
 }

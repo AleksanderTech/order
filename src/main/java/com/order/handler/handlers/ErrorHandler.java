@@ -3,8 +3,10 @@ package com.order.handler.handlers;
 import com.order.error.Errors;
 import com.order.error.HttpStatus;
 import com.order.error.OrderException;
+import com.order.error.OrderRestException;
 import com.order.handler.Handler;
 import com.order.handler.Routes;
+import com.order.service.Response;
 import com.order.view.Presenter;
 import com.order.view.Views;
 import com.order.view.model.ErrorVM;
@@ -26,6 +28,7 @@ public class ErrorHandler extends Handler {
     public void register(Javalin lin) {
         lin.error(404, this::error404);
         lin.exception(Exception.class, this::handleException);
+        lin.exception(OrderRestException.class, this::handleOrderRestException);
         lin.exception(OrderException.class, this::handleOrderException);
         lin.get(Routes.ERROR_ROUTE, this::errorGet);
     }
@@ -36,6 +39,12 @@ public class ErrorHandler extends Handler {
 
     public void errorGet(Context ctx) {
         ctx.html(presenter.template(Views.ERROR, new SignInVM(new HashMap<>())));
+    }
+
+    public void handleOrderRestException(OrderRestException exception, Context ctx) {
+        exception.printStackTrace();
+        ctx.status(exception.getStatus().getStatusCode());
+        ctx.json(Response.withStatus(exception.getStatus(), exception.getErrors()));
     }
 
     public void handleException(Exception exception, Context ctx) {

@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.order.database.jooq.Tables.SORT_ORDER;
+import static com.order.database.jooq.Tables.THOUGHT_TAG;
 import static com.order.database.jooq.tables.Tag.TAG;
+import static com.order.database.jooq.tables.Thought.THOUGHT;
 
 
 public class TagRepository {
@@ -79,5 +81,18 @@ public class TagRepository {
                 .createdAt(record.get(TAG.CREATED_AT))
                 .orderValue(record.getValue(SORT_ORDER.VALUE))
                 .build();
+    }
+
+    public boolean hasThoughts(long tagId, long userId) {
+        return dslContext.fetchExists(dslContext.select(THOUGHT_TAG.TAG_ID)
+                .from(THOUGHT_TAG)
+                .join(TAG)
+                .on(TAG.ID.eq(THOUGHT_TAG.TAG_ID))
+                .where(TAG.USER_ID.eq(userId))
+                .and(TAG.ID.eq(tagId)));
+    }
+
+    public void deleteById(long tagId, long userId) {
+        dslContext.deleteFrom(TAG).where(TAG.ID.eq(tagId)).and(TAG.USER_ID.eq(userId)).execute();
     }
 }
