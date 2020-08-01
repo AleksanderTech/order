@@ -4,6 +4,7 @@ import com.order.database.jooq.tables.records.SortOrderRecord;
 import com.order.entity.Tag;
 import com.order.model.OrderedTag;
 import org.jooq.*;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 
 import java.time.LocalDateTime;

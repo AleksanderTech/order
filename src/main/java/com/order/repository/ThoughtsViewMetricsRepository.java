@@ -5,8 +5,6 @@ import org.jooq.DSLContext;
 
 import java.util.Optional;
 
-import static com.order.database.jooq.Tables.ORDER_USER;
-import static com.order.database.jooq.Tables.SORT_ORDER;
 import static com.order.database.jooq.tables.ThoughtsViewMetrics.THOUGHTS_VIEW_METRICS;
 
 public class ThoughtsViewMetricsRepository {
