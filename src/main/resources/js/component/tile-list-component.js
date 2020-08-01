@@ -23,6 +23,8 @@ export class TileListComponent {
         this.registerHandlers(this.tileEntities);
     }
 
+   
+
     registerHandlers(thoughtsOrTags) {
         document.querySelectorAll('.tile').forEach(tile => {
             tile.addEventListener('dragstart', e => {

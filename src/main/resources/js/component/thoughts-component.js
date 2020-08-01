@@ -1,7 +1,7 @@
 import { ThoughtsMetrics } from '../model/thoughts-metrics.js';
 import { TileListComponent } from './tile-list-component.js';
 import { ROUTER_INSTANCE } from '../router.js';
-import { EVENTS, TAG_SELECTED } from '../events.js'
+import { EVENTS, TAG_SELECTED, THOUGHT_CREATED } from '../events.js'
 import { Thought } from '../model/thought.js';
 import { INFORMATION } from '../component/information-component.js';
 
@@ -48,6 +48,7 @@ export class ThoughtsComponent {
         this.setupGridPosition();
         this.tileListComponent.fetchTags();
         window.onpopstate = () => {
+            this.cleanAfterChangeLayout();
             const route = ROUTER_INSTANCE.getRoute(window.location.pathname);
             this.thoughtsGrid.innerHTML = route.content;
             route.callback();
@@ -57,6 +58,7 @@ export class ThoughtsComponent {
             } else {
                 document.querySelector('#new-thought').style.display = 'block';
                 document.querySelector('#new-tag').style.display = 'none';
+
             }
         }
         EVENTS.subscribe(this);
@@ -67,6 +69,7 @@ export class ThoughtsComponent {
 
     update(eventType, data) {
         if (eventType === TAG_SELECTED) {
+            this.cleanAfterChangeLayout();
             this.currentTagId = data
         } else {
             document.querySelector('.drag-grid').addEventListener('mousedown', this.dragMouseDown.bind(this));
@@ -106,6 +109,7 @@ export class ThoughtsComponent {
                     .then(thoughts => {
                         this.tileListComponent.drawBareThoughts(thoughts);
                         this.tileListComponent.registerHandlers(thoughts);
+                        EVENTS.emit(THOUGHT_CREATED);
                     }).catch(err => {
                         console.log(err);
                     })
@@ -144,11 +148,17 @@ export class ThoughtsComponent {
     }
 
     showDragGridHandle() {
-        document.querySelector('.drag-grid').classList.add('display-block');
+        let dragGrid = document.querySelector('.drag-grid');
+        if (dragGrid) {
+            document.querySelector('.drag-grid').classList.add('display-block');
+        }
     }
 
     hideDragGridHandle() {
-        document.querySelector('.drag-grid').classList.remove('display-block');
+        let dragGrid = document.querySelector('.drag-grid');
+        if (dragGrid) {
+            dragGrid.classList.remove('display-block');
+        }
     }
 
     changeLayout() {
@@ -186,6 +196,10 @@ export class ThoughtsComponent {
         thoughtsMetrics.width = box.width;
         thoughtsMetrics.height = box.height;
         this.thoughtsMetricsManager.savePosition(thoughtsMetrics)
+        this.cleanAfterChangeLayout();
+    }
+
+    cleanAfterChangeLayout() {
         this.removeBorder();
         this.hideResizeHandle(this.thoughtsGrid);
         this.hideDragGridHandle()

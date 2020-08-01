@@ -13,3 +13,4 @@ export class Events {
 }
 export const EVENTS = new Events();
 export const TAG_SELECTED = 'TAG_SELECTED';
+export const THOUGHT_CREATED = 'THOUGHT_CREATED';
