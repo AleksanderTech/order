@@ -26,9 +26,11 @@ export class ThoughtsComponent {
         this.thoughtsForm = document.getElementById('thoughts-form');
         this.newThoughtButton = document.getElementById('new-thought-button');
         this.newTagButton = document.getElementById('new-tag-button');
-        this.creationModal = document.getElementById('creation-modal');
+        this.thoughtCreationModal = document.getElementById('thought-creation-modal');
+        this.tagCreationModal = document.getElementById('tag-creation-modal');
         this.editorModal = document.getElementById('editor-modal');
-        this.closeModal = document.getElementById('close-modal');
+        this.tagCloseModal = document.getElementById('tag-close-modal');
+        this.thoughtCloseModal = document.getElementById('thought-close-modal');
         this.resizeGrid = document.getElementById('resize-grid');
         this.tagsForm = document.getElementById('tags-form');
         this.thoughtsWrapper = document.getElementById('thoughts-wrapper');
@@ -79,20 +81,19 @@ export class ThoughtsComponent {
             e.preventDefault();
         });
         this.newThoughtButton.addEventListener('click', e => {
-            this.creationModal.style.display = 'block';
-            this.thoughtsForm.style.display = 'block';
+            this.thoughtCreationModal.style.display = 'block';
         });
         this.thoughtsElement.querySelector('#create-thought-button').addEventListener('click', (e) => {
             this.createThought(document.getElementById('create-thought-input').value);
         });
         this.newTagButton.addEventListener('click', e => {
-            this.creationModal.style.display = 'block';
-            this.tagsForm.style.display = 'block';
+            this.tagCreationModal.style.display = 'block';
         });
-        this.closeModal.addEventListener('click', e => {
-            this.thoughtsForm.style.display = 'none';
-            this.tagsForm.style.display = 'none';
-            this.creationModal.style.display = 'none';
+        this.thoughtCloseModal.addEventListener('click', e => {
+            this.thoughtCreationModal.style.display = 'none';
+        });
+        this.tagCloseModal.addEventListener('click', e => {
+            this.tagCreationModal.style.display = 'none';
         });
     }
 
@@ -109,10 +110,10 @@ export class ThoughtsComponent {
                         console.log(err);
                     })
 
-                this.creationModal.style.display = 'none';
+                this.thoughtCreationModal.style.display = 'none';
             })
             .catch(err => {
-                this.creationModal.style.display = 'none';
+                this.thoughtCreationModal.style.display = 'none';
                 console.log(err);
             });
     }

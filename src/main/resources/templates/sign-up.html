@@ -42,10 +42,10 @@
         <div th:if="${model.messages.containsKey('ACCOUNT_CREATED')}" id="account-created-modal" class="modal">
             <div class="modal-content text-right">
                 <div class="close" id="close-modal">&times;</div>
-                <h3 class="text-center" th:text="${model.messages.get('ACCOUNT_CREATED')}"></h3>
+                <h3 class="text-center text-dark" th:text="${model.messages.get('ACCOUNT_CREATED')}"></h3>
                 <div class="buttons">
-                    <button class="button back" type="button" onclick="location.href='/sign-up'">Back</button>
-                    <button class="button" type="button" onclick="location.href='/sign-in'">Sign in</button>
+                    <button class="button back modal-button" type="button" onclick="location.href='/sign-up'">Back</button>
+                    <button class="button modal-button" type="button" onclick="location.href='/sign-in'">Sign in</button>
                 </div>
             </div>
         </div>

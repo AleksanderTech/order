@@ -405,14 +405,6 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     background-color: var(--black-white-8) !important;
 }
 
-#thoughts-form {
-    display: none;
-}
-
-#tags-form {
-    display: none;
-}
-
 .modal {
     background-color: var(--modal-background);
     z-index: 999;
@@ -478,10 +470,6 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 .modal-content input::placeholder {
     font-size: 18px;
-}
-
-.creation-form {
-    display: flex;
 }
 
 .tile {
@@ -822,6 +810,10 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 .letter-sp-3 {
     letter-spacing: 3px;
+}
+
+.text-dark{
+    color: var(--black-white-10);
 }
 
 .pad-1 {

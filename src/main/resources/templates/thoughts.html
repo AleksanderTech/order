@@ -49,17 +49,25 @@
                 <div id="management-label" class="mar-t-2"><span class="pointer">Management</span></div>
             </div>
        
-            <div id="creation-modal" class="modal display-none">
+            <div id="tag-creation-modal" class="modal display-none">
                 <div class="modal-content text-right">
-                    <div class="close" id="close-modal">&times;</div>
+                    <div class="close" id="tag-close-modal">&times;</div>
                     <div id="thoughts-form" class="creation-form">
-                    <input class="font-18" placeholder="Name" type="text" id="create-thought-input">
-                    <button class="button modal-button" id="create-thought-button">create</button>
                     </div>
-                    <form id="tags-form" class="creation-form" action="/api/tag" method="POST" autocomplete="off">
+                    <form id="tags-form" action="/api/tag" method="POST" autocomplete="off">
                         <input class="font-18" placeholder="Name" type="text" name="name">
                         <input type="submit" class="button modal-button" value="create">
                     </form>
+                </div>
+            </div>
+
+            <div id="thought-creation-modal" class="modal display-none">
+                <div class="modal-content text-right">
+                    <div class="close" id="thought-close-modal">&times;</div>
+                    <div id="thoughts-form">
+                    <input class="font-18" placeholder="Name" type="text" id="create-thought-input">
+                    <button class="button modal-button" id="create-thought-button">create</button>
+                    </div>
                 </div>
             </div>
 
